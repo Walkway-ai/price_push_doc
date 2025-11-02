@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-         <loc>https://Walkway-ai.github.io/walkway_saas_backend/</loc>
+         <loc>https://Walkway-ai.github.io/price_push_doc/</loc>
          <lastmod>2025-11-02</lastmod>
     </url>
     <url>
-         <loc>https://Walkway-ai.github.io/walkway_saas_backend/price-push/api-endpoints/</loc>
+         <loc>https://Walkway-ai.github.io/price_push_doc/price-push/api-endpoints/</loc>
          <lastmod>2025-11-02</lastmod>
     </url>
     <url>
-         <loc>https://Walkway-ai.github.io/walkway_saas_backend/price-push/availability/</loc>
+         <loc>https://Walkway-ai.github.io/price_push_doc/price-push/availability/</loc>
          <lastmod>2025-11-02</lastmod>
     </url>
     <url>
-         <loc>https://Walkway-ai.github.io/walkway_saas_backend/price-push/configuration/</loc>
+         <loc>https://Walkway-ai.github.io/price_push_doc/price-push/configuration/</loc>
          <lastmod>2025-11-02</lastmod>
     </url>
     <url>
-         <loc>https://Walkway-ai.github.io/walkway_saas_backend/price-push/history/</loc>
+         <loc>https://Walkway-ai.github.io/price_push_doc/price-push/history/</loc>
          <lastmod>2025-11-02</lastmod>
     </url>
     <url>
-         <loc>https://Walkway-ai.github.io/walkway_saas_backend/price-push/how-it-works/</loc>
+         <loc>https://Walkway-ai.github.io/price_push_doc/price-push/how-it-works/</loc>
          <lastmod>2025-11-02</lastmod>
     </url>
     <url>
-         <loc>https://Walkway-ai.github.io/walkway_saas_backend/price-push/overview/</loc>
+         <loc>https://Walkway-ai.github.io/price_push_doc/price-push/overview/</loc>
          <lastmod>2025-11-02</lastmod>
     </url>
     <url>
-         <loc>https://Walkway-ai.github.io/walkway_saas_backend/price-push/price-units/</loc>
+         <loc>https://Walkway-ai.github.io/price_push_doc/price-push/price-units/</loc>
          <lastmod>2025-11-02</lastmod>
     </url>
     <url>
-         <loc>https://Walkway-ai.github.io/walkway_saas_backend/price-push/troubleshooting/</loc>
+         <loc>https://Walkway-ai.github.io/price_push_doc/price-push/troubleshooting/</loc>
          <lastmod>2025-11-02</lastmod>
     </url>
     <url>
-         <loc>https://Walkway-ai.github.io/walkway_saas_backend/price-push/undo/</loc>
+         <loc>https://Walkway-ai.github.io/price_push_doc/price-push/undo/</loc>
          <lastmod>2025-11-02</lastmod>
     </url>
     <url>
-         <loc>https://Walkway-ai.github.io/walkway_saas_backend/price-push/use-cases/</loc>
+         <loc>https://Walkway-ai.github.io/price_push_doc/price-push/use-cases/</loc>
          <lastmod>2025-11-02</lastmod>
     </url>
 </urlset>

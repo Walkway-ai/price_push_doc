@@ -1,9 +1,9 @@
 site_name: Walkway SaaS Backend Documentation
-site_url: https://Walkway-ai.github.io/walkway_saas_backend/
+site_url: https://Walkway-ai.github.io/price_push_doc/
 site_description: Complete documentation for Walkway SaaS Backend features
 site_author: Walkway Team
-repo_url: https://github.com/Walkway-ai/walkway_saas_backend
-repo_name: Walkway-ai/walkway_saas_backend
+repo_url: https://Walkway-ai.github.io/price_push_doc
+repo_name: Walkway-ai/price_push_doc
 
 theme:
   name: material
@@ -82,4 +82,3 @@ extra:
     property: UA-XXXXXXXX-X
 
 copyright: Copyright &copy; 2025 Walkway
-
