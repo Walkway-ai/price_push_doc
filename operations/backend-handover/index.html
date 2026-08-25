@@ -1,0 +1,2666 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Complete documentation for Walkway SaaS Backend features">
+      
+      
+        <meta name="author" content="Walkway Team">
+      
+      
+        <link rel="canonical" href="https://Walkway-ai.github.io/price_push_doc/operations/backend-handover/">
+      
+      
+        <link rel="prev" href="../../price-push/troubleshooting/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Backend Handover Runbook - Walkway SaaS Backend Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","UA-XXXXXXXX-X"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","UA-XXXXXXXX-X",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXXX-X",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#backend-handover-runbook" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Walkway SaaS Backend Documentation" class="md-header__button md-logo" aria-label="Walkway SaaS Backend Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Walkway SaaS Backend Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Backend Handover Runbook
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Walkway-ai/price_push_doc" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Walkway-ai/price_push_doc
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../price-push/overview/" class="md-tabs__link">
+          
+  
+  
+  Price Push Feature
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+  Operations
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Walkway SaaS Backend Documentation" class="md-nav__button md-logo" aria-label="Walkway SaaS Backend Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Walkway SaaS Backend Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Walkway-ai/price_push_doc" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Walkway-ai/price_push_doc
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Price Push Feature
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Price Push Feature
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../price-push/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../price-push/how-it-works/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How It Works
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../price-push/configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../price-push/price-units/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Price Unit Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../price-push/availability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Availability Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../price-push/history/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Price Change History
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../price-push/undo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Undo & Revert Changes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../price-push/use-cases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Use Cases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../price-push/api-endpoints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Endpoints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../price-push/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Operations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Operations
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Backend Handover Runbook
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Backend Handover Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#start-here" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Start here
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#authority" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What you may do without me
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#triage-ladder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Triage ladder
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#playbooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Playbooks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Playbooks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#p1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P1 — One operator's prices did not move
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P2 — The batch has not run
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P3 — The batch runs but takes hours, or two run at once
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P4 — Bokun is failing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P5 — A schedule stopped firing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P6 — Notifications and digests stopped, API is fine
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-deployed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is deployed
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What is deployed">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#connections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connections
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deploys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deploys
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scheduled-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scheduled work
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Scheduled work">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-in-app-cron-handlers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. In-app @Cron handlers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-external-cloud-scheduler-jobs-that-call-us" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. External Cloud Scheduler jobs that call us
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-per-compset-refresh-jobs-created-by-the-app-at-runtime" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Per-compset refresh jobs, created by the app at runtime
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#auto-apply-the-batch-that-moves-money" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Auto-apply: the batch that moves money
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Auto-apply: the batch that moves money">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#verify-the-batch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify the batch
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-five-vendor-rails" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The five vendor rails
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kill-switches-and-knobs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kill switches and knobs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dependencies
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#escalation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Escalation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#landmines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Landmines
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commands
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Commands">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#roll-back-the-api-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Roll back the API service
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flip-a-kill-switch-without-a-build" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flip a kill switch without a build
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#re-fire-a-digest-or-snapshot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Re-fire a digest or snapshot
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#locally" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Locally
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#in-flight-at-handover" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        In flight at handover
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#keeping-this-page-true" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Keeping this page true
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#start-here" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Start here
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#authority" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What you may do without me
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#triage-ladder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Triage ladder
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#playbooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Playbooks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Playbooks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#p1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P1 — One operator's prices did not move
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P2 — The batch has not run
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P3 — The batch runs but takes hours, or two run at once
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P4 — Bokun is failing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P5 — A schedule stopped firing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P6 — Notifications and digests stopped, API is fine
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-deployed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is deployed
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What is deployed">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#connections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connections
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deploys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deploys
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scheduled-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scheduled work
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Scheduled work">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-in-app-cron-handlers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. In-app @Cron handlers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-external-cloud-scheduler-jobs-that-call-us" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. External Cloud Scheduler jobs that call us
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-per-compset-refresh-jobs-created-by-the-app-at-runtime" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Per-compset refresh jobs, created by the app at runtime
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#auto-apply-the-batch-that-moves-money" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Auto-apply: the batch that moves money
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Auto-apply: the batch that moves money">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#verify-the-batch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify the batch
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-five-vendor-rails" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The five vendor rails
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kill-switches-and-knobs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kill switches and knobs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dependencies
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#escalation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Escalation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#landmines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Landmines
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commands
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Commands">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#roll-back-the-api-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Roll back the API service
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flip-a-kill-switch-without-a-build" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flip a kill switch without a build
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#re-fire-a-digest-or-snapshot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Re-fire a digest or snapshot
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#locally" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Locally
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#in-flight-at-handover" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        In flight at handover
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#keeping-this-page-true" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Keeping this page true
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="backend-handover-runbook">Backend Handover Runbook</h1>
+<p>Everything in the backend that needs a human, written for someone who did not build it.</p>
+<div class="admonition info">
+<p class="admonition-title">Status of this page</p>
+<p><strong>Verified against production on 25 August 2026.</strong> Resource shapes, schedules, the
+auto-apply cadence and its execution history were read from GCP, not inferred from code.
+Anything still unverified is listed under <a href="#open-questions">Open questions</a> — that
+section is part of the document, not an appendix.</p>
+<p>Where a value is marked <code>code default</code> it was read from the source and <strong>not</strong> confirmed
+against the live revision.</p>
+</div>
+<hr />
+<h2 id="start-here">Start here</h2>
+<table>
+<thead>
+<tr>
+<th>You are…</th>
+<th>Go to</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>On call, something looks broken</td>
+<td><a href="#triage-ladder">Triage ladder</a>, then the matching <a href="#playbooks">playbook</a></td>
+</tr>
+<tr>
+<td>Asked "why didn't this operator's prices update?"</td>
+<td><a href="#p1">Playbook: one operator's prices did not move</a></td>
+</tr>
+<tr>
+<td>Deciding whether you're allowed to do something</td>
+<td><a href="#authority">What you may do without me</a></td>
+</tr>
+<tr>
+<td>Looking for background, not an incident</td>
+<td><a href="#what-is-deployed">What is deployed</a></td>
+</tr>
+<tr>
+<td>Wondering who owns a thing</td>
+<td><a href="#escalation">Escalation</a></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="authority">What you may do without me</h2>
+<p>The point of this section is that nobody waits on me for something that is already decided.</p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Go ahead</th>
+<th>Ask first</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Flip a single-vendor kill switch (<code>BOKUN_AUTO_APPLY_DISABLED</code>)</td>
+<td>✅ Yes, any time a vendor is degraded</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Roll back the API service to the previous revision</td>
+<td>✅ Yes</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Re-run a digest or snapshot via its <code>/admin/**/run</code> route</td>
+<td>✅ Yes</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Lower <code>AUTO_APPLY_TASKS_COUNT</code> / vendor concurrency</td>
+<td>✅ Yes, to protect the database</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Re-trigger the auto-apply batch manually</td>
+<td>✅ Yes — it is idempotent per slot and the manual lock protects hand-pushed prices</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Disable the whole auto-apply batch</td>
+<td>—</td>
+<td>⚠️ Ask — prices stop moving for every operator</td>
+</tr>
+<tr>
+<td>Widen <code>SELF_COMPARE_ALLOWED_CHANNELS</code></td>
+<td>—</td>
+<td>⚠️ Ask — this is how self-referential pricing loops start</td>
+</tr>
+<tr>
+<td>Turn off <code>AUTO_APPLY_RESPECT_OWNER_TOGGLE</code></td>
+<td>—</td>
+<td>🚫 Don't — it pushes for operators who opted out</td>
+</tr>
+<tr>
+<td>Run a Prisma migration against prod</td>
+<td>—</td>
+<td>⚠️ Ask — the live schema has drifted from <code>migrations</code></td>
+</tr>
+<tr>
+<td>Change a vendor's pricing-rule semantics</td>
+<td>—</td>
+<td>⚠️ Ask</td>
+</tr>
+<tr>
+<td>Contact a vendor's support on our behalf</td>
+<td>—</td>
+<td>⚠️ Ask, unless it is a straight "is your API down" question</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="triage-ladder">Triage ladder</h2>
+<p>The failure mode nobody watches is silence. A cron that stops firing and a batch nobody
+triggers both look exactly like a quiet day. Steps 1 and 2 exist because of that.</p>
+<ol>
+<li><strong>Read the price-alerts Slack channel.</strong> Every batch posts a health digest when it ends:
+   per-vendor applied/failed, p50/p95 push duration, top error classes, queue depth, and a
+   <code>GREEN</code> / <code>YELLOW</code> / <code>RED</code> verdict. <strong>No digest at all is the louder signal</strong> — the batch
+   never ran, or Redis was down when it finished.</li>
+<li><strong>Confirm the batch is still firing.</strong> It should run 8× a day, roughly every 3 hours. One
+   command, <a href="#verify-the-batch">below</a>. If the last execution is more than ~4 hours old,
+   go to <a href="#p2">playbook P2</a>.</li>
+<li><strong>Confirm the API service has a warm instance.</strong> <code>minScale: 1</code> is load-bearing — every
+   <code>@Cron</code> runs there and nowhere else.</li>
+<li><strong>Then Sentry, then Cloud Logging.</strong> The Job's image skips the sourcemap upload, so its
+   traces are unsymbolicated: you get the error, not the line. For batch work, filter logs on
+   the job name and the <code>traceId</code> the <code>202</code> returned.</li>
+<li><strong>Check <code>feature_trace</code></strong> for the user-visible answer — every meaningful action writes a
+   row with input, response, status, duration and business steps. Fastest way to answer <em>"did
+   this operator's push actually happen"</em> without reading logs.</li>
+<li><strong>Only then reach for a kill switch.</strong> Prefer disabling one vendor over stopping the batch.</li>
+</ol>
+<hr />
+<h2 id="playbooks">Playbooks</h2>
+<h3 id="p1">P1 — One operator's prices did not move</h3>
+<p><strong>Symptom.</strong> An operator, or someone in CS, says prices are not updating.</p>
+<ol>
+<li>Check <code>feature_trace</code> for that subscription. If there is a row with a failure, you have
+   your answer and the vendor's error is in it.</li>
+<li>If the push <strong>succeeded</strong> on our side, the wait is probably the channel's. Direct is
+   instant, Viator is seconds, <strong>GetYourGuide is about an hour and up to 24</strong>. Say so — this
+   removes a whole category of report.</li>
+<li>If there is no row at all, the recommendation was never applied. Check in order: is the
+   compset owner's auto-apply toggle on (<code>AUTO_APPLY_RESPECT_OWNER_TOGGLE</code>); was the slot
+   under an <code>AutoApplyManualLock</code> from a recent hand-push; did the OTA-source guard skip it
+   because the price came from an OTA and the target is Direct.</li>
+<li>Bokun specifically: <strong>roughly 1 change in 7 never lands</strong>, cause unrecorded. If it is
+   Bokun and there is no error, this is the known gap, not a new bug.</li>
+</ol>
+<h3 id="p2">P2 — The batch has not run</h3>
+<p><strong>Symptom.</strong> No health digest, or the last execution is hours old.</p>
+<p>The batch is triggered by a <strong>Python caller inside GCP that is not in this repository</strong> —
+verified as <code>python-requests/2.34.2</code> from Google Cloud address space, POSTing every ~3 hours
+and receiving <code>202</code> every time. Nothing in the backend schedules it.</p>
+<ol>
+<li>Verify when it last ran → <a href="#verify-the-batch">command</a>.</li>
+<li>If executions stopped but the service is healthy, <strong>the caller stopped</strong>, not us. This is
+   a data-team question — the backend cannot restart it.</li>
+<li>You can trigger one by hand in the meantime: <code>POST /ventrata/recommendations/auto-apply</code>
+   with the <code>compsetIds</code> you want. It returns <code>202</code> plus an execution name.</li>
+<li>There is <strong>no alert</strong> on a batch that never starts. If you fix nothing else during my
+   leave, this is the one worth adding.</li>
+</ol>
+<h3 id="p3">P3 — The batch runs but takes hours, or two run at once</h3>
+<p>This is a known live problem, measured over 29 executions on 21–25 August 2026:</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cadence</td>
+<td>every ~3 h, 8× per day, always <code>202</code></td>
+</tr>
+<tr>
+<td>Median duration</td>
+<td>≈ 88 min</td>
+</tr>
+<tr>
+<td>Fastest / slowest</td>
+<td>50 min / <strong>6 h 43 min</strong></td>
+</tr>
+<tr>
+<td>Exceeded the 4 h task ceiling and retried</td>
+<td><strong>2 of 29</strong></td>
+</tr>
+<tr>
+<td>Overlapped the following execution</td>
+<td><strong>6 of 29</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Cause: the Job is running <strong>unsharded</strong>. Its spec is <code>taskCount: 1</code> with <code>parallelism: 5</code>,
+so one task does all the work, even though the code supports hash-sharding a batch across N
+tasks via <code>CLOUD_RUN_TASK_INDEX</code> / <code>_COUNT</code>.</p>
+<p><strong>Consequence.</strong> Long runs cross into the next trigger, so two batches push prices
+concurrently, and a run past 4 h is killed and retried from the start.</p>
+<p><strong>Mitigation.</strong> Raise the effective task count so the batch shards (the caller may pass it,
+or set <code>AUTO_APPLY_TASKS_COUNT</code> on the Service). Watch pool-wait time in the digest when you
+do — the Job talks to Postgres unpooled, so more tasks means more raw connections.</p>
+<h3 id="p4">P4 — Bokun is failing</h3>
+<p>Bokun degrades more than the others: <strong>12.1 s median push, 17× Ventrata.</strong></p>
+<p>A three-stage breaker already limits the damage: per-experience quarantine at 4 consecutive
+5xx → global half-open cooldown of 30 s once cumulative 5xx crosses 10 → hard stop after 3
+failed probes. You will see <code>[Bokun CIRCUIT]</code> lines in the logs.</p>
+<p>If the breaker is tripping repeatedly, set <code>BOKUN_AUTO_APPLY_DISABLED=true</code>. The rest of the
+batch keeps running. Re-enable when their gateway recovers.</p>
+<h3 id="p5">P5 — A schedule stopped firing</h3>
+<p>Every <code>@Cron</code> returns early when <code>RUN_WORKER === 'true'</code> and therefore runs <strong>only</strong> in the
+API service, kept alive by <code>minScale: 1</code>.</p>
+<p>If schedules went quiet, check the live revision for <code>minScale: 0</code> or a <code>RUN_WORKER=true</code>
+that should not be there. There is no missing-heartbeat alert — a stopped cron produces no
+error, no Sentry event, nothing.</p>
+<h3 id="p6">P6 — Notifications and digests stopped, API is fine</h3>
+<p><code>main.ts</code> wraps the Redis connection in try/catch: it logs the failure and <strong>continues
+booting without a queue</strong>. The API keeps serving normally while every queued side effect —
+emails, Slack posts, the end-of-batch digest — silently stops being produced.</p>
+<p>Bull Board is commented out in <code>main.ts</code>, so there is no queue UI. Inspect Redis directly.</p>
+<hr />
+<h2 id="what-is-deployed">What is deployed</h2>
+<p>Verified 25 August 2026. All built from this repository. Service and Worker share one image
+and differ only by <code>RUN_WORKER</code>; the Job is a second image from <code>Dockerfile.job</code> whose <code>CMD</code>
+is the Nest application context, not the HTTP server.</p>
+<table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>Kind</th>
+<th>Role</th>
+<th>Verified shape</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>walkwaysaasbackend</code></td>
+<td>Cloud Run Service, public</td>
+<td>NestJS + Fastify API. Three containers per revision: Cloud SQL Auth Proxy → pgbouncer <code>:6432</code> → Nest <code>:3000</code>. <strong>All <code>@Cron</code> handlers fire here.</strong></td>
+<td>✅ minScale 1, maxScale 5, 4 vCPU / 4 Gi</td>
+</tr>
+<tr>
+<td><code>walkwaysaasbackend-worker</code></td>
+<td>Cloud Run Service, private</td>
+<td>Same image. Drains the BullMQ <code>notifications</code> queue.</td>
+<td><code>RUN_WORKER=true</code></td>
+</tr>
+<tr>
+<td><code>walkway-auto-apply</code></td>
+<td>Cloud Run <strong>Job</strong></td>
+<td>Runs the auto-apply batch off the user-facing service — no OOM kills, no revision rollover mid-push, no HTTP timeout ceiling.</td>
+<td>✅ <code>taskCount: 1</code>, <code>parallelism: 5</code>, 4 h task timeout, max-retries 1</td>
+</tr>
+<tr>
+<td><code>walkwaysaasbackend-dev</code></td>
+<td>Cloud Run Service</td>
+<td>Dev environment.</td>
+<td>see the warning below</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Dev and prod share the scheduler pool</p>
+<p>Many of the runtime-created per-compset refresh jobs point at
+<strong><code>walkwaysaasbackend-dev</code></strong>, not prod. When a refresh "did nothing" in production,
+check which host its scheduler job actually targets before debugging the backend.</p>
+</div>
+<h3 id="connections">Connections</h3>
+<p>Runtime queries go through pgbouncer in transaction mode
+(<code>connection_limit=1&amp;pgbouncer=true</code>, pool 76, 500 max clients). Migrations and admin
+scripts use <code>DATABASE_DIRECT_URL</code> to bypass the pooler.</p>
+<div class="admonition warning">
+<p class="admonition-title">The Job has no proxy sidecar</p>
+<p>The Cloud Run Job reaches Postgres directly and unpooled. If pool-wait time climbs in the
+digest, lower the task count before anything else.</p>
+</div>
+<h3 id="deploys">Deploys</h3>
+<p>Cloud Build deploys all three on push to <code>main</code>; the trigger lives in the GCP console as
+inline YAML, <strong>not in the repo</strong>, so it cannot be reviewed in a PR. The Job image is tagged
+with the commit SHA — at time of writing it matched the <code>main</code> tip, which is how you confirm
+the batch is running current code.</p>
+<hr />
+<h2 id="scheduled-work">Scheduled work</h2>
+<p>Three different mechanisms schedule things. Confusing them costs hours.</p>
+<h3 id="1-in-app-cron-handlers">1. In-app <code>@Cron</code> handlers</h3>
+<p>Fire in the <strong>API service only</strong>. Times below are UTC; handlers declared without a
+<code>timeZone</code> run in the container's zone, which is UTC on Cloud Run.</p>
+<table>
+<thead>
+<tr>
+<th>Handler</th>
+<th>Expression</th>
+<th>Declared zone</th>
+<th>≈ UTC</th>
+<th>Does</th>
+<th>Gate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Support inbox poll</td>
+<td><code>*/2 * * * *</code></td>
+<td>container</td>
+<td>continuous</td>
+<td>IMAP scan → support issues, first-response times</td>
+<td><code>SUPPORT_INBOX_ENABLED</code></td>
+</tr>
+<tr>
+<td>Expire recommendations</td>
+<td><code>0 * * * *</code></td>
+<td>container</td>
+<td>hourly</td>
+<td>Marks lapsed recommendations expired</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Prune price history</td>
+<td><code>0 2 * * *</code></td>
+<td>container</td>
+<td>02:00</td>
+<td>Deletes history older than 90 days</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Min/max signal detection</td>
+<td><code>0 3 * * *</code></td>
+<td>container</td>
+<td>03:00</td>
+<td>ENG-1130 floor/ceiling signals</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Auto-Pilot weekly digest</td>
+<td><code>0 9 * * 1</code></td>
+<td>Europe/Paris</td>
+<td>07:00 Mon</td>
+<td>Slack digest</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Auto-Pilot follow-up</td>
+<td><code>0 10 * * *</code></td>
+<td>Europe/Paris</td>
+<td>08:00</td>
+<td>Chases accounts that activated but never pushed</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Operator health scorecard</td>
+<td><code>0 10 * * 1</code></td>
+<td>Europe/Paris</td>
+<td>08:00 Mon</td>
+<td>Portfolio score → Slack</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Daily report</td>
+<td><code>0 9 * * *</code></td>
+<td>container</td>
+<td>09:00</td>
+<td>Yesterday's recommendation activity</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Adoption funnel</td>
+<td><code>0 11 * * 1</code></td>
+<td>Europe/Paris</td>
+<td>09:00 Mon</td>
+<td>Weekly funnel snapshot</td>
+<td>—</td>
+</tr>
+<tr>
+<td>HTA price snapshot</td>
+<td><code>0 9 * * *</code></td>
+<td>America/New_York</td>
+<td>13:00</td>
+<td>ENG-613 daily price email</td>
+<td>recipients hardcoded in config</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">DST and collisions</p>
+<p>The Paris and New York handlers shift by one hour in the UTC column at the end of
+October. Two handlers already collide at 08:00 UTC on Mondays.</p>
+</div>
+<h3 id="2-external-cloud-scheduler-jobs-that-call-us">2. External Cloud Scheduler jobs that call us</h3>
+<p>Not in this repo. They will keep firing whatever happens to the codebase.</p>
+<table>
+<thead>
+<tr>
+<th>Job</th>
+<th>Schedule</th>
+<th>Hits</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>saas-notifications</code></td>
+<td><code>0 13 * * 1-7</code> Europe/Paris</td>
+<td><code>POST /notifications/trigger-daily-notifications</code></td>
+</tr>
+<tr>
+<td><em>(the auto-apply trigger)</em></td>
+<td>every ~3 h — <strong>not a Cloud Scheduler job</strong>, see <a href="#p2">P2</a></td>
+<td><code>POST /ventrata/recommendations/auto-apply</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="3-per-compset-refresh-jobs-created-by-the-app-at-runtime">3. Per-compset refresh jobs, created by the app at runtime</h3>
+<p>The application creates one Cloud Scheduler job per compset on-demand refresh setup, calling
+back into itself with an OIDC token, at whatever hour and timezone the operator picked.
+There are on the order of a hundred of them. They are <strong>not in this repo</strong> — list them in the
+console, never expect to find them in code. Endpoints hit:
+<code>/api/compset/on-demand-trigger</code> and <code>/api/compset/refresh</code>.</p>
+<hr />
+<h2 id="auto-apply-the-batch-that-moves-money">Auto-apply: the batch that moves money</h2>
+<div class="admonition danger">
+<p class="admonition-title">Nothing in this repository schedules it</p>
+<p>An external Python caller inside GCP POSTs to <code>/ventrata/recommendations/auto-apply</code>
+every ~3 hours. The Service then dispatches a Cloud Run Job execution using its own
+runtime service account. If that caller stops, <strong>no prices move and no alert fires.</strong></p>
+</div>
+<ol>
+<li><strong>External POST</strong> — <code>POST /ventrata/recommendations/auto-apply</code> with <code>compsetIds</code>. The only
+   entry point. It lives on the Ventrata controller for historical reasons and dispatches to
+   every vendor.</li>
+<li><strong>Dispatch to the Job</strong> — with <code>AUTO_APPLY_VIA_CLOUD_RUN_JOB=true</code> the Service fires a
+   <code>walkway-auto-apply</code> execution through the Cloud Run Admin API and returns <strong>202 with the
+   execution name</strong>. Payload rides as a <code>PAYLOAD_JSON</code> env override alongside <code>TRACE_ID</code>.</li>
+<li><strong>Shard</strong> — <em>in principle.</em> Each task hashes the shared compset list down to its own shard
+   using <code>CLOUD_RUN_TASK_INDEX</code> / <code>_COUNT</code>. <strong>In production this is not happening</strong>:
+   <code>taskCount: 1</code>. See <a href="#p3">P3</a>.</li>
+<li><strong>Push, vendor by vendor</strong> — Ventrata first, then Bokun, Xola and Prioticket as parallel
+   sub-batches keyed on <code>products.channel</code>. Guards per recommendation: the compset-owner
+   toggle, the OTA-source guard that stops OTA-sourced prices reaching Direct, and
+   <code>AutoApplyManualLock</code>, which protects any slot a human just pushed by hand.</li>
+<li><strong>Record</strong> — every push lands in the vendor's <code>*_price_changes</code> table with its duration,
+   the vendor's HTTP time, and <code>pushOrigin</code> = <code>AUTO</code> here (<code>MANUAL</code> for API, bulk, undo,
+   legacy).</li>
+<li><strong>Digest</strong> — a BullMQ job aggregates and posts to Slack. Needs Redis up.</li>
+</ol>
+<h3 id="verify-the-batch">Verify the batch</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>gcloud<span class="w"> </span>run<span class="w"> </span><span class="nb">jobs</span><span class="w"> </span>executions<span class="w"> </span>list<span class="w"> </span>--job<span class="o">=</span>walkway-auto-apply<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span>--project<span class="o">=</span>ww-da-ingestion<span class="w"> </span>--region<span class="o">=</span>us-central1<span class="w"> </span>--limit<span class="o">=</span><span class="m">10</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span>--format<span class="o">=</span><span class="s2">"table(metadata.name,status.startTime,status.completionTime)"</span>
+</code></pre></div>
+<p>Healthy looks like: a new execution every ~3 h, each finishing in well under 3 h, none
+overlapping the next.</p>
+<hr />
+<h2 id="the-five-vendor-rails">The five vendor rails</h2>
+<p>Latencies are our own push, measured on production over a trailing 90-day window. What the
+channel adds afterwards is operator-reported, not instrumented.</p>
+<table>
+<thead>
+<tr>
+<th>Rail</th>
+<th>Our push</th>
+<th>Auth</th>
+<th>The thing that bites</th>
+<th>Kill / tune</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Ventrata</strong></td>
+<td>693 ms</td>
+<td><code>Bearer</code> token per subscription, <code>VENTRATA_TOKEN</code> fallback. OCTO + REST.</td>
+<td>Also hosts the unified auto-apply entry point for <em>every</em> vendor — the route name is historical.</td>
+<td><code>VENTRATA_AUTO_APPLY_CONCURRENCY</code>, <code>VENTRATA_PRICE_PUSH_TIMEOUT_MS</code>, <code>VENTRATA_VERIFY_AFTER_PUSH</code></td>
+</tr>
+<tr>
+<td><strong>Bokun</strong></td>
+<td>12.1 s</td>
+<td>HMAC REST v2 + App Store OAuth. Three credentials when collected by hand.</td>
+<td><strong>~1 change in 7 never lands</strong>, cause unrecorded. Three-stage breaker — see <a href="#p4">P4</a>.</td>
+<td><code>BOKUN_AUTO_APPLY_DISABLED</code>, <code>BOKUN_PRICE_PUSH_DRY_RUN</code>, <code>BOKUN_CIRCUIT_5XX_THRESHOLD</code></td>
+</tr>
+<tr>
+<td><strong>Xola</strong></td>
+<td>5.9 s</td>
+<td><code>x-api-key</code> header, <strong>not</strong> Bearer. Order: <code>x-api-token</code> header → <code>subscription.xolaApiKey</code> → <code>XOLA_DEFAULT_API_KEY</code>.</td>
+<td>If a push authenticates as the wrong operator, that resolution order is why. New suppliers must be registered by <strong>Xola's own team</strong> — no status, no SLA.</td>
+<td><code>XOLA_RECOMMENDED_PRICE_ROUNDING_*</code></td>
+</tr>
+<tr>
+<td><strong>Prioticket</strong></td>
+<td>low volume</td>
+<td>OCTO, same adapter shape.</td>
+<td>Smallest rail; behaves like Ventrata.</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Viator</strong></td>
+<td>read path</td>
+<td>Partner JWT against Viator's JWKS.</td>
+<td><strong>Not a price-push rail</strong> — linkout, campaigns, waitlist.</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>Channel propagation, for setting expectations: Direct is instant, Viator seconds,
+<strong>GetYourGuide ~1 h and up to 24 h</strong>.</p>
+<hr />
+<h2 id="kill-switches-and-knobs">Kill switches and knobs</h2>
+<p>Environment variables on the Cloud Run revision — no image rebuild, only a revision update,
+so rollback is the previous revision. Defaults below are <strong>read from source</strong>; the live
+revision was not readable at the time of writing (see <a href="#open-questions">Open questions</a>).</p>
+<table>
+<thead>
+<tr>
+<th>Env var</th>
+<th>Code default</th>
+<th>What flipping it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AUTO_APPLY_VIA_CLOUD_RUN_JOB</code></td>
+<td><code>false</code></td>
+<td>Routes the batch to the Job. Given executions exist, this <strong>is</strong> on in prod. Off means the batch runs on the user-facing service and dies on a revision rollover.</td>
+</tr>
+<tr>
+<td><code>AUTO_APPLY_TASKS_COUNT</code></td>
+<td><code>5</code></td>
+<td>Parallel Job tasks. Live spec is <code>taskCount: 1</code> — see <a href="#p3">P3</a>. Raising it shards the batch; watch pool-wait, the Job is unpooled.</td>
+</tr>
+<tr>
+<td><code>AUTO_APPLY_JOB_NAME</code></td>
+<td><code>walkway-auto-apply</code></td>
+<td>Target job. Change only on rename.</td>
+</tr>
+<tr>
+<td><code>AUTO_APPLY_RESPECT_OWNER_TOGGLE</code></td>
+<td>—</td>
+<td>Honours the compset owner's auto-apply toggle (ENG-2431). <strong>Do not turn off</strong> — pushes for operators who opted out.</td>
+</tr>
+<tr>
+<td><code>BOKUN_AUTO_APPLY_DISABLED</code></td>
+<td><code>false</code></td>
+<td><strong>Single-vendor kill switch.</strong> First thing to flip when Bokun degrades.</td>
+</tr>
+<tr>
+<td><code>BOKUN_PRICE_PUSH_DRY_RUN</code></td>
+<td><code>false</code></td>
+<td>Compute and log pushes without sending. Pair with <code>_LOG_DIR</code> locally.</td>
+</tr>
+<tr>
+<td><code>BOKUN_CIRCUIT_5XX_THRESHOLD</code></td>
+<td><code>10</code></td>
+<td>Cumulative 5xx before the global cooldown arms. <code>0</code> keeps per-experience quarantine only.</td>
+</tr>
+<tr>
+<td><code>PRICE_PUSH_HEALTH_DIGEST_ENABLED</code></td>
+<td>—</td>
+<td>The end-of-batch digest. <strong>Leave on</strong> — it is the only proof the batch completed.</td>
+</tr>
+<tr>
+<td><code>MANUAL_PRICE_LOCK_DEFAULT_HOURS</code></td>
+<td>—</td>
+<td>How long a hand-pushed slot is protected. <code>_MAX_HOURS</code> caps user requests.</td>
+</tr>
+<tr>
+<td><code>SELF_COMPARE_ALLOWED_CHANNELS</code></td>
+<td>—</td>
+<td>Channels allowed to compare against themselves. Widening this starts pricing loops.</td>
+</tr>
+<tr>
+<td><code>SUPPORT_INBOX_ENABLED</code></td>
+<td><code>false</code></td>
+<td>The 2-minute IMAP poll.</td>
+</tr>
+<tr>
+<td><code>RUN_WORKER</code></td>
+<td><code>false</code> / <code>true</code></td>
+<td>Service vs Worker. <strong>Never true on the API service</strong> — all schedules stop, silently.</td>
+</tr>
+<tr>
+<td><code>VENDOR_HTTP_MAX_SOCKETS</code></td>
+<td>—</td>
+<td>Global outbound socket ceiling across vendor calls.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="dependencies">Dependencies</h2>
+<table>
+<thead>
+<tr>
+<th>Dependency</th>
+<th>What it carries</th>
+<th>If it breaks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cloud SQL Postgres</td>
+<td>Prisma 5 schema + SQL migrations. Runtime pooled, migrations direct.</td>
+<td>Everything stops</td>
+</tr>
+<tr>
+<td>Redis Memorystore</td>
+<td>BullMQ queue + caching</td>
+<td>API fine, all queued side effects vanish — <a href="#p6">P6</a></td>
+</tr>
+<tr>
+<td><code>walkway-saas-mlservice</code></td>
+<td>Compset discovery, product grading</td>
+<td>Compset features degrade</td>
+</tr>
+<tr>
+<td>BigQuery</td>
+<td>Analytics reads</td>
+<td>Reports only</td>
+</tr>
+<tr>
+<td>Mage KPI marts</td>
+<td>Everything the Data Hub (ENG-791) reads</td>
+<td><strong>Reports go stale with no error</strong></td>
+</tr>
+<tr>
+<td>Elasticsearch</td>
+<td>Product/compset search indexing</td>
+<td>Search degrades</td>
+</tr>
+<tr>
+<td>Stripe</td>
+<td>Subscriptions, billing, <code>POST /stripe/webhook</code></td>
+<td>Billing only</td>
+</tr>
+<tr>
+<td>Slack</td>
+<td>Digests, alerts, per-vendor debug feeds</td>
+<td><strong>You lose your main signal</strong></td>
+</tr>
+<tr>
+<td>Gmail SMTP / IMAP</td>
+<td>Outbound email; the support-inbox poll</td>
+<td>Email + support ingestion</td>
+</tr>
+<tr>
+<td>Google OAuth</td>
+<td>Sign-in</td>
+<td>Nobody can log in</td>
+</tr>
+<tr>
+<td>Cloud Scheduler</td>
+<td>Per-compset refreshes + <code>saas-notifications</code></td>
+<td>Refreshes stop</td>
+</tr>
+<tr>
+<td>Sentry</td>
+<td>Errors for Service and Job</td>
+<td>You debug blind</td>
+</tr>
+<tr>
+<td>Vendor APIs</td>
+<td>The five rails</td>
+<td>Bokun is the one that degrades</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="escalation">Escalation</h2>
+<div class="admonition danger">
+<p class="admonition-title">Fill this in before you leave</p>
+<p>This is the one table I cannot generate. The Linear workspace has two teams — <strong>Tech
+(<code>ENG</code>)</strong> and <strong>Walkway (<code>WAL</code>)</strong> — and the roster below is everyone active. Assign a
+real owner per area, with a Slack handle and a timezone, and this page becomes something
+people can actually lean on at 3 a.m.</p>
+</div>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Owner</th>
+<th>Backup</th>
+<th>Slack / TZ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Backend, price push</td>
+<td><em>to confirm</em></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Auto-apply trigger (the Python caller)</td>
+<td><em>data team — confirm who</em></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Data / Mage / BigQuery</td>
+<td><em>to confirm</em></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>GCP, infra, billing</td>
+<td><em>to confirm</em></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Vendor relationships (Bokun, Xola)</td>
+<td><em>to confirm</em></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Product decisions on pricing behaviour</td>
+<td><em>to confirm</em></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Active workspace members at handover: alegria, anurag, Brayan Ortiz, Brent Boone, bruno,
+Emmanuel Gautier, gabriel, garikoitz, juan, laura, terry, Thiago Hernandez, vinicius, zlata.</p>
+<hr />
+<h2 id="landmines">Landmines</h2>
+<div class="admonition danger">
+<p class="admonition-title">Credentials are committed in plaintext</p>
+<p>The Cloud Run manifest in this repository carries live third-party and database
+credentials as literal values, and they are in git history. Anyone with repo read access
+has them. They belong in Secret Manager — but <strong>rotation matters more than the move</strong>,
+because history cannot be un-shared. Treat as open until rotated.</p>
+</div>
+<div class="admonition danger">
+<p class="admonition-title">The batch overlaps itself and sometimes exceeds its ceiling</p>
+<p>Unsharded, 2 of 29 sampled runs blew the 4 h task timeout and were retried; 6 of 29
+overlapped the next execution. See <a href="#p3">P3</a>.</p>
+</div>
+<div class="admonition danger">
+<p class="admonition-title">No alert exists for the two silent failures</p>
+<p>A batch that never starts, and a cron that stops firing, both produce zero signal. The
+absence of a Slack digest is the only symptom of either.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Redis failure degrades silently</p>
+<p>See <a href="#p6">P6</a>.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">The live schema drifted from migrations</p>
+<p>A recent commit is <code>chore(prisma): sync the schema with the live DB</code> — the database had
+moved ahead of <code>prisma/migrations</code>. Diff before the next migration, or a fresh
+environment will not reproduce prod.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Dev and prod scheduler jobs are interleaved</p>
+<p>Per-compset refresh jobs target both <code>walkwaysaasbackend</code> and <code>walkwaysaasbackend-dev</code>.
+Check the host before debugging.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Repo hygiene</p>
+<p><code>dist/</code> is committed; <code>stripe-cli.zip</code> (8.7 MB), <code>token.txt</code> and <code>storageState.json</code> sit
+in the repo root. The last two are worth reading before assuming they are inert.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Two clones, one remote</p>
+<p>Backend work belongs in the <code>walkway_backend_last</code> clone; <code>walkway_saas_backend</code> is a
+stale second clone. The backoffice has the same duplication.</p>
+</div>
+<hr />
+<h2 id="open-questions">Open questions</h2>
+<p>Honest list of what this page does <strong>not</strong> establish. Each one is a small task, not a mystery.</p>
+<ol>
+<li><strong>What is the Python caller that triggers auto-apply?</strong> Confirmed as <code>python-requests</code>
+   from GCP address space every ~3 h, but not attributed to a named service or pipeline.
+   Ask the data team and write the answer here.</li>
+<li><strong>Live values of the feature flags.</strong> The table above is code defaults; reading the
+   deployed revision's environment was not permitted from my session. Confirm at least
+   <code>AUTO_APPLY_VIA_CLOUD_RUN_JOB</code>, <code>AUTO_APPLY_TASKS_COUNT</code>, <code>AUTO_APPLY_RESPECT_OWNER_TOGGLE</code>
+   and <code>PRICE_PUSH_HEALTH_DIGEST_ENABLED</code>.</li>
+<li><strong>Why is <code>taskCount</code> 1?</strong> Deliberate, or drift? The answer decides whether <a href="#p3">P3</a> is a
+   one-line fix.</li>
+<li><strong>Why does 1 Bokun change in 7 never land?</strong> The cause is genuinely unrecorded. Recording
+   the failure reason is what turns this from folklore into a fix.</li>
+<li><strong>Escalation owners</strong> — see <a href="#escalation">above</a>.</li>
+</ol>
+<hr />
+<h2 id="commands">Commands</h2>
+<h3 id="roll-back-the-api-service">Roll back the API service</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>gcloud<span class="w"> </span>run<span class="w"> </span>revisions<span class="w"> </span>list<span class="w"> </span>--service<span class="o">=</span>walkwaysaasbackend<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span>--project<span class="o">=</span>ww-da-ingestion<span class="w"> </span>--region<span class="o">=</span>us-central1
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>gcloud<span class="w"> </span>run<span class="w"> </span>services<span class="w"> </span>update-traffic<span class="w"> </span>walkwaysaasbackend<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span>--project<span class="o">=</span>ww-da-ingestion<span class="w"> </span>--region<span class="o">=</span>us-central1<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span>--to-revisions<span class="o">=</span>&lt;revision-name&gt;<span class="o">=</span><span class="m">100</span>
+</code></pre></div>
+<h3 id="flip-a-kill-switch-without-a-build">Flip a kill switch without a build</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>gcloud<span class="w"> </span>run<span class="w"> </span>services<span class="w"> </span>update<span class="w"> </span>walkwaysaasbackend<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span>--project<span class="o">=</span>ww-da-ingestion<span class="w"> </span>--region<span class="o">=</span>us-central1<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span>--update-env-vars<span class="o">=</span><span class="nv">BOKUN_AUTO_APPLY_DISABLED</span><span class="o">=</span><span class="nb">true</span>
+</code></pre></div>
+<h3 id="logs">Logs</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># the Job</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>gcloud<span class="w"> </span>logging<span class="w"> </span><span class="nb">read</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="s1">'resource.type=cloud_run_job AND resource.labels.job_name=walkway-auto-apply'</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span>--project<span class="o">=</span>ww-da-ingestion<span class="w"> </span>--limit<span class="o">=</span><span class="m">200</span><span class="w"> </span>--freshness<span class="o">=</span>1d
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="c1"># the API service</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>gcloud<span class="w"> </span>logging<span class="w"> </span><span class="nb">read</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">  </span><span class="s1">'resource.type=cloud_run_revision AND resource.labels.service_name=walkwaysaasbackend'</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">  </span>--project<span class="o">=</span>ww-da-ingestion<span class="w"> </span>--limit<span class="o">=</span><span class="m">200</span><span class="w"> </span>--freshness<span class="o">=</span>1h
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="c1"># who called auto-apply, and did it get a 202</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>gcloud<span class="w"> </span>logging<span class="w"> </span><span class="nb">read</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">  </span><span class="s1">'resource.type=cloud_run_revision AND resource.labels.service_name=walkwaysaasbackend</span>
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="s1">   AND httpRequest.requestUrl:"recommendations/auto-apply"'</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">  </span>--project<span class="o">=</span>ww-da-ingestion<span class="w"> </span>--limit<span class="o">=</span><span class="m">10</span><span class="w"> </span>--freshness<span class="o">=</span>24h<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="w">  </span>--format<span class="o">=</span><span class="s2">"value(timestamp,httpRequest.status,httpRequest.userAgent)"</span>
+</code></pre></div>
+<h3 id="re-fire-a-digest-or-snapshot">Re-fire a digest or snapshot</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>POST /admin/hta-price-snapshot/run
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>POST /admin/auto-pilot-digest/run
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>POST /admin/operator-health-score/run
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>POST /admin/adoption-funnel/run
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>POST /admin/signals/run
+</code></pre></div>
+<h3 id="locally">Locally</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>npm<span class="w"> </span>install<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>npx<span class="w"> </span>prisma<span class="w"> </span>generate
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>npm<span class="w"> </span>run<span class="w"> </span>start:dev<span class="w">              </span><span class="c1"># API, hot reload</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>npm<span class="w"> </span>run<span class="w"> </span>start:worker<span class="w">           </span><span class="c1"># BullMQ worker, separate process</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>npm<span class="w"> </span>run<span class="w"> </span>test:push-origin<span class="w">       </span><span class="c1"># the contract tests that matter for vendor work</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>npx<span class="w"> </span>prisma<span class="w"> </span>migrate<span class="w"> </span>deploy<span class="w">      </span><span class="c1"># uses DATABASE_DIRECT_URL</span>
+</code></pre></div>
+<p>Swagger is at <code>/api</code>.</p>
+<hr />
+<h2 id="in-flight-at-handover">In flight at handover</h2>
+<table>
+<thead>
+<tr>
+<th>Branch</th>
+<th>What it is</th>
+<th>State</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>feat/eng-2464-price-recommendation-impact-columns</code></td>
+<td>Impact columns on <code>price_recommendations</code>, plus the schema-sync commit. The branch I was on.</td>
+<td>in progress</td>
+</tr>
+<tr>
+<td><code>fix/backport-2431-2346-2472-onto-dev</code></td>
+<td>Backport of the owner gate, waitlist calendar source, multipart fix onto <code>dev</code>.</td>
+<td>open</td>
+</tr>
+<tr>
+<td><code>fix/eng-2472-register-fastify-multipart</code></td>
+<td>Register <code>@fastify/multipart</code> — upload routes 500 without it.</td>
+<td>open</td>
+</tr>
+<tr>
+<td><code>feat/eng-2423-relanding-on-main</code></td>
+<td>Xola booking-priced products, re-landing after PR #462 was reverted in #463. <strong>Read the revert first.</strong></td>
+<td>needs care</td>
+</tr>
+<tr>
+<td><code>feat/eng-2346-waitlist-calendar-pending-source</code></td>
+<td>Pending source on the waitlist calendar.</td>
+<td>open</td>
+</tr>
+<tr>
+<td><code>fix/eng-2431-auto-apply-gate-compset-owner</code></td>
+<td>Gates auto-apply on the compset owner's toggle.</td>
+<td>open</td>
+</tr>
+</tbody>
+</table>
+<p>Conventions: Conventional Commits, one ENG ticket per branch, never edit a merged migration —
+always a follow-up. Every new vendor flow ships with a <code>*.push-origin.spec.ts</code> plus dispatcher
+coverage in <code>ventrata.service.spec.ts</code>.</p>
+<hr />
+<h2 id="keeping-this-page-true">Keeping this page true</h2>
+<p>A runbook nobody updates is worse than none, because people trust it.</p>
+<ul>
+<li>The <strong>verified</strong> claims carry a date. If that date is more than a quarter old, re-run the
+  commands in <a href="#verify-the-batch">Verify the batch</a> and the revision describe.</li>
+<li>When you answer one of the <a href="#open-questions">open questions</a>, delete it from that list and
+  fold the answer into the body.</li>
+<li>When you add a feature flag, add it to the kill-switch table in the same PR. That is the
+  cheapest moment it will ever be.</li>
+</ul>
+<p><strong>Further reading:</strong> <code>README.md</code> (architecture, local setup), <code>docs/</code> (per-feature and
+per-vendor depth), <code>docs/AUTO_APPLY_CLOUD_RUN_JOB.md</code> (the Job's IAM setup).</p>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Walkway
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/walkway" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://twitter.com/walkway" target="_blank" rel="noopener" title="twitter.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M459.4 151.7c.3 4.5.3 9.1.3 13.6 0 138.7-105.6 298.6-298.6 298.6-59.5 0-114.7-17.2-161.1-47.1 8.4 1 16.6 1.3 25.3 1.3 49.1 0 94.2-16.6 130.3-44.8-46.1-1-84.8-31.2-98.1-72.8 6.5 1 13 1.6 19.8 1.6 9.4 0 18.8-1.3 27.6-3.6-48.1-9.7-84.1-52-84.1-103v-1.3c14 7.8 30.2 12.7 47.4 13.3-28.3-18.8-46.8-51-46.8-87.4 0-19.5 5.2-37.4 14.3-53C87.4 130.8 165 172.4 252.1 176.9c-1.6-7.8-2.6-15.9-2.6-24C249.5 95.1 296.3 48 354.4 48c30.2 0 57.5 12.7 76.7 33.1 23.7-4.5 46.5-13.3 66.6-25.3-7.8 24.4-24.4 44.8-46.1 57.8 21.1-2.3 41.6-8.1 60.4-16.2-14.3 20.8-32.2 39.3-52.6 54.3"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

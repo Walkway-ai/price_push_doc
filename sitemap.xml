@@ -2,46 +2,54 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://Walkway-ai.github.io/price_push_doc/</loc>
-         <lastmod>2025-11-02</lastmod>
+         <lastmod>2026-08-25</lastmod>
+    </url>
+    <url>
+         <loc>https://Walkway-ai.github.io/price_push_doc/features/market-intelligence-access-flag/</loc>
+         <lastmod>2026-08-25</lastmod>
+    </url>
+    <url>
+         <loc>https://Walkway-ai.github.io/price_push_doc/operations/backend-handover/</loc>
+         <lastmod>2026-08-25</lastmod>
     </url>
     <url>
          <loc>https://Walkway-ai.github.io/price_push_doc/price-push/api-endpoints/</loc>
-         <lastmod>2025-11-02</lastmod>
+         <lastmod>2026-08-25</lastmod>
     </url>
     <url>
          <loc>https://Walkway-ai.github.io/price_push_doc/price-push/availability/</loc>
-         <lastmod>2025-11-02</lastmod>
+         <lastmod>2026-08-25</lastmod>
     </url>
     <url>
          <loc>https://Walkway-ai.github.io/price_push_doc/price-push/configuration/</loc>
-         <lastmod>2025-11-02</lastmod>
+         <lastmod>2026-08-25</lastmod>
     </url>
     <url>
          <loc>https://Walkway-ai.github.io/price_push_doc/price-push/history/</loc>
-         <lastmod>2025-11-02</lastmod>
+         <lastmod>2026-08-25</lastmod>
     </url>
     <url>
          <loc>https://Walkway-ai.github.io/price_push_doc/price-push/how-it-works/</loc>
-         <lastmod>2025-11-02</lastmod>
+         <lastmod>2026-08-25</lastmod>
     </url>
     <url>
          <loc>https://Walkway-ai.github.io/price_push_doc/price-push/overview/</loc>
-         <lastmod>2025-11-02</lastmod>
+         <lastmod>2026-08-25</lastmod>
     </url>
     <url>
          <loc>https://Walkway-ai.github.io/price_push_doc/price-push/price-units/</loc>
-         <lastmod>2025-11-02</lastmod>
+         <lastmod>2026-08-25</lastmod>
     </url>
     <url>
          <loc>https://Walkway-ai.github.io/price_push_doc/price-push/troubleshooting/</loc>
-         <lastmod>2025-11-02</lastmod>
+         <lastmod>2026-08-25</lastmod>
     </url>
     <url>
          <loc>https://Walkway-ai.github.io/price_push_doc/price-push/undo/</loc>
-         <lastmod>2025-11-02</lastmod>
+         <lastmod>2026-08-25</lastmod>
     </url>
     <url>
          <loc>https://Walkway-ai.github.io/price_push_doc/price-push/use-cases/</loc>
-         <lastmod>2025-11-02</lastmod>
+         <lastmod>2026-08-25</lastmod>
     </url>
 </urlset>
