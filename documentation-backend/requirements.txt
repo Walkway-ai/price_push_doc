@@ -1,3 +1,6 @@
-mkdocs>=1.5.0
-mkdocs-material>=9.0.0
-
+# Upper bounds are deliberate. MkDocs 2.0 is announced as backward-incompatible
+# (the plugin system is removed, theme overrides break, no migration path), and
+# the previous ">=1.5.0" floor would have pulled it into CI and broken the build
+# with no documentation change. Raise these bounds on purpose, never by accident.
+mkdocs>=1.6,<2
+mkdocs-material>=9.7,<10

@@ -2,7 +2,7 @@ site_name: Walkway SaaS Backend Documentation
 site_url: https://Walkway-ai.github.io/price_push_doc/
 site_description: Complete documentation for Walkway SaaS Backend features
 site_author: Walkway Team
-repo_url: https://Walkway-ai.github.io/price_push_doc
+repo_url: https://github.com/Walkway-ai/price_push_doc
 repo_name: Walkway-ai/price_push_doc
 
 theme:
@@ -70,6 +70,8 @@ nav:
       - Use Cases: price-push/use-cases.md
       - API Endpoints: price-push/api-endpoints.md
       - Troubleshooting: price-push/troubleshooting.md
+  - Operations:
+      - Backend Handover Runbook: operations/backend-handover.md
 
 extra:
   social:
@@ -82,3 +84,4 @@ extra:
     property: UA-XXXXXXXX-X
 
 copyright: Copyright &copy; 2025 Walkway
+

@@ -1,0 +1,54 @@
+name: Deploy Documentation
+
+# The site is served by GitHub Pages from this repository's gh-pages branch.
+# Building here rather than in walkway_saas_backend means the push target is
+# the same repository as the workflow, so the automatic GITHUB_TOKEN is
+# sufficient — no personal access token to create, share or renew.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'documentation-backend/**'
+      - '.github/workflows/deploy-docs.yml'
+  workflow_dispatch:
+
+# gh-deploy force-pushes the built site to gh-pages in THIS repo.
+permissions:
+  contents: write
+
+# Two merges in quick succession must not force-push gh-pages concurrently.
+concurrency:
+  group: docs-deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # gh-deploy needs the gh-pages history, not just the tip of main.
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+          cache: pip
+          cache-dependency-path: documentation-backend/requirements.txt
+
+      # requirements.txt bounds mkdocs and mkdocs-material below the next
+      # major. Installing them unbounded lets MkDocs 2.0 break the build
+      # with no documentation change.
+      - name: Install dependencies
+        working-directory: documentation-backend
+        run: pip install -r requirements.txt
+
+      - name: Configure Git
+        run: |
+          git config --global user.name  "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Build and deploy to gh-pages
+        working-directory: documentation-backend
+        run: mkdocs gh-deploy --remote-branch gh-pages --force
