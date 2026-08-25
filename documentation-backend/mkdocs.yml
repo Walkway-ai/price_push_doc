@@ -70,6 +70,12 @@ nav:
       - Use Cases: price-push/use-cases.md
       - API Endpoints: price-push/api-endpoints.md
       - Troubleshooting: price-push/troubleshooting.md
+  - Integrations:
+      - Overview: integrations/index.md
+      - Ventrata: integrations/ventrata.md
+      - Bokun: integrations/bokun.md
+      - Xola: integrations/xola.md
+      - Prioticket: integrations/prioticket.md
   - Operations:
       - Backend Handover Runbook: operations/backend-handover.md
 
