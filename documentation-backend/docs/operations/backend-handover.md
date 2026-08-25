@@ -29,19 +29,19 @@ Everything in the backend that needs a human, written for someone who did not bu
 
 The point of this section is that nobody waits on me for something that is already decided.
 
-| Action | Go ahead | Ask first |
+| Action | Clearance | Why |
 | --- | --- | --- |
-| Flip a single-vendor kill switch (`BOKUN_AUTO_APPLY_DISABLED`) | ✅ Yes, any time a vendor is degraded | — |
-| Roll back the API service to the previous revision | ✅ Yes | — |
-| Re-run a digest or snapshot via its `/admin/**/run` route | ✅ Yes | — |
-| Lower `AUTO_APPLY_TASKS_COUNT` / vendor concurrency | ✅ Yes, to protect the database | — |
-| Re-trigger the auto-apply batch manually | ✅ Yes — it is idempotent per slot and the manual lock protects hand-pushed prices | — |
-| Disable the whole auto-apply batch | — | ⚠️ Ask — prices stop moving for every operator |
-| Widen `SELF_COMPARE_ALLOWED_CHANNELS` | — | ⚠️ Ask — this is how self-referential pricing loops start |
-| Turn off `AUTO_APPLY_RESPECT_OWNER_TOGGLE` | — | 🚫 Don't — it pushes for operators who opted out |
-| Run a Prisma migration against prod | — | ⚠️ Ask — the live schema has drifted from `migrations` |
-| Change a vendor's pricing-rule semantics | — | ⚠️ Ask |
-| Contact a vendor's support on our behalf | — | ⚠️ Ask, unless it is a straight "is your API down" question |
+| Flip a single-vendor kill switch (`BOKUN_AUTO_APPLY_DISABLED`) | **Go ahead** | Isolates one degraded vendor; the rest of the batch keeps running |
+| Roll back the API service to the previous revision | **Go ahead** | Cloud Run keeps previous revisions live; it is one command and reversible |
+| Re-run a digest or snapshot via its `/admin/**/run` route | **Go ahead** | Same payload as the cron, no side effect beyond re-sending |
+| Lower `AUTO_APPLY_TASKS_COUNT` or vendor concurrency | **Go ahead** | Always safe in that direction — it protects the database |
+| Re-trigger the auto-apply batch by hand | **Go ahead** | Idempotent per slot, and the manual lock protects hand-pushed prices |
+| Disable the auto-apply batch entirely | **Ask first** | Prices stop moving for every operator, silently |
+| Widen `SELF_COMPARE_ALLOWED_CHANNELS` | **Ask first** | This is how self-referential pricing loops start |
+| Run a Prisma migration against production | **Ask first** | The live schema has drifted from `migrations` |
+| Change a vendor's pricing-rule semantics | **Ask first** | Product decision, not an operational one |
+| Contact a vendor's support on our behalf | **Ask first** | Unless it is a straight "is your API down" question |
+| Turn off `AUTO_APPLY_RESPECT_OWNER_TOGGLE` | **Never** | It pushes prices for operators who explicitly opted out |
 
 ---
 
@@ -162,12 +162,24 @@ Verified 25 August 2026. All built from this repository. Service and Worker shar
 and differ only by `RUN_WORKER`; the Job is a second image from `Dockerfile.job` whose `CMD`
 is the Nest application context, not the HTTP server.
 
-| Resource | Kind | Role | Verified shape |
-| --- | --- | --- | --- |
-| `walkwaysaasbackend` | Cloud Run Service, public | NestJS + Fastify API. Three containers per revision: Cloud SQL Auth Proxy → pgbouncer `:6432` → Nest `:3000`. **All `@Cron` handlers fire here.** | ✅ minScale 1, maxScale 5, 4 vCPU / 4 Gi |
-| `walkwaysaasbackend-worker` | Cloud Run Service, private | Same image. Drains the BullMQ `notifications` queue. | `RUN_WORKER=true` |
-| `walkway-auto-apply` | Cloud Run **Job** | Runs the auto-apply batch off the user-facing service — no OOM kills, no revision rollover mid-push, no HTTP timeout ceiling. | ✅ `taskCount: 1`, `parallelism: 5`, 4 h task timeout, max-retries 1 |
-| `walkwaysaasbackend-dev` | Cloud Run Service | Dev environment. | see the warning below |
+`walkwaysaasbackend` — Cloud Run Service, public
+:   NestJS + Fastify API. Three containers per revision: Cloud SQL Auth Proxy →
+    pgbouncer `:6432` → Nest `:3000`. **All `@Cron` handlers fire here.**
+    ✅ Verified: minScale 1, maxScale 5, 4 vCPU / 4 Gi.
+
+`walkwaysaasbackend-worker` — Cloud Run Service, private
+:   Same image as the API, selected by `RUN_WORKER=true`. Drains the BullMQ
+    `notifications` queue: emails, Slack posts, the end-of-batch health digest.
+
+`walkway-auto-apply` — Cloud Run **Job**
+:   Runs the auto-apply batch off the user-facing service, so it survives what
+    would otherwise kill it: OOM kills, a revision rollover mid-push, the HTTP
+    timeout ceiling. ✅ Verified: `taskCount: 1`, `parallelism: 5`, 4 h task
+    timeout, max-retries 1.
+
+`walkwaysaasbackend-dev` — Cloud Run Service
+:   The dev environment. Read the warning below before assuming a refresh ran
+    against production.
 
 !!! warning "Dev and prod share the scheduler pool"
     Many of the runtime-created per-compset refresh jobs point at
@@ -281,42 +293,167 @@ overlapping the next.
 Latencies are our own push, measured on production over a trailing 90-day window. What the
 channel adds afterwards is operator-reported, not instrumented.
 
-| Rail | Our push | Auth | The thing that bites | Kill / tune |
-| --- | --- | --- | --- | --- |
-| **Ventrata** | 693 ms | `Bearer` token per subscription, `VENTRATA_TOKEN` fallback. OCTO + REST. | Also hosts the unified auto-apply entry point for *every* vendor — the route name is historical. | `VENTRATA_AUTO_APPLY_CONCURRENCY`, `VENTRATA_PRICE_PUSH_TIMEOUT_MS`, `VENTRATA_VERIFY_AFTER_PUSH` |
-| **Bokun** | 12.1 s | HMAC REST v2 + App Store OAuth. Three credentials when collected by hand. | **~1 change in 7 never lands**, cause unrecorded. Three-stage breaker — see [P4](#p4). | `BOKUN_AUTO_APPLY_DISABLED`, `BOKUN_PRICE_PUSH_DRY_RUN`, `BOKUN_CIRCUIT_5XX_THRESHOLD` |
-| **Xola** | 5.9 s | `x-api-key` header, **not** Bearer. Order: `x-api-token` header → `subscription.xolaApiKey` → `XOLA_DEFAULT_API_KEY`. | If a push authenticates as the wrong operator, that resolution order is why. New suppliers must be registered by **Xola's own team** — no status, no SLA. | `XOLA_RECOMMENDED_PRICE_ROUNDING_*` |
-| **Prioticket** | low volume | OCTO, same adapter shape. | Smallest rail; behaves like Ventrata. | — |
-| **Viator** | read path | Partner JWT against Viator's JWKS. | **Not a price-push rail** — linkout, campaigns, waitlist. | — |
+### Ventrata — 693 ms median push
 
-Channel propagation, for setting expectations: Direct is instant, Viator seconds,
-**GetYourGuide ~1 h and up to 24 h**.
+Auth
+:   `Authorization: Bearer <apiToken>`, one key per subscription, with
+    `VENTRATA_TOKEN` as fallback. OCTO plus REST.
 
----
+What bites
+:   Also hosts the unified auto-apply entry point for *every* vendor — the route
+    name is historical, not a scoping mistake. Full price-change history and an
+    undo system live here too.
+
+Knobs
+:   `VENTRATA_AUTO_APPLY_CONCURRENCY`, `VENTRATA_PRICE_PUSH_TIMEOUT_MS`,
+    `VENTRATA_GET_AVAILABILITY_TIMEOUT_MS`, `VENTRATA_PREFETCH_CONCURRENCY`,
+    `VENTRATA_VERIFY_AFTER_PUSH`
+
+Onboarding
+:   One credential, still collected and typed in by hand. No app store exists, so
+    self-serve entry is the only lever.
+
+### Bokun — 12.1 s median push, 17× Ventrata
+
+Auth
+:   HMAC-signed REST v2, plus App Store OAuth. Three separate credentials when
+    collected manually.
+
+What bites
+:   **Roughly 1 change in 7 never lands**, and the cause is unrecorded. A
+    three-stage breaker limits the damage: per-experience quarantine at 4
+    consecutive 5xx, then a global half-open cooldown of 30 s once cumulative
+    5xx crosses 10, then a hard stop after 3 failed probes. Look for
+    `[Bokun CIRCUIT]` in the logs. See [P4](#p4).
+
+Knobs
+:   `BOKUN_AUTO_APPLY_DISABLED`, `BOKUN_PRICE_PUSH_DRY_RUN`,
+    `BOKUN_CIRCUIT_5XX_THRESHOLD`, `BOKUN_PER_EXPERIENCE_5XX_THRESHOLD`,
+    `BOKUN_GLOBAL_COOLDOWN_MS`, `BOKUN_MAX_COOLDOWN_ROUNDS`, `BOKUN_SKIP_NOOP`,
+    `BOKUN_DRIFT_THRESHOLD_PCT`
+
+Onboarding
+:   The app-store install flow is **already written and needs wiring** — one
+    click would replace all three credentials.
+
+### Xola — 5.9 s median push
+
+Auth
+:   `x-api-key` header, **not** Bearer. Resolution order: `x-api-token` request
+    header → `subscription.xolaApiKey` → `XOLA_DEFAULT_API_KEY` env.
+
+What bites
+:   If a push ever authenticates as the wrong operator, that resolution order is
+    why — an inherited request header wins over the subscription's own key.
+    Booking-priced products are handled separately in guardrails and push
+    (ENG-2423).
+
+Knobs
+:   `XOLA_RECOMMENDED_PRICE_ROUNDING_INCREMENT_MAJOR`,
+    `XOLA_RECOMMENDED_PRICE_ROUNDING_MODE`
+
+Onboarding
+:   Every new supplier has to be registered **by Xola's own team**. No status
+    endpoint, no agreed turnaround — an operator can be signed and unreachable
+    with nothing on our side saying so.
+
+### Prioticket — low volume
+
+Auth
+:   OCTO, same adapter shape as the others.
+
+What bites
+:   Nothing specific. Smallest rail, behaves like Ventrata. Covered by
+    `prioticket.service.push-origin.spec.ts` and the dispatcher tests.
+
+Knobs
+:   None specific.
+
+Onboarding
+:   Manual.
+
+### Viator — read path, not a push rail
+
+Auth
+:   Partner JWT verified against Viator's JWKS: `VIATOR_JWKS_URL`,
+    `VIATOR_JWT_SECRET`, `VIATOR_JWT_PUBLIC_KEY`.
+
+What bites
+:   Easy to assume it is a fifth price-push rail. It is not — linkout, partner
+    campaigns and a waitlist. Campaign sends go through
+    `scripts/send-campaign-emails.ts`.
+
+Knobs
+:   None specific.
+
+Onboarding
+:   Partner-side, handled per deal.
 
 ## Kill switches and knobs
 
-Environment variables on the Cloud Run revision — no image rebuild, only a revision update,
-so rollback is the previous revision. Defaults below are **read from source**; the live
-revision was not readable at the time of writing (see [Open questions](#open-questions)).
+Environment variables on the Cloud Run revision. Changing one is a revision update,
+not an image rebuild, so **rollback is the previous revision**. Defaults below are read
+from source; the live revision was not readable at the time of writing (see
+[Open questions](#open-questions)).
 
-| Env var | Code default | What flipping it does |
-| --- | --- | --- |
-| `AUTO_APPLY_VIA_CLOUD_RUN_JOB` | `false` | Routes the batch to the Job. Given executions exist, this **is** on in prod. Off means the batch runs on the user-facing service and dies on a revision rollover. |
-| `AUTO_APPLY_TASKS_COUNT` | `5` | Parallel Job tasks. Live spec is `taskCount: 1` — see [P3](#p3). Raising it shards the batch; watch pool-wait, the Job is unpooled. |
-| `AUTO_APPLY_JOB_NAME` | `walkway-auto-apply` | Target job. Change only on rename. |
-| `AUTO_APPLY_RESPECT_OWNER_TOGGLE` | — | Honours the compset owner's auto-apply toggle (ENG-2431). **Do not turn off** — pushes for operators who opted out. |
-| `BOKUN_AUTO_APPLY_DISABLED` | `false` | **Single-vendor kill switch.** First thing to flip when Bokun degrades. |
-| `BOKUN_PRICE_PUSH_DRY_RUN` | `false` | Compute and log pushes without sending. Pair with `_LOG_DIR` locally. |
-| `BOKUN_CIRCUIT_5XX_THRESHOLD` | `10` | Cumulative 5xx before the global cooldown arms. `0` keeps per-experience quarantine only. |
-| `PRICE_PUSH_HEALTH_DIGEST_ENABLED` | — | The end-of-batch digest. **Leave on** — it is the only proof the batch completed. |
-| `MANUAL_PRICE_LOCK_DEFAULT_HOURS` | — | How long a hand-pushed slot is protected. `_MAX_HOURS` caps user requests. |
-| `SELF_COMPARE_ALLOWED_CHANNELS` | — | Channels allowed to compare against themselves. Widening this starts pricing loops. |
-| `SUPPORT_INBOX_ENABLED` | `false` | The 2-minute IMAP poll. |
-| `RUN_WORKER` | `false` / `true` | Service vs Worker. **Never true on the API service** — all schedules stop, silently. |
-| `VENDOR_HTTP_MAX_SOCKETS` | — | Global outbound socket ceiling across vendor calls. |
+#### Emergency switches
 
----
+The four you would actually reach for during an incident.
+
+`BOKUN_AUTO_APPLY_DISABLED` — default `false`
+:   **Single-vendor kill switch.** First thing to flip when Bokun's gateway is
+    degraded. The Ventrata, Xola and Prioticket sub-batches carry on.
+
+`RUN_WORKER` — `false` on the API, `true` on the worker
+:   Selects Service or Worker behaviour. **Never set it true on the API
+    service**: every cron handler self-skips when it is, and all ten schedules
+    stop with no error and no alert.
+
+`AUTO_APPLY_TASKS_COUNT` — default `5`
+:   Parallel Job tasks. Production currently runs `taskCount: 1`, which is why
+    batches overlap — see [P3](#p3). Raising it shards the work; lowering it
+    protects the database, which the Job reaches unpooled.
+
+`PRICE_PUSH_HEALTH_DIGEST_ENABLED`
+:   The end-of-batch Slack digest. **Leave this on.** It is the only proof the
+    batch completed, and its absence is your only alarm.
+
+#### Tuning knobs
+
+`AUTO_APPLY_VIA_CLOUD_RUN_JOB` — default `false`
+:   Routes the batch to the Cloud Run Job. Given executions exist, this *is* on
+    in production. Off means the batch runs on the user-facing service, where a
+    revision rollover kills it mid-push.
+
+`AUTO_APPLY_JOB_NAME` — default `walkway-auto-apply`
+:   Dispatch target. Change only if the Job is renamed.
+
+`AUTO_APPLY_RESPECT_OWNER_TOGGLE`
+:   Honours the compset owner's auto-apply toggle (ENG-2431). **Do not turn
+    off** — it pushes for operators who opted out.
+
+`MANUAL_PRICE_LOCK_DEFAULT_HOURS` / `_MAX_HOURS`
+:   How long a hand-pushed slot is protected from the batch, and the ceiling a
+    user may request.
+
+`SELF_COMPARE_ALLOWED_CHANNELS`
+:   Channels allowed to compare against themselves. Widening this is how
+    self-referential pricing loops start.
+
+`BOKUN_PRICE_PUSH_DRY_RUN` — default `false`
+:   Computes and logs the pushes without sending them. Pair with
+    `BOKUN_PRICE_PUSH_DRY_RUN_LOG_DIR` when reproducing locally.
+
+`BOKUN_CIRCUIT_5XX_THRESHOLD` — default `10`
+:   Cumulative 5xx before the global cooldown arms. `0` disables the global
+    breaker and keeps per-experience quarantine only.
+
+`SUPPORT_INBOX_ENABLED` — default `false`
+:   The 2-minute IMAP poll. Inert until the mailbox credentials are confirmed in
+    the target environment.
+
+`VENDOR_HTTP_MAX_SOCKETS`
+:   Global outbound socket ceiling across every vendor HTTP call.
 
 ## Dependencies
 
