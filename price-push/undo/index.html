@@ -300,6 +300,26 @@
     
     
       <li class="md-tabs__item">
+        <a href="../../features/market-intelligence-access-flag/" class="md-tabs__link">
+          
+  
+  
+  Features
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
         <a href="../../operations/backend-handover/" class="md-tabs__link">
           
   
@@ -1581,7 +1601,7 @@
   <span class="md-ellipsis">
     
   
-    Operations
+    Features
   
 
     
@@ -1594,6 +1614,95 @@
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Features
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/market-intelligence-access-flag/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Market Intelligence Access Flag
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Operations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2257,11 +2366,11 @@
   
 
 
-<h1 id="undo-revert-changes">Undo &amp; Revert Changes</h1>
-<h2 id="overview">Overview</h2>
+<h1 id="undo-revert-changes">Undo &amp; Revert Changes<a class="headerlink" href="#undo-revert-changes" title="Permanent link">&para;</a></h1>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
 <p>Made a mistake with pricing? No problem. The Undo feature allows you to quickly revert price changes back to their previous values, both in Walkway and on Ventrata.</p>
-<h2 id="how-undo-works">How Undo Works</h2>
-<h3 id="the-undo-process">The Undo Process</h3>
+<h2 id="how-undo-works">How Undo Works<a class="headerlink" href="#how-undo-works" title="Permanent link">&para;</a></h2>
+<h3 id="the-undo-process">The Undo Process<a class="headerlink" href="#the-undo-process" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>graph LR
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    A[Price Change Made] --&gt; B[Stored in History]
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    B --&gt; C[User Clicks Undo]
@@ -2279,8 +2388,8 @@
 <p class="admonition-title">Safe &amp; Auditable</p>
 <p>Undoing doesn't delete history. It creates a new entry showing the revert, maintaining a complete audit trail.</p>
 </div>
-<h2 id="undoing-a-change">Undoing a Change</h2>
-<h3 id="via-api">Via API</h3>
+<h2 id="undoing-a-change">Undoing a Change<a class="headerlink" href="#undoing-a-change" title="Permanent link">&para;</a></h2>
+<h3 id="via-api">Via API<a class="headerlink" href="#via-api" title="Permanent link">&para;</a></h3>
 <p><strong>Endpoint:</strong> <code>POST /api/ventrata/price-changes/{id}/undo</code></p>
 <p><strong>Request:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>https://api.walkway.com/api/ventrata/price-changes/change-123/undo<span class="w"> </span><span class="se">\</span>
@@ -2314,7 +2423,7 @@
 <a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="w">  </span><span class="nt">"pushedAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2025-11-01T11:15:00Z"</span>
 <a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="p">}</span>
 </code></pre></div></p>
-<h3 id="via-dashboard">Via Dashboard</h3>
+<h3 id="via-dashboard">Via Dashboard<a class="headerlink" href="#via-dashboard" title="Permanent link">&para;</a></h3>
 <ol>
 <li>Navigate to <strong>Price Change History</strong></li>
 <li>Find the change you want to undo</li>
@@ -2327,8 +2436,8 @@
 - ✅ Prices immediately revert to previous values
 - ✅ Change pushed to Ventrata automatically
 - ✅ New history entry created</p>
-<h2 id="what-can-be-undone">What Can Be Undone?</h2>
-<h3 id="can-be-undone">✅ Can Be Undone</h3>
+<h2 id="what-can-be-undone">What Can Be Undone?<a class="headerlink" href="#what-can-be-undone" title="Permanent link">&para;</a></h2>
+<h3 id="can-be-undone">✅ Can Be Undone<a class="headerlink" href="#can-be-undone" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Individual price changes (single availability)</li>
 <li>Bulk price changes (multiple availabilities)</li>
@@ -2336,15 +2445,15 @@
 <li>Changes from any time period (within retention)</li>
 <li>Both successful and partially successful changes</li>
 </ul>
-<h3 id="cannot-be-undone">❌ Cannot Be Undone</h3>
+<h3 id="cannot-be-undone">❌ Cannot Be Undone<a class="headerlink" href="#cannot-be-undone" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Changes older than retention period</li>
 <li>Changes where product/option no longer exists</li>
 <li>Changes already undone (prevents double-undo)</li>
 <li>Changes where Ventrata API is unavailable</li>
 </ul>
-<h2 id="bulk-undo">Bulk Undo</h2>
-<h3 id="undo-multiple-changes">Undo Multiple Changes</h3>
+<h2 id="bulk-undo">Bulk Undo<a class="headerlink" href="#bulk-undo" title="Permanent link">&para;</a></h2>
+<h3 id="undo-multiple-changes">Undo Multiple Changes<a class="headerlink" href="#undo-multiple-changes" title="Permanent link">&para;</a></h3>
 <p>Revert several related changes at once:</p>
 <p><strong>Endpoint:</strong> <code>POST /api/ventrata/price-changes/bulk-undo</code></p>
 <p><strong>Request:</strong>
@@ -2382,7 +2491,7 @@
 <a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a><span class="w">  </span><span class="p">]</span>
 <a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a><span class="p">}</span>
 </code></pre></div></p>
-<h3 id="undo-by-filter">Undo by Filter</h3>
+<h3 id="undo-by-filter">Undo by Filter<a class="headerlink" href="#undo-by-filter" title="Permanent link">&para;</a></h3>
 <p>Undo all changes matching criteria:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="p">{</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">"filter"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
@@ -2398,8 +2507,8 @@
 <p class="admonition-title">Use with Caution</p>
 <p>Bulk undo operations affect multiple prices. Always preview before confirming.</p>
 </div>
-<h2 id="undo-limitations">Undo Limitations</h2>
-<h3 id="time-based-restrictions">Time-Based Restrictions</h3>
+<h2 id="undo-limitations">Undo Limitations<a class="headerlink" href="#undo-limitations" title="Permanent link">&para;</a></h2>
+<h3 id="time-based-restrictions">Time-Based Restrictions<a class="headerlink" href="#time-based-restrictions" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
@@ -2423,7 +2532,7 @@
 </tbody>
 </table>
 <p>After the undo window expires, changes can still be manually reverted but not with one-click undo.</p>
-<h3 id="booking-considerations">Booking Considerations</h3>
+<h3 id="booking-considerations">Booking Considerations<a class="headerlink" href="#booking-considerations" title="Permanent link">&para;</a></h3>
 <p>⚠️ <strong>Important:</strong> If bookings have been made at the new price, undoing will:</p>
 <ol>
 <li>Restore old prices for <strong>future bookings</strong></li>
@@ -2445,8 +2554,8 @@
 <a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">  </span><span class="nt">"warning"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3 bookings exist at current price. Undoing will affect future bookings only."</span>
 <a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="p">}</span>
 </code></pre></div></p>
-<h2 id="partial-undo">Partial Undo</h2>
-<h3 id="undo-specific-units-only">Undo Specific Units Only</h3>
+<h2 id="partial-undo">Partial Undo<a class="headerlink" href="#partial-undo" title="Permanent link">&para;</a></h2>
+<h3 id="undo-specific-units-only">Undo Specific Units Only<a class="headerlink" href="#undo-specific-units-only" title="Permanent link">&para;</a></h3>
 <p>Revert only certain unit types:</p>
 <p><strong>Request:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="p">{</span>
@@ -2473,8 +2582,8 @@
 <a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a><span class="w">  </span><span class="p">]</span>
 <a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a><span class="p">}</span>
 </code></pre></div></p>
-<h2 id="undo-history">Undo History</h2>
-<h3 id="view-undo-operations">View Undo Operations</h3>
+<h2 id="undo-history">Undo History<a class="headerlink" href="#undo-history" title="Permanent link">&para;</a></h2>
+<h3 id="view-undo-operations">View Undo Operations<a class="headerlink" href="#view-undo-operations" title="Permanent link">&para;</a></h3>
 <p>See all undo operations performed:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>GET<span class="w"> </span>/api/ventrata/price-changes?isUndo<span class="o">=</span><span class="nb">true</span>
 </code></pre></div>
@@ -2492,7 +2601,7 @@
 <a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="w">  </span><span class="p">]</span>
 <a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="p">}</span>
 </code></pre></div></p>
-<h3 id="undo-chain">Undo Chain</h3>
+<h3 id="undo-chain">Undo Chain<a class="headerlink" href="#undo-chain" title="Permanent link">&para;</a></h3>
 <p>Track changes and their undos:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>GET<span class="w"> </span>/api/ventrata/price-changes/change-123/chain
 </code></pre></div>
@@ -2520,14 +2629,14 @@
 <a id="__codelineno-13-21" name="__codelineno-13-21" href="#__codelineno-13-21"></a><span class="w">  </span><span class="p">]</span>
 <a id="__codelineno-13-22" name="__codelineno-13-22" href="#__codelineno-13-22"></a><span class="p">}</span>
 </code></pre></div></p>
-<h2 id="alternative-manual-revert">Alternative: Manual Revert</h2>
-<h3 id="when-to-use-manual-revert">When to Use Manual Revert</h3>
+<h2 id="alternative-manual-revert">Alternative: Manual Revert<a class="headerlink" href="#alternative-manual-revert" title="Permanent link">&para;</a></h2>
+<h3 id="when-to-use-manual-revert">When to Use Manual Revert<a class="headerlink" href="#when-to-use-manual-revert" title="Permanent link">&para;</a></h3>
 <p>Use manual revert instead of undo when:
 - Change is outside undo window
 - You want different prices (not exact old values)
 - Original change data is incomplete
 - You need to make additional adjustments</p>
-<h3 id="manual-revert-process">Manual Revert Process</h3>
+<h3 id="manual-revert-process">Manual Revert Process<a class="headerlink" href="#manual-revert-process" title="Permanent link">&para;</a></h3>
 <ol>
 <li>Look up old prices from history</li>
 <li>Create new price change with old values</li>
@@ -2556,8 +2665,8 @@
 <a id="__codelineno-14-20" name="__codelineno-14-20" href="#__codelineno-14-20"></a><span class="w">  </span><span class="p">})</span>
 <a id="__codelineno-14-21" name="__codelineno-14-21" href="#__codelineno-14-21"></a><span class="p">});</span>
 </code></pre></div></p>
-<h2 id="undo-safeguards">Undo Safeguards</h2>
-<h3 id="confirmation-required">Confirmation Required</h3>
+<h2 id="undo-safeguards">Undo Safeguards<a class="headerlink" href="#undo-safeguards" title="Permanent link">&para;</a></h2>
+<h3 id="confirmation-required">Confirmation Required<a class="headerlink" href="#confirmation-required" title="Permanent link">&para;</a></h3>
 <p>High-impact undo operations require confirmation:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="p">{</span>
 <a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">  </span><span class="nt">"changeId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"change-123"</span><span class="p">,</span>
@@ -2565,7 +2674,7 @@
 <a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">  </span><span class="nt">"reason"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Required for audit trail"</span>
 <a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="p">}</span>
 </code></pre></div>
-<h3 id="preview-undo">Preview Undo</h3>
+<h3 id="preview-undo">Preview Undo<a class="headerlink" href="#preview-undo" title="Permanent link">&para;</a></h3>
 <p>Preview what will happen before executing:</p>
 <p><strong>Endpoint:</strong> <code>GET /api/ventrata/price-changes/{id}/undo/preview</code></p>
 <p><strong>Response:</strong>
@@ -2589,7 +2698,7 @@
 <a id="__codelineno-16-18" name="__codelineno-16-18" href="#__codelineno-16-18"></a><span class="w">  </span><span class="nt">"warnings"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
 <a id="__codelineno-16-19" name="__codelineno-16-19" href="#__codelineno-16-19"></a><span class="p">}</span>
 </code></pre></div></p>
-<h3 id="undo-permissions">Undo Permissions</h3>
+<h3 id="undo-permissions">Undo Permissions<a class="headerlink" href="#undo-permissions" title="Permanent link">&para;</a></h3>
 <p>Not everyone can undo changes:</p>
 <table>
 <thead>
@@ -2622,8 +2731,8 @@
 </tr>
 </tbody>
 </table>
-<h2 id="undo-notifications">Undo Notifications</h2>
-<h3 id="email-notifications">Email Notifications</h3>
+<h2 id="undo-notifications">Undo Notifications<a class="headerlink" href="#undo-notifications" title="Permanent link">&para;</a></h2>
+<h3 id="email-notifications">Email Notifications<a class="headerlink" href="#email-notifications" title="Permanent link">&para;</a></h3>
 <p>Users receive email when their changes are undone:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>Subject: Your price change has been undone
 <a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>
@@ -2639,7 +2748,7 @@
 <a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a>
 <a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a>View full details: [Link to change history]
 </code></pre></div>
-<h3 id="slackteams-integration">Slack/Teams Integration</h3>
+<h3 id="slackteams-integration">Slack/Teams Integration<a class="headerlink" href="#slackteams-integration" title="Permanent link">&para;</a></h3>
 <p>Connect Walkway to your team chat:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>🔄 Price Change Undone
 <a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>
@@ -2654,37 +2763,37 @@
 <a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a>
 <a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a>[View Details] [Contact User]
 </code></pre></div>
-<h2 id="best-practices">Best Practices</h2>
-<h3 id="1-act-quickly">1. Act Quickly</h3>
+<h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Permanent link">&para;</a></h2>
+<h3 id="1-act-quickly">1. Act Quickly<a class="headerlink" href="#1-act-quickly" title="Permanent link">&para;</a></h3>
 <p>Undo changes as soon as errors are discovered:
 - ✅ Less impact on bookings
 - ✅ Fewer customers see incorrect prices
 - ✅ Easier to track and explain</p>
-<h3 id="2-always-add-a-reason">2. Always Add a Reason</h3>
+<h3 id="2-always-add-a-reason">2. Always Add a Reason<a class="headerlink" href="#2-always-add-a-reason" title="Permanent link">&para;</a></h3>
 <p>Document why you're undoing:
 - Required for audit trail
 - Helps team understand mistakes
 - Useful for training and process improvement</p>
-<h3 id="3-check-for-bookings-first">3. Check for Bookings First</h3>
+<h3 id="3-check-for-bookings-first">3. Check for Bookings First<a class="headerlink" href="#3-check-for-bookings-first" title="Permanent link">&para;</a></h3>
 <p>Before undoing:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># Check if bookings exist</span>
 <a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>GET<span class="w"> </span>/api/ventrata/bookings?availabilityId<span class="o">={</span>id<span class="o">}</span>
 <a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>
 <a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="c1"># If bookings exist, consider alternatives</span>
 </code></pre></div></p>
-<h3 id="4-communicate-changes">4. Communicate Changes</h3>
+<h3 id="4-communicate-changes">4. Communicate Changes<a class="headerlink" href="#4-communicate-changes" title="Permanent link">&para;</a></h3>
 <p>If customers might be affected:
 - Send notification emails
 - Update website/booking platform
 - Prepare customer service team</p>
-<h3 id="5-learn-from-mistakes">5. Learn from Mistakes</h3>
+<h3 id="5-learn-from-mistakes">5. Learn from Mistakes<a class="headerlink" href="#5-learn-from-mistakes" title="Permanent link">&para;</a></h3>
 <p>Review undone changes regularly:
 - What went wrong?
 - How can we prevent it?
 - Do we need better validation?
 - Should we update training?</p>
-<h2 id="preventing-errors">Preventing Errors</h2>
-<h3 id="pre-push-validation">Pre-Push Validation</h3>
+<h2 id="preventing-errors">Preventing Errors<a class="headerlink" href="#preventing-errors" title="Permanent link">&para;</a></h2>
+<h3 id="pre-push-validation">Pre-Push Validation<a class="headerlink" href="#pre-push-validation" title="Permanent link">&para;</a></h3>
 <p>Validate before pushing to catch errors:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="kd">function</span><span class="w"> </span><span class="nx">validatePriceChange</span><span class="p">(</span><span class="nx">change</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">errors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[];</span>
@@ -2713,7 +2822,7 @@
 <a id="__codelineno-20-25" name="__codelineno-20-25" href="#__codelineno-20-25"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">errors</span><span class="p">;</span>
 <a id="__codelineno-20-26" name="__codelineno-20-26" href="#__codelineno-20-26"></a><span class="p">}</span>
 </code></pre></div>
-<h3 id="approval-workflows">Approval Workflows</h3>
+<h3 id="approval-workflows">Approval Workflows<a class="headerlink" href="#approval-workflows" title="Permanent link">&para;</a></h3>
 <p>Require approval for large changes:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">abs</span><span class="p">(</span><span class="nx">changePercent</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">20</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="w">  </span><span class="nx">requireApproval</span><span class="p">({</span>
@@ -2723,7 +2832,7 @@
 <a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="w">  </span><span class="p">});</span>
 <a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="p">}</span>
 </code></pre></div>
-<h3 id="staging-environment">Staging Environment</h3>
+<h3 id="staging-environment">Staging Environment<a class="headerlink" href="#staging-environment" title="Permanent link">&para;</a></h3>
 <p>Test changes in staging first:</p>
 <ol>
 <li>Push to staging environment</li>
@@ -2731,8 +2840,8 @@
 <li>If correct, push to production</li>
 <li>If incorrect, fix without affecting live prices</li>
 </ol>
-<h2 id="recovery-scenarios">Recovery Scenarios</h2>
-<h3 id="scenario-1-wrong-price-entered">Scenario 1: Wrong Price Entered</h3>
+<h2 id="recovery-scenarios">Recovery Scenarios<a class="headerlink" href="#recovery-scenarios" title="Permanent link">&para;</a></h2>
+<h3 id="scenario-1-wrong-price-entered">Scenario 1: Wrong Price Entered<a class="headerlink" href="#scenario-1-wrong-price-entered" title="Permanent link">&para;</a></h3>
 <p><strong>Problem:</strong> Typed €550 instead of €55</p>
 <p><strong>Solution:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>POST<span class="w"> </span>/api/ventrata/price-changes/change-123/undo
@@ -2740,7 +2849,7 @@
 <a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="w">  </span><span class="s2">"reason"</span>:<span class="w"> </span><span class="s2">"Typo: entered €550 instead of €55"</span>
 <a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="o">}</span>
 </code></pre></div></p>
-<h3 id="scenario-2-wrong-date-range">Scenario 2: Wrong Date Range</h3>
+<h3 id="scenario-2-wrong-date-range">Scenario 2: Wrong Date Range<a class="headerlink" href="#scenario-2-wrong-date-range" title="Permanent link">&para;</a></h3>
 <p><strong>Problem:</strong> Applied summer prices to wrong months</p>
 <p><strong>Solution:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>POST<span class="w"> </span>/api/ventrata/price-changes/bulk-undo
@@ -2752,7 +2861,7 @@
 <a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a><span class="w">  </span><span class="s2">"reason"</span>:<span class="w"> </span><span class="s2">"Summer prices applied to spring dates"</span>
 <a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a><span class="o">}</span>
 </code></pre></div></p>
-<h3 id="scenario-3-wrong-product">Scenario 3: Wrong Product</h3>
+<h3 id="scenario-3-wrong-product">Scenario 3: Wrong Product<a class="headerlink" href="#scenario-3-wrong-product" title="Permanent link">&para;</a></h3>
 <p><strong>Problem:</strong> Updated prices for wrong tour</p>
 <p><strong>Solution:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>POST<span class="w"> </span>/api/ventrata/price-changes/change-123/undo
@@ -2760,7 +2869,7 @@
 <a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="w">  </span><span class="s2">"reason"</span>:<span class="w"> </span><span class="s2">"Wrong product - meant to update Beach Tour not City Tour"</span>
 <a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="o">}</span>
 </code></pre></div></p>
-<h2 id="next-steps">Next Steps</h2>
+<h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="../history/">Price Change History →</a> - View all changes</li>
 <li><a href="../api-endpoints/">API Endpoints →</a> - Full API reference</li>
@@ -2858,7 +2967,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "navigation.instant", "navigation.tracking", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>

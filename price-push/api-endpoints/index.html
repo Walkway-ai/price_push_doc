@@ -300,6 +300,26 @@
     
     
       <li class="md-tabs__item">
+        <a href="../../features/market-intelligence-access-flag/" class="md-tabs__link">
+          
+  
+  
+  Features
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
         <a href="../../operations/backend-handover/" class="md-tabs__link">
           
   
@@ -1341,7 +1361,7 @@
   <span class="md-ellipsis">
     
   
-    Operations
+    Features
   
 
     
@@ -1354,6 +1374,95 @@
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Features
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/market-intelligence-access-flag/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Market Intelligence Access Flag
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Operations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1777,19 +1886,19 @@
   
 
 
-<h1 id="price-push-api-endpoints">Price Push API Endpoints</h1>
-<h2 id="overview">Overview</h2>
+<h1 id="price-push-api-endpoints">Price Push API Endpoints<a class="headerlink" href="#price-push-api-endpoints" title="Permanent link">&para;</a></h1>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
 <p>This page documents the API endpoints related to Price Push functionality. These endpoints allow you to programmatically manage Price Push settings and propagate changes to team members.</p>
-<h2 id="authentication">Authentication</h2>
+<h2 id="authentication">Authentication<a class="headerlink" href="#authentication" title="Permanent link">&para;</a></h2>
 <p>All API requests require a valid JWT token in the Authorization header:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Authorization:<span class="w"> </span>Bearer<span class="w"> </span>YOUR_JWT_TOKEN
 </code></pre></div>
-<h2 id="base-url">Base URL</h2>
+<h2 id="base-url">Base URL<a class="headerlink" href="#base-url" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>https://api.walkway.com
 </code></pre></div>
 <hr />
-<h2 id="subscription-endpoints">Subscription Endpoints</h2>
-<h3 id="enabledisable-price-push">Enable/Disable Price Push</h3>
+<h2 id="subscription-endpoints">Subscription Endpoints<a class="headerlink" href="#subscription-endpoints" title="Permanent link">&para;</a></h2>
+<h3 id="enabledisable-price-push">Enable/Disable Price Push<a class="headerlink" href="#enabledisable-price-push" title="Permanent link">&para;</a></h3>
 <p>Enable or disable Price Push for a subscription. This automatically propagates to all Owner and Admin members.</p>
 <p><strong>Endpoint:</strong> <code>PATCH /api/subscriptions/:id/price-push</code></p>
 <p><strong>Parameters:</strong>
@@ -1816,7 +1925,7 @@
 </code></pre></div></p>
 <p><strong>Role Required:</strong> Owner or Admin with <code>canEditSubscription</code> permission</p>
 <hr />
-<h3 id="update-ventrata-api-key">Update Ventrata API Key</h3>
+<h3 id="update-ventrata-api-key">Update Ventrata API Key<a class="headerlink" href="#update-ventrata-api-key" title="Permanent link">&para;</a></h3>
 <p>Set or update the Ventrata API key for a subscription. The key is automatically propagated to all members.</p>
 <p><strong>Endpoint:</strong> <code>PATCH /api/subscriptions/:id/ventrata-api-key</code></p>
 <p><strong>Parameters:</strong>
@@ -1843,7 +1952,7 @@
 </code></pre></div></p>
 <p><strong>Role Required:</strong> Owner or Admin with <code>canEditSubscription</code> permission</p>
 <hr />
-<h3 id="get-ventrata-api-key">Get Ventrata API Key</h3>
+<h3 id="get-ventrata-api-key">Get Ventrata API Key<a class="headerlink" href="#get-ventrata-api-key" title="Permanent link">&para;</a></h3>
 <p>Retrieve the Ventrata API key for a subscription.</p>
 <p><strong>Endpoint:</strong> <code>GET /api/subscriptions/:id/ventrata-api-key</code></p>
 <p><strong>Parameters:</strong>
@@ -1860,7 +1969,7 @@
 </code></pre></div></p>
 <p><strong>Role Required:</strong> Member with <code>canViewAnalytics</code> permission</p>
 <hr />
-<h3 id="update-subscription-with-price-push">Update Subscription (with Price Push)</h3>
+<h3 id="update-subscription-with-price-push">Update Subscription (with Price Push)<a class="headerlink" href="#update-subscription-with-price-push" title="Permanent link">&para;</a></h3>
 <p>Update subscription details including Price Push settings. Changes are automatically propagated to members.</p>
 <p><strong>Endpoint:</strong> <code>PATCH /api/subscriptions/:id</code></p>
 <p><strong>Parameters:</strong>
@@ -1897,8 +2006,8 @@
 </code></pre></div></p>
 <p><strong>Role Required:</strong> Owner or Admin with <code>canEditSubscription</code> permission</p>
 <hr />
-<h2 id="user-endpoints">User Endpoints</h2>
-<h3 id="get-all-user-flags">Get All User Flags</h3>
+<h2 id="user-endpoints">User Endpoints<a class="headerlink" href="#user-endpoints" title="Permanent link">&para;</a></h2>
+<h3 id="get-all-user-flags">Get All User Flags<a class="headerlink" href="#get-all-user-flags" title="Permanent link">&para;</a></h3>
 <p>Retrieve Price Push status and other feature flags for all users.</p>
 <p><strong>Endpoint:</strong> <code>GET /api/users/flags</code></p>
 <p><strong>Response:</strong>
@@ -1923,7 +2032,7 @@
 </code></pre></div></p>
 <p><strong>Use Case:</strong> Check Price Push status for multiple users at once</p>
 <hr />
-<h3 id="get-user-ventrata-api-key">Get User Ventrata API Key</h3>
+<h3 id="get-user-ventrata-api-key">Get User Ventrata API Key<a class="headerlink" href="#get-user-ventrata-api-key" title="Permanent link">&para;</a></h3>
 <p>Get the Ventrata API key configured for a specific user.</p>
 <p><strong>Endpoint:</strong> <code>GET /api/users/:id/ventrata-api-key</code></p>
 <p><strong>Parameters:</strong>
@@ -1939,7 +2048,7 @@
 <a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer YOUR_TOKEN"</span>
 </code></pre></div></p>
 <hr />
-<h3 id="update-user-ventrata-api-key">Update User Ventrata API Key</h3>
+<h3 id="update-user-ventrata-api-key">Update User Ventrata API Key<a class="headerlink" href="#update-user-ventrata-api-key" title="Permanent link">&para;</a></h3>
 <p>Set or update the Ventrata API key for a specific user.</p>
 <p><strong>Endpoint:</strong> <code>PATCH /api/users/:id/ventrata-api-key</code></p>
 <p><strong>Parameters:</strong>
@@ -1964,8 +2073,8 @@
 </code></pre></div></p>
 <p><strong>Role Required:</strong> Owner or Admin</p>
 <hr />
-<h2 id="admin-endpoints">Admin Endpoints</h2>
-<h3 id="update-user-price-push-access">Update User Price Push Access</h3>
+<h2 id="admin-endpoints">Admin Endpoints<a class="headerlink" href="#admin-endpoints" title="Permanent link">&para;</a></h2>
+<h3 id="update-user-price-push-access">Update User Price Push Access<a class="headerlink" href="#update-user-price-push-access" title="Permanent link">&para;</a></h3>
 <p>Manually enable or disable Price Push for a specific user (overrides automatic propagation).</p>
 <p><strong>Endpoint:</strong> <code>PATCH /api/admin/:id/price-push-access</code></p>
 <p><strong>Parameters:</strong>
@@ -1995,8 +2104,8 @@
 <p>This endpoint creates a manual override. Future automatic propagation from subscription changes will overwrite this setting.</p>
 </div>
 <hr />
-<h2 id="member-management-endpoints">Member Management Endpoints</h2>
-<h3 id="add-member-to-subscription">Add Member to Subscription</h3>
+<h2 id="member-management-endpoints">Member Management Endpoints<a class="headerlink" href="#member-management-endpoints" title="Permanent link">&para;</a></h2>
+<h3 id="add-member-to-subscription">Add Member to Subscription<a class="headerlink" href="#add-member-to-subscription" title="Permanent link">&para;</a></h3>
 <p>Add a new member to a subscription. Price Push access is automatically configured based on role.</p>
 <p><strong>Endpoint:</strong> <code>POST /api/subscriptions/:subscriptionId/members</code></p>
 <p><strong>Parameters:</strong>
@@ -2033,7 +2142,7 @@
 <a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a><span class="s1">  }'</span>
 </code></pre></div></p>
 <hr />
-<h3 id="update-member-role">Update Member Role</h3>
+<h3 id="update-member-role">Update Member Role<a class="headerlink" href="#update-member-role" title="Permanent link">&para;</a></h3>
 <p>Change a member's role. Price Push access is automatically adjusted.</p>
 <p><strong>Endpoint:</strong> <code>PATCH /api/subscriptions/:subscriptionId/members/:memberId</code></p>
 <p><strong>Parameters:</strong>
@@ -2064,8 +2173,8 @@
 <a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">'{"role": "ADMIN"}'</span>
 </code></pre></div></p>
 <hr />
-<h2 id="error-responses">Error Responses</h2>
-<h3 id="common-error-codes">Common Error Codes</h3>
+<h2 id="error-responses">Error Responses<a class="headerlink" href="#error-responses" title="Permanent link">&para;</a></h2>
+<h3 id="common-error-codes">Common Error Codes<a class="headerlink" href="#common-error-codes" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
@@ -2107,7 +2216,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="error-response-format">Error Response Format</h3>
+<h3 id="error-response-format">Error Response Format<a class="headerlink" href="#error-response-format" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="p">{</span>
 <a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="w">  </span><span class="nt">"statusCode"</span><span class="p">:</span><span class="w"> </span><span class="mi">400</span><span class="p">,</span>
 <a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a><span class="w">  </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pricePush must be a boolean value"</span><span class="p">,</span>
@@ -2115,7 +2224,7 @@
 <a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a><span class="p">}</span>
 </code></pre></div>
 <hr />
-<h2 id="rate-limiting">Rate Limiting</h2>
+<h2 id="rate-limiting">Rate Limiting<a class="headerlink" href="#rate-limiting" title="Permanent link">&para;</a></h2>
 <p>API endpoints are rate-limited to prevent abuse:</p>
 <ul>
 <li><strong>Standard endpoints</strong>: 100 requests per minute</li>
@@ -2128,7 +2237,7 @@
 <a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a>X-RateLimit-Reset: 1635782400
 </code></pre></div></p>
 <hr />
-<h2 id="webhooks-coming-soon">Webhooks (Coming Soon)</h2>
+<h2 id="webhooks-coming-soon">Webhooks (Coming Soon)<a class="headerlink" href="#webhooks-coming-soon" title="Permanent link">&para;</a></h2>
 <p>Webhook notifications for Price Push events:</p>
 <ul>
 <li><code>price_push.enabled</code> - Price Push enabled for subscription</li>
@@ -2137,8 +2246,8 @@
 <li><code>ventrata.key_updated</code> - Ventrata API key updated</li>
 </ul>
 <hr />
-<h2 id="code-examples">Code Examples</h2>
-<h3 id="javascripttypescript">JavaScript/TypeScript</h3>
+<h2 id="code-examples">Code Examples<a class="headerlink" href="#code-examples" title="Permanent link">&para;</a></h2>
+<h3 id="javascripttypescript">JavaScript/TypeScript<a class="headerlink" href="#javascripttypescript" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="c1">// Enable Price Push for subscription</span>
 <a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">enablePricePush</span><span class="p">(</span><span class="nx">subscriptionId</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="nx">token</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">fetch</span><span class="p">(</span>
@@ -2162,7 +2271,7 @@
 <a id="__codelineno-31-21" name="__codelineno-31-21" href="#__codelineno-31-21"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">data</span><span class="p">;</span>
 <a id="__codelineno-31-22" name="__codelineno-31-22" href="#__codelineno-31-22"></a><span class="p">}</span>
 </code></pre></div>
-<h3 id="python">Python</h3>
+<h3 id="python">Python<a class="headerlink" href="#python" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
 <a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>
 <a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a><span class="k">def</span><span class="w"> </span><span class="nf">enable_price_push</span><span class="p">(</span><span class="n">subscription_id</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
@@ -2180,7 +2289,7 @@
 <a id="__codelineno-32-15" name="__codelineno-32-15" href="#__codelineno-32-15"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Price Push enabled for </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">'updatedUsersCount'</span><span class="p">]</span><span class="si">}</span><span class="s2"> members"</span><span class="p">)</span>
 <a id="__codelineno-32-16" name="__codelineno-32-16" href="#__codelineno-32-16"></a>    <span class="k">return</span> <span class="n">result</span>
 </code></pre></div>
-<h3 id="php">PHP</h3>
+<h3 id="php">PHP<a class="headerlink" href="#php" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="cp">&lt;?php</span>
 <a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a><span class="k">function</span> <span class="nf">enablePricePush</span><span class="p">(</span><span class="nv">$subscriptionId</span><span class="p">,</span> <span class="nv">$token</span><span class="p">)</span> <span class="p">{</span>
 <a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>    <span class="nv">$url</span> <span class="o">=</span> <span class="s2">"https://api.walkway.com/api/subscriptions/</span><span class="si">{</span><span class="nv">$subscriptionId</span><span class="si">}</span><span class="s2">/price-push"</span><span class="p">;</span>
@@ -2202,7 +2311,7 @@
 <a id="__codelineno-33-19" name="__codelineno-33-19" href="#__codelineno-33-19"></a><span class="cp">?&gt;</span>
 </code></pre></div>
 <hr />
-<h2 id="next-steps">Next Steps</h2>
+<h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="../configuration/">Configuration Guide</a> - Set up Price Push</li>
 <li><a href="../troubleshooting/">Troubleshooting</a> - Common issues and solutions</li>
@@ -2300,7 +2409,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "navigation.instant", "navigation.tracking", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>

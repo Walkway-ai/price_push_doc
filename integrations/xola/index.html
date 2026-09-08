@@ -300,6 +300,26 @@
     
     
       <li class="md-tabs__item">
+        <a href="../../features/market-intelligence-access-flag/" class="md-tabs__link">
+          
+  
+  
+  Features
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
         <a href="../../operations/backend-handover/" class="md-tabs__link">
           
   
@@ -1280,7 +1300,7 @@
   <span class="md-ellipsis">
     
   
-    Operations
+    Features
   
 
     
@@ -1293,6 +1313,95 @@
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Features
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/market-intelligence-access-flag/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Market Intelligence Access Flag
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Operations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1655,7 +1764,7 @@
   
 
 
-<h1 id="xola">Xola</h1>
+<h1 id="xola">Xola<a class="headerlink" href="#xola" title="Permanent link">&para;</a></h1>
 <p>Median push <strong>5.9 s</strong>. Native Xola REST, <code>x-api-key</code> auth.</p>
 <div class="admonition abstract">
 <p class="admonition-title">The one thing to understand</p>
@@ -1669,7 +1778,7 @@ silently falls back to the experience's catalog price. Most Xola incidents are o
 those three being wrong.</p>
 </div>
 <hr />
-<h2 id="authentication">Authentication</h2>
+<h2 id="authentication">Authentication<a class="headerlink" href="#authentication" title="Permanent link">&para;</a></h2>
 <p>Header is <code>x-api-key</code>, <strong>not</strong> <code>Authorization: Bearer</code>. Getting this wrong returns a 401 that
 reads like an expired token.</p>
 <p>The key is resolved in a strict order, and the first hit wins:</p>
@@ -1687,7 +1796,7 @@ check. <code>logXolaApiKeyResolutionDebug</code> logs which source won for every
 log line is the fastest way to settle it.</p>
 </div>
 <hr />
-<h2 id="the-objects-involved">The objects involved</h2>
+<h2 id="the-objects-involved">The objects involved<a class="headerlink" href="#the-objects-involved" title="Permanent link">&para;</a></h2>
 <dl>
 <dt><code>Experience</code></dt>
 <dd>The product. Xola ids are Mongo ObjectIds (24 hex chars). Walkway sanitises inbound ids
@@ -1711,7 +1820,7 @@ checkout.</strong></dd>
 the call fails, Walkway falls back to <code>products.supplier_id</code> for the <code>xola</code> channel.</dd>
 </dl>
 <hr />
-<h2 id="the-push-step-by-step">The push, step by step</h2>
+<h2 id="the-push-step-by-step">The push, step by step<a class="headerlink" href="#the-push-step-by-step" title="Permanent link">&para;</a></h2>
 <p><code>XolaService.updateExperiencePriceWithHistory</code> is the entry point for both manual and batch
 pushes.</p>
 <ol>
@@ -1729,7 +1838,7 @@ pushes.</p>
 <li><strong>Persist <code>xolaPriceChange</code></strong> — the history row undo reads from.</li>
 <li><strong>Update the local <code>price</code> table.</strong></li>
 </ol>
-<h3 id="endpoints">Endpoints</h3>
+<h3 id="endpoints">Endpoints<a class="headerlink" href="#endpoints" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
@@ -1777,7 +1886,7 @@ pushes.</p>
 </tbody>
 </table>
 <hr />
-<h2 id="schedules">Schedules</h2>
+<h2 id="schedules">Schedules<a class="headerlink" href="#schedules" title="Permanent link">&para;</a></h2>
 <p>Created with <code>repeat: 'custom'</code> and an explicit <code>dates</code> array — never a recurring pattern.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Override date 2026-08-16 @ 945"</span><span class="p">,</span>
@@ -1798,11 +1907,11 @@ than writing a <code>00:00</code> row that matches no recommendation slot.</p>
 <p>The <code>name</code> follows the convention <code>Override date &lt;date&gt; @ &lt;time&gt;</code>, or <code>Override date &lt;date&gt;</code>
 when there is no time. <strong>That string is load-bear</strong> — the cleanup routine identifies
 Walkway-created schedules by it.</p>
-<h3 id="automatic-cleanup">Automatic cleanup</h3>
+<h3 id="automatic-cleanup">Automatic cleanup<a class="headerlink" href="#automatic-cleanup" title="Permanent link">&para;</a></h3>
 <p><code>purgeOutdatedOverrideSchedulesForExperience</code> deletes Walkway's own past override schedules,
 identified by the name convention plus <code>repeat: custom</code> plus a date entirely in the past.
 Left unchecked these accumulate on every experience, and Xola's own UI becomes unusable.</p>
-<h3 id="purge-stale">Purging retired slots</h3>
+<h3 id="purge-stale">Purging retired slots<a class="headerlink" href="#purge-stale" title="Permanent link">&para;</a></h3>
 <p>Past-dated cleanup is not enough: the overrides that cause trouble are the <strong>future</strong> ones
 sitting on slots the operator has withdrawn. The code fix stops new ones being created; it
 does not remove what is already there.</p>
@@ -1827,7 +1936,7 @@ route unless you actually mean to unwind the whole integration.</p>
 active or future bookings tied to the schedule, or per seller policy. Walkway logs it and
 moves on — it is not a push failure. A 404 is treated as already-deleted.</p>
 <hr />
-<h2 id="operator-schedule">The operator's schedule wins</h2>
+<h2 id="operator-schedule">The operator's schedule wins<a class="headerlink" href="#operator-schedule" title="Permanent link">&para;</a></h2>
 <div class="admonition danger">
 <p class="admonition-title">Creating a schedule puts a slot on sale</p>
 <p>A Walkway override is <code>type: 'available'</code>. Creating one for a time slot the operator
@@ -1878,7 +1987,7 @@ withdrawn slot.</p>
 It exists because the check depends on parsing operator schedules correctly, and an
 experience whose schedules we misparse stops being priced entirely — a loud failure, but one
 someone may need to unblock without a deploy.</p>
-<h3 id="time-ranges">Hours are stated two different ways</h3>
+<h3 id="time-ranges">Hours are stated two different ways<a class="headerlink" href="#time-ranges" title="Permanent link">&para;</a></h3>
 <div class="admonition warning">
 <p class="admonition-title">The most expensive mistake in this file</p>
 <p>A schedule's hours live in <code>times</code> <strong>or</strong> in <code>timeRanges</code>. Reading only <code>times</code> treats a
@@ -1901,7 +2010,7 @@ price until the next push.</p>
 <p><code>scheduleCoversSlot</code> now reads both. Only a schedule stating <strong>neither</strong> covers the whole
 day. Range bounds are inclusive, so a slot exactly on the edge counts as inside; for a
 blackout that errs toward not selling, which is the direction the rest of the module takes.</p>
-<h3 id="blackouts">Blackouts are also a workaround</h3>
+<h3 id="blackouts">Blackouts are also a workaround<a class="headerlink" href="#blackouts" title="Permanent link">&para;</a></h3>
 <p>Operators use <code>type: 'unavailable'</code> schedules to close dates. Empire also adopted them as a
 <strong>workaround for the bug above</strong> — "I have instructed the Empire team to use blackouts to
 retire time slots" — so a blackout dated around September 2026 on their account may be a
@@ -1909,13 +2018,13 @@ patch rather than an intention. Once the fix is live they should be able to remo
 <p>When reading a blackout, check the name against <code>timeRanges</code>: an operator who means 8:30
 may write a schedule that closes the day, and only the name says otherwise.</p>
 <hr />
-<h2 id="purchase-rules-two-shapes">Purchase rules — two shapes</h2>
+<h2 id="purchase-rules-two-shapes">Purchase rules — two shapes<a class="headerlink" href="#purchase-rules-two-shapes" title="Permanent link">&para;</a></h2>
 <p>Which shape gets built depends entirely on whether a schedule id is available.</p>
-<h3 id="schedule-scoped-the-correct-one">Schedule-scoped (the correct one)</h3>
+<h3 id="schedule-scoped-the-correct-one">Schedule-scoped (the correct one)<a class="headerlink" href="#schedule-scoped-the-correct-one" title="Permanent link">&para;</a></h3>
 <p>Used whenever a schedule id exists. Filter is <code>in_product_schedule_filter</code>, actions use
 <code>shortcut.absolute_per_purchase</code>. This is the shape Xola themselves recommend for slot
 pricing.</p>
-<h3 id="legacy-datetimesource">Legacy date/time/source</h3>
+<h3 id="legacy-datetimesource">Legacy date/time/source<a class="headerlink" href="#legacy-datetimesource" title="Permanent link">&para;</a></h3>
 <p>The fallback when no schedule id could be resolved: an <code>and_filter</code> over <code>arrivalDate</code>,
 <code>arrivalTime</code> and <code>source</code>, with modifiers.</p>
 <div class="admonition warning">
@@ -1930,7 +2039,7 @@ inventory, create a schedule on Xola and pass scheduleId so pricing applies to t
 sees, even though it returned success. <strong>Treat it as a failure even when the status says
 otherwise.</strong></p>
 </div>
-<h3 id="the-link-payload">The link payload</h3>
+<h3 id="the-link-payload">The link payload<a class="headerlink" href="#the-link-payload" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">{</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Schedule Price Variations"</span><span class="p">,</span>
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="nt">"seller"</span><span class="p">:</span><span class="w">   </span><span class="p">{</span><span class="w"> </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;sellerId&gt;"</span><span class="w"> </span><span class="p">},</span>
@@ -1944,7 +2053,7 @@ otherwise.</strong></p>
 <p>The <code>walkway</code> tag is how our rules are told apart from the operator's own. <code>sequence</code>
 determines precedence against other rules — the high value puts ours late, so it wins.</p>
 <hr />
-<h2 id="action-merge"><code>PUT /purchaseRules/{id}</code> merges, it does not replace</h2>
+<h2 id="action-merge"><code>PUT /purchaseRules/{id}</code> merges, it does not replace<a class="headerlink" href="#action-merge" title="Permanent link">&para;</a></h2>
 <div class="admonition danger">
 <p class="admonition-title">The single most damaging Xola defect to date</p>
 <p>Xola, confirming the semantics on 2026-09-08:</p>
@@ -1982,7 +2091,7 @@ carrying one are ever removed.</p>
 next push — no separate sweep needed. Which also means: <em>the bloat only clears if pushes are
 running</em>. Empire's had been stopped since 2026-09-01, so nothing was draining.</p>
 <hr />
-<h2 id="rule-reuse-by-price-signature">Rule reuse by price signature</h2>
+<h2 id="rule-reuse-by-price-signature">Rule reuse by price signature<a class="headerlink" href="#rule-reuse-by-price-signature" title="Permanent link">&para;</a></h2>
 <p>Creating a rule per push would leave thousands of rules on an experience. Instead Walkway
 fingerprints the price set:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>sha256( sorted([{ templateId, cents }, …]) )
@@ -1994,7 +2103,7 @@ schedule list</strong> rather than creating another rule.</p>
 <p>Reading the current schedule list back out means walking the filter tree —
 <code>extractInProductScheduleFromRuleFilter</code> handles both a top-level
 <code>in_product_schedule_filter</code> and one nested under an <code>and_filter</code>.</p>
-<h3 id="stale-schedule-recovery">Stale schedule recovery</h3>
+<h3 id="stale-schedule-recovery">Stale schedule recovery<a class="headerlink" href="#stale-schedule-recovery" title="Permanent link">&para;</a></h3>
 <p>If a schedule was deleted on Xola's side but is still referenced by a rule, the <code>PUT</code> fails
 with a 400 shaped like:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">"field"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"filter.filters.0.schedules.items"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
@@ -2005,7 +2114,7 @@ with a 400 shaped like:</p>
 from the structured field <em>or</em> by regex over the message text — so the rule can be retried
 without them. Without this, one deleted schedule would poison a rule permanently.</p>
 <hr />
-<h2 id="booking-priced-products-eng-2423">Booking-priced products (ENG-2423)</h2>
+<h2 id="booking-priced-products-eng-2423">Booking-priced products (ENG-2423)<a class="headerlink" href="#booking-priced-products-eng-2423" title="Permanent link">&para;</a></h2>
 <p>Some Xola experiences are priced <strong>once per booking</strong>, not per guest. They still return a
 single demographic (<code>Guests</code>, <code>guests-over-21</code>, <code>beer-tour</code>) and express the per-booking
 nature only as <code>priceType: "outing"</code>.</p>
@@ -2015,7 +2124,7 @@ miss them entirely. When a <code>product_grade_channel_code</code> is supplied i
 lookup, because one Xola experience can map to several Walkway product rows and the pgcc names
 exactly one.</p>
 <hr />
-<h2 id="skip-and-failure-buckets">Skip and failure buckets</h2>
+<h2 id="skip-and-failure-buckets">Skip and failure buckets<a class="headerlink" href="#skip-and-failure-buckets" title="Permanent link">&para;</a></h2>
 <p>Batch results are canonicalised into buckets for the Slack digest. Order matters — the
 auto-apply-off message is long and mentions other keywords, so it is matched first.</p>
 <table>
@@ -2084,7 +2193,7 @@ auto-apply-off message is long and mentions other keywords, so it is matched fir
 skips-only breakdown alongside. A rising <code>no-op-same-price</code> is healthy. A rising
 <code>schedule-fail</code> or <code>purchase-rule-fail</code> is not.</p>
 <hr />
-<h2 id="tuning">Tuning</h2>
+<h2 id="tuning">Tuning<a class="headerlink" href="#tuning" title="Permanent link">&para;</a></h2>
 <dl>
 <dt><code>XOLA_DEFAULT_API_KEY</code></dt>
 <dd>Last-resort key. Convenient in dev, dangerous in prod — it makes a missing subscription
@@ -2098,7 +2207,7 @@ if an experience has stopped being priced entirely because we misparse its sched
 and say so in the incident channel — it re-opens the failure Empire escalated.</dd>
 </dl>
 <hr />
-<h2 id="empire-incident">The Empire incident, September 2026</h2>
+<h2 id="empire-incident">The Empire incident, September 2026<a class="headerlink" href="#empire-incident" title="Permanent link">&para;</a></h2>
 <p>Worth reading once, because it exercises everything above and every number here was measured
 on their live account rather than estimated.</p>
 <p>Aanand reported two things: Walkway reopening retired slots, and up to a minute of checkout
@@ -2145,7 +2254,7 @@ slot sells at their base rate. And <strong>the operator's own account state is e
 decoration</strong>: Capitol Hill carried 58 operator schedules of which 56 were <code>unavailable</code>,
 which is what a blackout-based workaround looks like from the outside.</p>
 <hr />
-<h2 id="onboarding">Onboarding</h2>
+<h2 id="onboarding">Onboarding<a class="headerlink" href="#onboarding" title="Permanent link">&para;</a></h2>
 <p>Every new supplier must be registered <strong>by Xola's own team</strong>. There is no status endpoint and
 no agreed turnaround, so an operator can be signed, configured on our side, and still
 unreachable — with nothing in our system saying so. Budget for it, and confirm registration
@@ -2240,7 +2349,7 @@ before promising a go-live date.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "navigation.instant", "navigation.tracking", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>

@@ -300,6 +300,26 @@
     
     
       <li class="md-tabs__item">
+        <a href="../features/market-intelligence-access-flag/" class="md-tabs__link">
+          
+  
+  
+  Features
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
         <a href="../operations/backend-handover/" class="md-tabs__link">
           
   
@@ -1052,7 +1072,7 @@
   <span class="md-ellipsis">
     
   
-    Operations
+    Features
   
 
     
@@ -1065,6 +1085,95 @@
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Features
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../features/market-intelligence-access-flag/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Market Intelligence Access Flag
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Operations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1199,7 +1308,7 @@
   
 
 
-<h1 id="integrations-how-price-push-actually-works">Integrations — how price push actually works</h1>
+<h1 id="integrations-how-price-push-actually-works">Integrations — how price push actually works<a class="headerlink" href="#integrations-how-price-push-actually-works" title="Permanent link">&para;</a></h1>
 <p>Four rails carry prices to booking platforms: <strong>Ventrata</strong>, <strong>Bokun</strong>, <strong>Xola</strong> and
 <strong>Prioticket</strong>. A fifth integration, <strong>Viator</strong>, is a read and linkout path, not a push rail.</p>
 <p>They share an entry point and an audit contract. Everything past that differs, sometimes
@@ -1207,7 +1316,7 @@ profoundly — Bokun's <code>PUT</code> is neither a replace nor an upsert, Xola
 on the vendor side before a price can exist, Ventrata adds tax to what you pushed and hands
 it back. Those differences are the reason this section exists.</p>
 <hr />
-<h2 id="the-shared-contract">The shared contract</h2>
+<h2 id="the-shared-contract">The shared contract<a class="headerlink" href="#the-shared-contract" title="Permanent link">&para;</a></h2>
 <p>Everything below is identical across rails. Read it once, then read your rail's page.</p>
 <dl>
 <dt><strong>One entry point.</strong></dt>
@@ -1235,7 +1344,7 @@ and for the health digest. Ventrata, Bokun and Xola each have their own
 splits vendor HTTP time from database time from pool-wait, which is what makes the health
 digest able to say <em>whose</em> fault a slow batch is.</p>
 <hr />
-<h2 id="what-differs-at-a-glance">What differs, at a glance</h2>
+<h2 id="what-differs-at-a-glance">What differs, at a glance<a class="headerlink" href="#what-differs-at-a-glance" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
@@ -1308,7 +1417,7 @@ digest able to say <em>whose</em> fault a slow batch is.</p>
 <p>The two cells worth staring at: <strong>Xola requires three vendor objects to exist</strong> before a price
 applies, and <strong>Ventrata does not return what you pushed</strong>. Both are covered on their pages.</p>
 <hr />
-<h2 id="per-rail-pages">Per-rail pages</h2>
+<h2 id="per-rail-pages">Per-rail pages<a class="headerlink" href="#per-rail-pages" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="ventrata/">Ventrata</a> — the reference implementation, and the tax round-trip</li>
 <li><a href="bokun/">Bokun</a> — the entity model and the <code>PUT</code> semantics that cost a post-mortem</li>
@@ -1316,7 +1425,7 @@ applies, and <strong>Ventrata does not return what you pushed</strong>. Both are
 <li><a href="prioticket/">Prioticket</a> — the pipe-delimited auth and the Walkway webhook</li>
 </ul>
 <hr />
-<h2 id="adding-a-rail">Adding a rail</h2>
+<h2 id="adding-a-rail">Adding a rail<a class="headerlink" href="#adding-a-rail" title="Permanent link">&para;</a></h2>
 <p>The dispatcher, the guards, the audit contract and the digest are all vendor-neutral, so a
 new rail is a service plus a controller plus tests. What is <em>not</em> optional:</p>
 <ol>
@@ -1419,7 +1528,7 @@ has to offer for a rail to be possible at all.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "navigation.instant", "navigation.tracking", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>

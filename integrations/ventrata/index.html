@@ -300,6 +300,26 @@
     
     
       <li class="md-tabs__item">
+        <a href="../../features/market-intelligence-access-flag/" class="md-tabs__link">
+          
+  
+  
+  Features
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
         <a href="../../operations/backend-handover/" class="md-tabs__link">
           
   
@@ -1147,7 +1167,7 @@
   <span class="md-ellipsis">
     
   
-    Operations
+    Features
   
 
     
@@ -1160,6 +1180,95 @@
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Features
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/market-intelligence-access-flag/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Market Intelligence Access Flag
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Operations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1389,7 +1498,7 @@
   
 
 
-<h1 id="ventrata">Ventrata</h1>
+<h1 id="ventrata">Ventrata<a class="headerlink" href="#ventrata" title="Permanent link">&para;</a></h1>
 <p>Median push <strong>693 ms</strong> — the fastest and most reliable rail, and the reference implementation
 the others are modelled on. OCTO plus REST, <code>Authorization: Bearer &lt;apiToken&gt;</code>.</p>
 <div class="admonition abstract">
@@ -1402,24 +1511,24 @@ own database on every push.</p>
 <p>Deep reference in the backend repo: <strong><code>src/ventrata/PRICE_PUSH_FLOW.md</code></strong> (653 lines, covers the
 frontend acceptance flow too).</p>
 <hr />
-<h2 id="a-note-on-the-route-names">A note on the route names</h2>
+<h2 id="a-note-on-the-route-names">A note on the route names<a class="headerlink" href="#a-note-on-the-route-names" title="Permanent link">&para;</a></h2>
 <p><code>POST /ventrata/recommendations/auto-apply</code> is the entry point for <strong>every</strong> rail, and
 <code>VentrataService.autoApplyBatchPricePush</code> is the dispatcher for all four. This is historical,
 not architectural — Ventrata was first. Do not read scoping into the path.</p>
 <hr />
-<h2 id="authentication">Authentication</h2>
+<h2 id="authentication">Authentication<a class="headerlink" href="#authentication" title="Permanent link">&para;</a></h2>
 <p><code>Authorization: Bearer &lt;apiToken&gt;</code>, one key per subscription, with <code>VENTRATA_TOKEN</code> as an
 environment fallback. Keys are validated before being stored, so a bad key fails at
 configuration rather than at push time — the one rail where that is true.</p>
 <hr />
-<h2 id="the-push">The push</h2>
+<h2 id="the-push">The push<a class="headerlink" href="#the-push" title="Permanent link">&para;</a></h2>
 <p>The target price is sent <strong>as-is</strong>: no discount logic, no gross-up.</p>
 <dl>
 <dt><code>unitPricing[].retail</code></dt>
 <dd>The target price per unit. Pricing rules (Child = 50 % of Adult, and so on) are resolved
 <em>before</em> the push, so what goes over the wire is already the final per-unit figure.</dd>
 </dl>
-<h3 id="parity-modes">Parity modes</h3>
+<h3 id="parity-modes">Parity modes<a class="headerlink" href="#parity-modes" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
@@ -1441,7 +1550,7 @@ configuration rather than at push time — the one rail where that is true.</p>
 <p><code>FULL_PARITY</code> means one logical push is six sequential HTTP calls. It is still the fastest
 rail. See <code>docs/PRICE_PARITY_MODE.md</code>.</p>
 <hr />
-<h2 id="the-tax-round-trip">The tax round-trip</h2>
+<h2 id="the-tax-round-trip">The tax round-trip<a class="headerlink" href="#the-tax-round-trip" title="Permanent link">&para;</a></h2>
 <p>After pushing, the <strong>actual</strong> availability response is fetched and used to upsert
 <code>public.price</code>. The response is tax-inclusive:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">"unitPricing"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">{</span>
@@ -1467,12 +1576,12 @@ pass through unchanged.</p>
 response. A taxed product with no discount has <code>has_offer = false</code> and two identical price
 columns. Reading <code>has_offer</code> as "this product has some price complexity" is wrong.</p>
 </div>
-<h3 id="when-the-post-push-fetch-fails">When the post-push fetch fails</h3>
+<h3 id="when-the-post-push-fetch-fails">When the post-push fetch fails<a class="headerlink" href="#when-the-post-push-fetch-fails" title="Permanent link">&para;</a></h3>
 <p>Fall back to the pushed value from <code>updateDto.unitPricing[0].retail</code>: both <code>original_price</code> and
 <code>discounted_price</code> are set to it, and <code>has_offer</code> defaults to <code>false</code> because no discount
 information is available. The price is right; the discount metadata is simply unknown.</p>
 <hr />
-<h2 id="unit-selection">Which unit gets priced</h2>
+<h2 id="unit-selection">Which unit gets priced<a class="headerlink" href="#unit-selection" title="Permanent link">&para;</a></h2>
 <div class="admonition danger">
 <p class="admonition-title">A product can expose two units of the same type</p>
 <p>World of Illusion exposes two units typed <code>ADULT</code>. Ventrata reported in September 2026
@@ -1500,7 +1609,7 @@ positional <code>|| availability.unitPricing[0]</code> fallback. The fallback pa
 than pricing an unidentified category.</p>
 <p>Walkway prices <strong>every unit type a product exposes</strong>, not only ADULT. A €0 unit is not
 necessarily a bug — a <code>FREE</code>/<code>OTHER</code> rule can legitimately set it.</p>
-<h3 id="unit-log"><code>ventrata_price_change_units.unitType</code> is wrong before September 2026</h3>
+<h3 id="unit-log"><code>ventrata_price_change_units.unitType</code> is wrong before September 2026<a class="headerlink" href="#unit-log" title="Permanent link">&para;</a></h3>
 <div class="admonition warning">
 <p class="admonition-title">Do not trust this column on historical rows</p>
 <p>All <strong>16,355,070</strong> rows say <code>ADULT</code>.</p>
@@ -1514,7 +1623,7 @@ the column is non-nullable, so an unidentifiable unit gets a label a query can f
 than a guess. <strong>Existing rows were not backfilled.</strong> Any analysis of unit types over history
 has to treat pre-fix rows as unlabelled.</p>
 <hr />
-<h2 id="verification-and-undo">Verification and undo</h2>
+<h2 id="verification-and-undo">Verification and undo<a class="headerlink" href="#verification-and-undo" title="Permanent link">&para;</a></h2>
 <p>Ventrata is the only rail that can <strong>verify and self-correct</strong>: after pushing it re-reads and,
 if the applied price does not match the target, pushes a correction. The history row is written
 before the post-push fetch and updated afterwards if a correction happened — so a history row
@@ -1523,7 +1632,7 @@ can legitimately differ from the first thing the vendor reported.</p>
 documented in <code>src/ventrata/UNDO_SYSTEM_SUMMARY.md</code> and
 <code>src/ventrata/PRICE_CHANGE_UNDO_GUIDE.md</code>.</p>
 <hr />
-<h2 id="tuning">Tuning</h2>
+<h2 id="tuning">Tuning<a class="headerlink" href="#tuning" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
@@ -1559,7 +1668,7 @@ documented in <code>src/ventrata/UNDO_SYSTEM_SUMMARY.md</code> and
 </tbody>
 </table>
 <hr />
-<h2 id="onboarding">Onboarding</h2>
+<h2 id="onboarding">Onboarding<a class="headerlink" href="#onboarding" title="Permanent link">&para;</a></h2>
 <p>One credential, still collected and typed in by hand. <strong>No app store exists</strong>, so unlike Bokun
 there is no install flow to wire — self-serve entry in our own product is the only lever
 available.</p>
@@ -1653,7 +1762,7 @@ available.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "navigation.instant", "navigation.tracking", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>

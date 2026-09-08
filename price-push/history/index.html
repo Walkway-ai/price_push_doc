@@ -300,6 +300,26 @@
     
     
       <li class="md-tabs__item">
+        <a href="../../features/market-intelligence-access-flag/" class="md-tabs__link">
+          
+  
+  
+  Features
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
         <a href="../../operations/backend-handover/" class="md-tabs__link">
           
   
@@ -1447,7 +1467,7 @@
   <span class="md-ellipsis">
     
   
-    Operations
+    Features
   
 
     
@@ -1460,6 +1480,95 @@
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Features
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/market-intelligence-access-flag/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Market Intelligence Access Flag
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Operations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1989,8 +2098,8 @@
   
 
 
-<h1 id="price-change-history">Price Change History</h1>
-<h2 id="overview">Overview</h2>
+<h1 id="price-change-history">Price Change History<a class="headerlink" href="#price-change-history" title="Permanent link">&para;</a></h1>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
 <p>Every price change pushed to Ventrata is tracked in a comprehensive audit trail. This allows you to:</p>
 <ul>
 <li>📊 See who changed what and when</li>
@@ -1999,8 +2108,8 @@
 <li>⏮️ Revert changes if needed</li>
 <li>📑 Generate compliance reports</li>
 </ul>
-<h2 id="what-gets-tracked">What Gets Tracked?</h2>
-<h3 id="every-change-includes">Every Change Includes</h3>
+<h2 id="what-gets-tracked">What Gets Tracked?<a class="headerlink" href="#what-gets-tracked" title="Permanent link">&para;</a></h2>
+<h3 id="every-change-includes">Every Change Includes<a class="headerlink" href="#every-change-includes" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
@@ -2052,7 +2161,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="change-record-structure">Change Record Structure</h3>
+<h3 id="change-record-structure">Change Record Structure<a class="headerlink" href="#change-record-structure" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"change-uuid-123"</span><span class="p">,</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nt">"subscriptionId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sub-456"</span><span class="p">,</span>
@@ -2097,8 +2206,8 @@
 <a id="__codelineno-0-42" name="__codelineno-0-42" href="#__codelineno-0-42"></a><span class="w">  </span><span class="nt">"updatedAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2025-11-01T10:30:15Z"</span>
 <a id="__codelineno-0-43" name="__codelineno-0-43" href="#__codelineno-0-43"></a><span class="p">}</span>
 </code></pre></div>
-<h2 id="viewing-change-history">Viewing Change History</h2>
-<h3 id="get-all-changes">Get All Changes</h3>
+<h2 id="viewing-change-history">Viewing Change History<a class="headerlink" href="#viewing-change-history" title="Permanent link">&para;</a></h2>
+<h3 id="get-all-changes">Get All Changes<a class="headerlink" href="#get-all-changes" title="Permanent link">&para;</a></h3>
 <p><strong>Endpoint:</strong> <code>GET /api/ventrata/price-changes</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>GET<span class="w"> </span><span class="s2">"https://api.walkway.com/api/ventrata/price-changes?page=1&amp;limit=50"</span><span class="w"> </span><span class="se">\</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer TOKEN"</span>
@@ -2122,25 +2231,25 @@
 <a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">  </span><span class="p">}</span>
 <a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="p">}</span>
 </code></pre></div></p>
-<h3 id="filter-by-date-range">Filter by Date Range</h3>
+<h3 id="filter-by-date-range">Filter by Date Range<a class="headerlink" href="#filter-by-date-range" title="Permanent link">&para;</a></h3>
 <p>Get changes within specific period:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>GET<span class="w"> </span>/api/ventrata/price-changes?<span class="se">\</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nv">startDate</span><span class="o">=</span><span class="m">2025</span>-11-01<span class="p">&amp;</span><span class="se">\</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="nv">endDate</span><span class="o">=</span><span class="m">2025</span>-11-30
 </code></pre></div>
-<h3 id="filter-by-user">Filter by User</h3>
+<h3 id="filter-by-user">Filter by User<a class="headerlink" href="#filter-by-user" title="Permanent link">&para;</a></h3>
 <p>See changes made by specific user:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>GET<span class="w"> </span>/api/ventrata/price-changes?userId<span class="o">=</span>user-123
 </code></pre></div>
-<h3 id="filter-by-product">Filter by Product</h3>
+<h3 id="filter-by-product">Filter by Product<a class="headerlink" href="#filter-by-product" title="Permanent link">&para;</a></h3>
 <p>Get all changes for a product:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>GET<span class="w"> </span>/api/ventrata/price-changes?productId<span class="o">=</span>prod-456
 </code></pre></div>
-<h3 id="filter-by-unit-type">Filter by Unit Type</h3>
+<h3 id="filter-by-unit-type">Filter by Unit Type<a class="headerlink" href="#filter-by-unit-type" title="Permanent link">&para;</a></h3>
 <p>Track changes to specific unit types:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>GET<span class="w"> </span>/api/ventrata/price-changes?unitType<span class="o">=</span>ADULT
 </code></pre></div>
-<h3 id="combined-filters">Combined Filters</h3>
+<h3 id="combined-filters">Combined Filters<a class="headerlink" href="#combined-filters" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>GET<span class="w"> </span>/api/ventrata/price-changes?<span class="se">\</span>
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nv">productId</span><span class="o">=</span>prod-city-tour<span class="p">&amp;</span><span class="se">\</span>
 <a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="nv">unitType</span><span class="o">=</span>ADULT<span class="p">&amp;</span><span class="se">\</span>
@@ -2148,8 +2257,8 @@
 <a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="nv">endDate</span><span class="o">=</span><span class="m">2025</span>-11-30<span class="p">&amp;</span><span class="se">\</span>
 <a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="nv">userId</span><span class="o">=</span>user-123
 </code></pre></div>
-<h2 id="analyzing-change-history">Analyzing Change History</h2>
-<h3 id="price-trends">Price Trends</h3>
+<h2 id="analyzing-change-history">Analyzing Change History<a class="headerlink" href="#analyzing-change-history" title="Permanent link">&para;</a></h2>
+<h3 id="price-trends">Price Trends<a class="headerlink" href="#price-trends" title="Permanent link">&para;</a></h3>
 <p>Track how prices have changed over time:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1">// Get price trend for a product</span>
 <a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">getPriceTrend</span><span class="p">(</span><span class="nx">productId</span><span class="p">,</span><span class="w"> </span><span class="nx">unitType</span><span class="p">,</span><span class="w"> </span><span class="nx">startDate</span><span class="p">,</span><span class="w"> </span><span class="nx">endDate</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
@@ -2175,7 +2284,7 @@
 <a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nx">date</span><span class="o">:</span><span class="w"> </span><span class="s2">"2025-12-01"</span><span class="p">,</span><span class="w"> </span><span class="nx">price</span><span class="o">:</span><span class="w"> </span><span class="mf">6000</span><span class="p">,</span><span class="w"> </span><span class="nx">changedBy</span><span class="o">:</span><span class="w"> </span><span class="s2">"john@company.com"</span><span class="w"> </span><span class="p">}</span>
 <a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a><span class="p">]</span>
 </code></pre></div>
-<h3 id="average-price-changes">Average Price Changes</h3>
+<h3 id="average-price-changes">Average Price Changes<a class="headerlink" href="#average-price-changes" title="Permanent link">&para;</a></h3>
 <p>Calculate average price increase/decrease:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kd">function</span><span class="w"> </span><span class="nx">calculateAveragePriceChange</span><span class="p">(</span><span class="nx">changes</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">totalChange</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">changes</span><span class="p">.</span><span class="nx">reduce</span><span class="p">((</span><span class="nx">sum</span><span class="p">,</span><span class="w"> </span><span class="nx">change</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
@@ -2188,7 +2297,7 @@
 <a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>
 <a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="c1">// Result: Average 8.5% price increase</span>
 </code></pre></div>
-<h3 id="most-active-users">Most Active Users</h3>
+<h3 id="most-active-users">Most Active Users<a class="headerlink" href="#most-active-users" title="Permanent link">&para;</a></h3>
 <p>See who makes the most pricing changes:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kd">function</span><span class="w"> </span><span class="nx">getMostActiveUsers</span><span class="p">(</span><span class="nx">changes</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">userCounts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
@@ -2209,8 +2318,8 @@
 <a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nx">email</span><span class="o">:</span><span class="w"> </span><span class="s2">"bob@company.com"</span><span class="p">,</span><span class="w"> </span><span class="nx">count</span><span class="o">:</span><span class="w"> </span><span class="mf">18</span><span class="w"> </span><span class="p">}</span>
 <a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a><span class="p">]</span>
 </code></pre></div>
-<h2 id="export-change-history">Export Change History</h2>
-<h3 id="export-to-csv">Export to CSV</h3>
+<h2 id="export-change-history">Export Change History<a class="headerlink" href="#export-change-history" title="Permanent link">&para;</a></h2>
+<h3 id="export-to-csv">Export to CSV<a class="headerlink" href="#export-to-csv" title="Permanent link">&para;</a></h3>
 <p><strong>Endpoint:</strong> <code>GET /api/ventrata/price-changes/export</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>GET<span class="w"> </span><span class="s2">"https://api.walkway.com/api/ventrata/price-changes/export?\</span>
 <a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="s2">format=csv&amp;\</span>
@@ -2224,7 +2333,7 @@
 <a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>2025-11-01,10:30:00,john@company.com,City Tour,Morning,ADULT,€50.00,€55.00,+10%,Seasonal increase,Success
 <a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>2025-11-01,14:15:00,jane@company.com,Beach Tour,Afternoon,ADULT,€40.00,€45.00,+12.5%,High demand,Success
 </code></pre></div></p>
-<h3 id="export-to-json">Export to JSON</h3>
+<h3 id="export-to-json">Export to JSON<a class="headerlink" href="#export-to-json" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>GET<span class="w"> </span><span class="s2">"https://api.walkway.com/api/ventrata/price-changes/export?\</span>
 <a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="s2">format=json&amp;\</span>
 <a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="s2">startDate=2025-01-01&amp;\</span>
@@ -2232,7 +2341,7 @@
 <a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer TOKEN"</span><span class="w"> </span><span class="se">\</span>
 <a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="w">  </span>--output<span class="w"> </span>price-changes-2025.json
 </code></pre></div>
-<h3 id="export-to-pdf-report">Export to PDF Report</h3>
+<h3 id="export-to-pdf-report">Export to PDF Report<a class="headerlink" href="#export-to-pdf-report" title="Permanent link">&para;</a></h3>
 <p>Generate formatted PDF report:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">"https://api.walkway.com/api/ventrata/price-changes/report"</span><span class="w"> </span><span class="se">\</span>
 <a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer TOKEN"</span><span class="w"> </span><span class="se">\</span>
@@ -2246,8 +2355,8 @@
 <a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="s1">  }'</span><span class="w"> </span><span class="se">\</span>
 <a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a><span class="w">  </span>--output<span class="w"> </span>annual-pricing-report-2025.pdf
 </code></pre></div>
-<h2 id="change-statistics">Change Statistics</h2>
-<h3 id="get-summary-statistics">Get Summary Statistics</h3>
+<h2 id="change-statistics">Change Statistics<a class="headerlink" href="#change-statistics" title="Permanent link">&para;</a></h2>
+<h3 id="get-summary-statistics">Get Summary Statistics<a class="headerlink" href="#get-summary-statistics" title="Permanent link">&para;</a></h3>
 <p><strong>Endpoint:</strong> <code>GET /api/ventrata/price-changes/stats</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>GET<span class="w"> </span>/api/ventrata/price-changes/stats?startDate<span class="o">=</span><span class="m">2025</span>-11-01<span class="p">&amp;</span><span class="nv">endDate</span><span class="o">=</span><span class="m">2025</span>-11-30
 </code></pre></div>
@@ -2305,8 +2414,8 @@
 <a id="__codelineno-16-51" name="__codelineno-16-51" href="#__codelineno-16-51"></a><span class="w">  </span><span class="p">]</span>
 <a id="__codelineno-16-52" name="__codelineno-16-52" href="#__codelineno-16-52"></a><span class="p">}</span>
 </code></pre></div></p>
-<h2 id="real-time-change-tracking">Real-Time Change Tracking</h2>
-<h3 id="websocket-connection">Websocket Connection</h3>
+<h2 id="real-time-change-tracking">Real-Time Change Tracking<a class="headerlink" href="#real-time-change-tracking" title="Permanent link">&para;</a></h2>
+<h3 id="websocket-connection">Websocket Connection<a class="headerlink" href="#websocket-connection" title="Permanent link">&para;</a></h3>
 <p>Subscribe to real-time price changes:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="kd">const</span><span class="w"> </span><span class="nx">ws</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">WebSocket</span><span class="p">(</span><span class="s1">'wss://api.walkway.com/ws/price-changes'</span><span class="p">);</span>
 <a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>
@@ -2326,7 +2435,7 @@
 <a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a><span class="w">  </span><span class="nx">updatePricingDashboard</span><span class="p">(</span><span class="nx">change</span><span class="p">);</span>
 <a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a><span class="p">};</span>
 </code></pre></div>
-<h3 id="change-notifications">Change Notifications</h3>
+<h3 id="change-notifications">Change Notifications<a class="headerlink" href="#change-notifications" title="Permanent link">&para;</a></h3>
 <p>Get notified of price changes:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="p">{</span>
 <a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">  </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"price_change"</span><span class="p">,</span>
@@ -2337,8 +2446,8 @@
 <a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="w">  </span><span class="nt">"timestamp"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2025-11-01T10:30:00Z"</span>
 <a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="p">}</span>
 </code></pre></div>
-<h2 id="compliance-auditing">Compliance &amp; Auditing</h2>
-<h3 id="generate-audit-report">Generate Audit Report</h3>
+<h2 id="compliance-auditing">Compliance &amp; Auditing<a class="headerlink" href="#compliance-auditing" title="Permanent link">&para;</a></h2>
+<h3 id="generate-audit-report">Generate Audit Report<a class="headerlink" href="#generate-audit-report" title="Permanent link">&para;</a></h3>
 <p>For compliance purposes:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>POST<span class="w"> </span>/api/ventrata/price-changes/audit-report
 </code></pre></div>
@@ -2357,7 +2466,7 @@
 - ✅ Failed attempts and reasons
 - ✅ System events and errors
 - ✅ Digital signature for authenticity</p>
-<h3 id="retention-policy">Retention Policy</h3>
+<h3 id="retention-policy">Retention Policy<a class="headerlink" href="#retention-policy" title="Permanent link">&para;</a></h3>
 <p>Change history is retained according to your plan:</p>
 <table>
 <thead>
@@ -2385,8 +2494,8 @@
 <p class="admonition-title">Archive Old Data</p>
 <p>Export historical data periodically to keep your own archive beyond retention limits.</p>
 </div>
-<h2 id="comparing-changes">Comparing Changes</h2>
-<h3 id="compare-two-dates">Compare Two Dates</h3>
+<h2 id="comparing-changes">Comparing Changes<a class="headerlink" href="#comparing-changes" title="Permanent link">&para;</a></h2>
+<h3 id="compare-two-dates">Compare Two Dates<a class="headerlink" href="#compare-two-dates" title="Permanent link">&para;</a></h3>
 <p>See how prices have changed between two dates:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>POST<span class="w"> </span>/api/ventrata/price-changes/compare
 </code></pre></div>
@@ -2419,8 +2528,8 @@
 <a id="__codelineno-23-20" name="__codelineno-23-20" href="#__codelineno-23-20"></a><span class="w">  </span><span class="p">]</span>
 <a id="__codelineno-23-21" name="__codelineno-23-21" href="#__codelineno-23-21"></a><span class="p">}</span>
 </code></pre></div></p>
-<h2 id="best-practices">Best Practices</h2>
-<h3 id="1-document-change-reasons">1. Document Change Reasons</h3>
+<h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Permanent link">&para;</a></h2>
+<h3 id="1-document-change-reasons">1. Document Change Reasons<a class="headerlink" href="#1-document-change-reasons" title="Permanent link">&para;</a></h3>
 <p>Always include a reason for price changes:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="k">await</span><span class="w"> </span><span class="nx">pushPriceChange</span><span class="p">({</span>
 <a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="w">  </span><span class="nx">productId</span><span class="o">:</span><span class="w"> </span><span class="s2">"city-tour"</span><span class="p">,</span>
@@ -2428,12 +2537,12 @@
 <a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="w">  </span><span class="nx">reason</span><span class="o">:</span><span class="w"> </span><span class="s2">"Competitor analysis: matching TourCompany X pricing"</span>
 <a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="p">});</span>
 </code></pre></div>
-<h3 id="2-review-history-regularly">2. Review History Regularly</h3>
+<h3 id="2-review-history-regularly">2. Review History Regularly<a class="headerlink" href="#2-review-history-regularly" title="Permanent link">&para;</a></h3>
 <p>Set up weekly reviews:
 - Who is making changes?
 - Are changes justified?
 - Are trends positive or negative?</p>
-<h3 id="3-monitor-failed-changes">3. Monitor Failed Changes</h3>
+<h3 id="3-monitor-failed-changes">3. Monitor Failed Changes<a class="headerlink" href="#3-monitor-failed-changes" title="Permanent link">&para;</a></h3>
 <p>Failed changes might indicate:
 - API key issues
 - Network problems
@@ -2441,7 +2550,7 @@
 - Permission issues</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>GET<span class="w"> </span>/api/ventrata/price-changes?pushedToVentrata<span class="o">=</span><span class="nb">false</span>
 </code></pre></div>
-<h3 id="4-set-up-alerts">4. Set Up Alerts</h3>
+<h3 id="4-set-up-alerts">4. Set Up Alerts<a class="headerlink" href="#4-set-up-alerts" title="Permanent link">&para;</a></h3>
 <p>Create alerts for unusual activity:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="c1">// Alert if price increase exceeds 20%</span>
 <a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">changePercentage</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">20</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
@@ -2452,7 +2561,7 @@
 <a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a><span class="w">  </span><span class="p">});</span>
 <a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a><span class="p">}</span>
 </code></pre></div>
-<h2 id="next-steps">Next Steps</h2>
+<h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="../undo/">Undo Changes →</a> - Learn how to revert price changes</li>
 <li><a href="../api-endpoints/">API Endpoints →</a> - Full API reference</li>
@@ -2550,7 +2659,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "navigation.instant", "navigation.tracking", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>

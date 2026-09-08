@@ -300,6 +300,26 @@
     
     
       <li class="md-tabs__item">
+        <a href="../../features/market-intelligence-access-flag/" class="md-tabs__link">
+          
+  
+  
+  Features
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
         <a href="../../operations/backend-handover/" class="md-tabs__link">
           
   
@@ -717,23 +737,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Automatic Unit Pricing">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#rule-types" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Rule Types
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
         
@@ -1464,7 +1467,7 @@
   <span class="md-ellipsis">
     
   
-    Operations
+    Features
   
 
     
@@ -1477,6 +1480,95 @@
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Features
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/market-intelligence-access-flag/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Market Intelligence Access Flag
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Operations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1673,23 +1765,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Automatic Unit Pricing">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#rule-types" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Rule Types
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
         
@@ -2023,11 +2098,11 @@
   
 
 
-<h1 id="price-unit-management">Price Unit Management</h1>
-<h2 id="what-are-price-units">What are Price Units?</h2>
+<h1 id="price-unit-management">Price Unit Management<a class="headerlink" href="#price-unit-management" title="Permanent link">&para;</a></h1>
+<h2 id="what-are-price-units">What are Price Units?<a class="headerlink" href="#what-are-price-units" title="Permanent link">&para;</a></h2>
 <p>Price Units represent different types of customers who book your tours. Each unit type can have its own price, allowing you to offer different rates for adults, children, seniors, and more.</p>
-<h2 id="supported-unit-types">Supported Unit Types</h2>
-<h3 id="standard-unit-types">Standard Unit Types</h3>
+<h2 id="supported-unit-types">Supported Unit Types<a class="headerlink" href="#supported-unit-types" title="Permanent link">&para;</a></h2>
+<h3 id="standard-unit-types">Standard Unit Types<a class="headerlink" href="#standard-unit-types" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
@@ -2070,14 +2145,14 @@
 </tr>
 </tbody>
 </table>
-<h3 id="how-units-work">How Units Work</h3>
+<h3 id="how-units-work">How Units Work<a class="headerlink" href="#how-units-work" title="Permanent link">&para;</a></h3>
 <p>Each unit type can have:
 - <strong>Different retail prices</strong> - Flexible pricing per customer type
 - <strong>Different currencies</strong> - Multi-currency support
 - <strong>Individual tracking</strong> - Separate change history per unit
 - <strong>Custom rules</strong> - Define relationships between units</p>
-<h2 id="price-unit-structure">Price Unit Structure</h2>
-<h3 id="basic-unit-object">Basic Unit Object</h3>
+<h2 id="price-unit-structure">Price Unit Structure<a class="headerlink" href="#price-unit-structure" title="Permanent link">&para;</a></h2>
+<h3 id="basic-unit-object">Basic Unit Object<a class="headerlink" href="#basic-unit-object" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">"unitId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unit-uuid-123"</span><span class="p">,</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nt">"unitType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ADULT"</span><span class="p">,</span>
@@ -2099,8 +2174,8 @@
 <p>All prices are stored in <strong>cents</strong> (or smallest currency unit) to avoid floating-point errors.<br />
 Example: €50.00 = 5000 cents</p>
 </div>
-<h2 id="managing-multiple-units">Managing Multiple Units</h2>
-<h3 id="example-family-tour-pricing">Example: Family Tour Pricing</h3>
+<h2 id="managing-multiple-units">Managing Multiple Units<a class="headerlink" href="#managing-multiple-units" title="Permanent link">&para;</a></h2>
+<h3 id="example-family-tour-pricing">Example: Family Tour Pricing<a class="headerlink" href="#example-family-tour-pricing" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">"productId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"city-tour-full-day"</span><span class="p">,</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nt">"optionId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"morning-departure"</span><span class="p">,</span>
@@ -2138,10 +2213,10 @@ Example: €50.00 = 5000 cents</p>
 - Child: €25.00 → €27.50
 - Senior: €40.00 → €44.00
 - Infant: Free (€0.00)</p>
-<h2 id="pricing-rules">Pricing Rules</h2>
-<h3 id="automatic-unit-pricing">Automatic Unit Pricing</h3>
+<h2 id="pricing-rules">Pricing Rules<a class="headerlink" href="#pricing-rules" title="Permanent link">&para;</a></h2>
+<h3 id="automatic-unit-pricing">Automatic Unit Pricing<a class="headerlink" href="#automatic-unit-pricing" title="Permanent link">&para;</a></h3>
 <p>You can set up rules to automatically calculate unit prices based on relationships:</p>
-<h4 id="rule-types">Rule Types</h4>
+<h4 id="rule-types">Rule Types<a class="headerlink" href="#rule-types" title="Permanent link">&para;</a></h4>
 <ol>
 <li>
 <p><strong>Fixed Difference</strong>
@@ -2187,7 +2262,7 @@ Example: €50.00 = 5000 cents</p>
    <strong>Result:</strong> Unit is free (shorthand for fixed price = 0)</p>
 </li>
 </ol>
-<h3 id="creating-pricing-rules">Creating Pricing Rules</h3>
+<h3 id="creating-pricing-rules">Creating Pricing Rules<a class="headerlink" href="#creating-pricing-rules" title="Permanent link">&para;</a></h3>
 <p><strong>API Endpoint:</strong> <code>POST /api/ventrata/pricing-rules</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>https://api.walkway.com/api/ventrata/pricing-rules<span class="w"> </span><span class="se">\</span>
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer TOKEN"</span><span class="w"> </span><span class="se">\</span>
@@ -2216,15 +2291,15 @@ Example: €50.00 = 5000 cents</p>
 <a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">  </span><span class="nt">"createdAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2025-11-01T10:30:00Z"</span>
 <a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="p">}</span>
 </code></pre></div></p>
-<h3 id="rule-priority">Rule Priority</h3>
+<h3 id="rule-priority">Rule Priority<a class="headerlink" href="#rule-priority" title="Permanent link">&para;</a></h3>
 <p>When multiple rules exist:</p>
 <ol>
 <li><strong>Option-specific rules</strong> (highest priority)</li>
 <li><strong>Product-level rules</strong> (applies to all options)</li>
 <li><strong>Manual prices</strong> (no rules applied)</li>
 </ol>
-<h2 id="updating-unit-prices">Updating Unit Prices</h2>
-<h3 id="single-unit-update">Single Unit Update</h3>
+<h2 id="updating-unit-prices">Updating Unit Prices<a class="headerlink" href="#updating-unit-prices" title="Permanent link">&para;</a></h2>
+<h3 id="single-unit-update">Single Unit Update<a class="headerlink" href="#single-unit-update" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>POST<span class="w"> </span>/api/ventrata/price-changes
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="p">{</span>
@@ -2243,7 +2318,7 @@ Example: €50.00 = 5000 cents</p>
 <a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="w">  </span><span class="p">]</span>
 <a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a><span class="p">}</span>
 </code></pre></div>
-<h3 id="bulk-unit-update">Bulk Unit Update</h3>
+<h3 id="bulk-unit-update">Bulk Unit Update<a class="headerlink" href="#bulk-unit-update" title="Permanent link">&para;</a></h3>
 <p>Update all units for a product at once:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="p">{</span>
 <a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span><span class="nt">"subscriptionId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sub-123"</span><span class="p">,</span>
@@ -2274,21 +2349,21 @@ Example: €50.00 = 5000 cents</p>
 <a id="__codelineno-10-27" name="__codelineno-10-27" href="#__codelineno-10-27"></a><span class="w">  </span><span class="p">]</span>
 <a id="__codelineno-10-28" name="__codelineno-10-28" href="#__codelineno-10-28"></a><span class="p">}</span>
 </code></pre></div>
-<h2 id="unit-pricing-best-practices">Unit Pricing Best Practices</h2>
-<h3 id="1-consistent-ratios">1. Consistent Ratios</h3>
+<h2 id="unit-pricing-best-practices">Unit Pricing Best Practices<a class="headerlink" href="#unit-pricing-best-practices" title="Permanent link">&para;</a></h2>
+<h3 id="1-consistent-ratios">1. Consistent Ratios<a class="headerlink" href="#1-consistent-ratios" title="Permanent link">&para;</a></h3>
 <p>Keep consistent pricing ratios across your products:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>ADULT: 100% (base)
 <a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>CHILD: 50% of adult
 <a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>SENIOR: 80% of adult
 <a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>INFANT: Free
 </code></pre></div>
-<h3 id="2-use-pricing-rules">2. Use Pricing Rules</h3>
+<h3 id="2-use-pricing-rules">2. Use Pricing Rules<a class="headerlink" href="#2-use-pricing-rules" title="Permanent link">&para;</a></h3>
 <p>Automate unit pricing to:
 - ✅ Maintain consistent relationships
 - ✅ Save time on bulk updates
 - ✅ Reduce human error
 - ✅ Ensure pricing logic is applied everywhere</p>
-<h3 id="3-validate-before-pushing">3. Validate Before Pushing</h3>
+<h3 id="3-validate-before-pushing">3. Validate Before Pushing<a class="headerlink" href="#3-validate-before-pushing" title="Permanent link">&para;</a></h3>
 <p>Always check unit prices before pushing:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1">// Example validation</span>
 <a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="kd">function</span><span class="w"> </span><span class="nx">validateUnitPrices</span><span class="p">(</span><span class="nx">units</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
@@ -2307,10 +2382,10 @@ Example: €50.00 = 5000 cents</p>
 <a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a><span class="w">  </span><span class="p">}</span>
 <a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a><span class="p">}</span>
 </code></pre></div>
-<h3 id="4-test-in-staging">4. Test in Staging</h3>
+<h3 id="4-test-in-staging">4. Test in Staging<a class="headerlink" href="#4-test-in-staging" title="Permanent link">&para;</a></h3>
 <p>Always test unit price changes in a staging environment first.</p>
-<h2 id="currency-handling">Currency Handling</h2>
-<h3 id="multi-currency-support">Multi-Currency Support</h3>
+<h2 id="currency-handling">Currency Handling<a class="headerlink" href="#currency-handling" title="Permanent link">&para;</a></h2>
+<h3 id="multi-currency-support">Multi-Currency Support<a class="headerlink" href="#multi-currency-support" title="Permanent link">&para;</a></h3>
 <p>Each unit can have its own currency:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="p">{</span>
 <a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">  </span><span class="nt">"units"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
@@ -2332,7 +2407,7 @@ Example: €50.00 = 5000 cents</p>
 <a id="__codelineno-13-18" name="__codelineno-13-18" href="#__codelineno-13-18"></a><span class="w">  </span><span class="p">]</span>
 <a id="__codelineno-13-19" name="__codelineno-13-19" href="#__codelineno-13-19"></a><span class="p">}</span>
 </code></pre></div>
-<h3 id="currency-conversion">Currency Conversion</h3>
+<h3 id="currency-conversion">Currency Conversion<a class="headerlink" href="#currency-conversion" title="Permanent link">&para;</a></h3>
 <p>When updating prices across currencies:</p>
 <ol>
 <li>Convert to cents/smallest unit</li>
@@ -2345,7 +2420,7 @@ Example: €50.00 = 5000 cents</p>
 <a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="kd">const</span><span class="w"> </span><span class="nx">exchangeRate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.10</span><span class="p">;</span>
 <a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="kd">const</span><span class="w"> </span><span class="nx">usdPrice</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">eurPrice</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">exchangeRate</span><span class="p">);</span><span class="w"> </span><span class="c1">// 5500 = $55.00</span>
 </code></pre></div>
-<h2 id="unit-tracking">Unit Tracking</h2>
+<h2 id="unit-tracking">Unit Tracking<a class="headerlink" href="#unit-tracking" title="Permanent link">&para;</a></h2>
 <p>Every unit price change is tracked individually:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="p">{</span>
 <a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">  </span><span class="nt">"priceChangeId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"change-123"</span><span class="p">,</span>
@@ -2371,8 +2446,8 @@ Example: €50.00 = 5000 cents</p>
 <a id="__codelineno-15-22" name="__codelineno-15-22" href="#__codelineno-15-22"></a><span class="w">  </span><span class="p">]</span>
 <a id="__codelineno-15-23" name="__codelineno-15-23" href="#__codelineno-15-23"></a><span class="p">}</span>
 </code></pre></div>
-<h2 id="common-unit-scenarios">Common Unit Scenarios</h2>
-<h3 id="scenario-1-seasonal-pricing">Scenario 1: Seasonal Pricing</h3>
+<h2 id="common-unit-scenarios">Common Unit Scenarios<a class="headerlink" href="#common-unit-scenarios" title="Permanent link">&para;</a></h2>
+<h3 id="scenario-1-seasonal-pricing">Scenario 1: Seasonal Pricing<a class="headerlink" href="#scenario-1-seasonal-pricing" title="Permanent link">&para;</a></h3>
 <p>Update all units for high season:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="kd">const</span><span class="w"> </span><span class="nx">SUMMER_MARKUP</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.20</span><span class="p">;</span><span class="w"> </span><span class="c1">// 20% increase</span>
 <a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>
@@ -2380,13 +2455,13 @@ Example: €50.00 = 5000 cents</p>
 <a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="w">  </span><span class="nx">unit</span><span class="p">.</span><span class="nx">newRetail</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">unit</span><span class="p">.</span><span class="nx">oldRetail</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">SUMMER_MARKUP</span><span class="p">);</span>
 <a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="p">});</span>
 </code></pre></div>
-<h3 id="scenario-2-special-promotion">Scenario 2: Special Promotion</h3>
+<h3 id="scenario-2-special-promotion">Scenario 2: Special Promotion<a class="headerlink" href="#scenario-2-special-promotion" title="Permanent link">&para;</a></h3>
 <p>Free children for weekend tours:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">isWeekend</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nx">unit</span><span class="p">.</span><span class="nx">unitType</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">'CHILD'</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="w">  </span><span class="nx">unit</span><span class="p">.</span><span class="nx">newRetail</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0</span><span class="p">;</span>
 <a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="p">}</span>
 </code></pre></div>
-<h3 id="scenario-3-group-discounts">Scenario 3: Group Discounts</h3>
+<h3 id="scenario-3-group-discounts">Scenario 3: Group Discounts<a class="headerlink" href="#scenario-3-group-discounts" title="Permanent link">&para;</a></h3>
 <p>Larger groups get better per-person rates:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">groupSize</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mf">10</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">  </span><span class="nx">units</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">unit</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
@@ -2394,23 +2469,23 @@ Example: €50.00 = 5000 cents</p>
 <a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="w">  </span><span class="p">});</span>
 <a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="p">}</span>
 </code></pre></div>
-<h2 id="api-reference">API Reference</h2>
-<h3 id="get-unit-pricing-rules">Get Unit Pricing Rules</h3>
+<h2 id="api-reference">API Reference<a class="headerlink" href="#api-reference" title="Permanent link">&para;</a></h2>
+<h3 id="get-unit-pricing-rules">Get Unit Pricing Rules<a class="headerlink" href="#get-unit-pricing-rules" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>GET<span class="w"> </span>/api/ventrata/pricing-rules?subscriptionId<span class="o">={</span>id<span class="o">}</span><span class="p">&amp;</span><span class="nv">productId</span><span class="o">={</span>id<span class="o">}</span>
 </code></pre></div>
-<h3 id="create-pricing-rule">Create Pricing Rule</h3>
+<h3 id="create-pricing-rule">Create Pricing Rule<a class="headerlink" href="#create-pricing-rule" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>POST<span class="w"> </span>/api/ventrata/pricing-rules
 </code></pre></div>
-<h3 id="update-pricing-rule">Update Pricing Rule</h3>
+<h3 id="update-pricing-rule">Update Pricing Rule<a class="headerlink" href="#update-pricing-rule" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>PATCH<span class="w"> </span>/api/ventrata/pricing-rules/<span class="o">{</span>id<span class="o">}</span>
 </code></pre></div>
-<h3 id="delete-pricing-rule">Delete Pricing Rule</h3>
+<h3 id="delete-pricing-rule">Delete Pricing Rule<a class="headerlink" href="#delete-pricing-rule" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>DELETE<span class="w"> </span>/api/ventrata/pricing-rules/<span class="o">{</span>id<span class="o">}</span>
 </code></pre></div>
-<h3 id="get-unit-price-history">Get Unit Price History</h3>
+<h3 id="get-unit-price-history">Get Unit Price History<a class="headerlink" href="#get-unit-price-history" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>GET<span class="w"> </span>/api/ventrata/price-changes?unitType<span class="o">=</span>ADULT<span class="p">&amp;</span><span class="nv">productId</span><span class="o">={</span>id<span class="o">}</span>
 </code></pre></div>
-<h2 id="next-steps">Next Steps</h2>
+<h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="../availability/">Availability Management →</a> - Manage when prices apply</li>
 <li><a href="../history/">Price Change History →</a> - Track all unit price changes</li>
@@ -2508,7 +2583,7 @@ Example: €50.00 = 5000 cents</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "navigation.instant", "navigation.tracking", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>

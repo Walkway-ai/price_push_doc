@@ -300,6 +300,26 @@
     
     
       <li class="md-tabs__item">
+        <a href="../../features/market-intelligence-access-flag/" class="md-tabs__link">
+          
+  
+  
+  Features
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
         <a href="../../operations/backend-handover/" class="md-tabs__link">
           
   
@@ -1174,7 +1194,7 @@
   <span class="md-ellipsis">
     
   
-    Operations
+    Features
   
 
     
@@ -1187,6 +1207,95 @@
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Features
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/market-intelligence-access-flag/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Market Intelligence Access Flag
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Operations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1443,7 +1552,7 @@
   
 
 
-<h1 id="bokun">Bokun</h1>
+<h1 id="bokun">Bokun<a class="headerlink" href="#bokun" title="Permanent link">&para;</a></h1>
 <p>Median push <strong>12.1 s</strong> — 17× Ventrata — and roughly <strong>1 change in 7 never lands</strong>, cause
 unrecorded. The slowest and least reliable rail, and the one with the most machinery built
 around it.</p>
@@ -1456,7 +1565,7 @@ direction and prices silently revert for every OTA. This cost a post-mortem in M
 <p>Deep reference in the backend repo: <strong><code>docs/BOKUN_PRICE_PUSH.md</code></strong> (in French, more detail than
 this page, including the transformation order and diagnostic scripts).</p>
 <hr />
-<h2 id="the-entity-model">The entity model</h2>
+<h2 id="the-entity-model">The entity model<a class="headerlink" href="#the-entity-model" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
@@ -1515,7 +1624,7 @@ contain the target date means the rule is <strong>ignored</strong> and the price
 push reports success. This is the most common cause of "we pushed but nothing changed".</p>
 </div>
 <hr />
-<h2 id="endpoints">Endpoints</h2>
+<h2 id="endpoints">Endpoints<a class="headerlink" href="#endpoints" title="Permanent link">&para;</a></h2>
 <p>All requests are HMAC-signed. Credentials per subscription via
 <code>getBokunHmacCredentialsOrThrow</code>, stored on <code>Subscription</code> then <code>User</code> as fallback.</p>
 <table>
@@ -1568,7 +1677,7 @@ push reports success. This is the most common cause of "we pushed but nothing ch
 to build the body, <code>ALL</code> for <code>defaultPricingCategoryId</code>. That round-trip count is a large part
 of the 12-second median.</p>
 <hr />
-<h2 id="the-put-semantics">The <code>PUT</code> semantics</h2>
+<h2 id="the-put-semantics">The <code>PUT</code> semantics<a class="headerlink" href="#the-put-semantics" title="Permanent link">&para;</a></h2>
 <p>Bokun applies a hybrid rule, and the two halves are asymmetric:</p>
 <dl>
 <dt><strong>Base rules must all be present.</strong></dt>
@@ -1597,9 +1706,9 @@ less data, read section 11 of <code>docs/BOKUN_PRICE_PUSH.md</code> first — it
 for this specific temptation.</p>
 </div>
 <hr />
-<h2 id="reliability-machinery">Reliability machinery</h2>
+<h2 id="reliability-machinery">Reliability machinery<a class="headerlink" href="#reliability-machinery" title="Permanent link">&para;</a></h2>
 <p>Bokun degrades often enough to justify three separate mechanisms.</p>
-<h3 id="circuit-breaker-three-stages">Circuit breaker, three stages</h3>
+<h3 id="circuit-breaker-three-stages">Circuit breaker, three stages<a class="headerlink" href="#circuit-breaker-three-stages" title="Permanent link">&para;</a></h3>
 <ol>
 <li><strong>Per-experience quarantine</strong> — 4 consecutive 5xx on one experience and it is dropped for
    the rest of the batch, so one bad product cannot poison the run. This is what the historical
@@ -1614,16 +1723,16 @@ for this specific temptation.</p>
 </ol>
 <p>Look for <code>[Bokun CIRCUIT]</code> in the logs. Set <code>BOKUN_CIRCUIT_5XX_THRESHOLD=0</code> to disable the
 global stages and keep per-experience quarantine only.</p>
-<h3 id="no-op-skip">No-op skip</h3>
+<h3 id="no-op-skip">No-op skip<a class="headerlink" href="#no-op-skip" title="Permanent link">&para;</a></h3>
 <p>On by default (<code>BOKUN_SKIP_NOOP</code>). A push whose computed price equals the current one is not
 sent. Given the round-trip cost this is a significant saving, and a rising no-op count is
 healthy, not a problem.</p>
-<h3 id="dry-run">Dry run</h3>
+<h3 id="dry-run">Dry run<a class="headerlink" href="#dry-run" title="Permanent link">&para;</a></h3>
 <p><code>BOKUN_PRICE_PUSH_DRY_RUN</code> computes and logs the full <code>PUT</code> body without sending it, writing to
 <code>BOKUN_PRICE_PUSH_DRY_RUN_LOG_DIR</code>. The correct way to validate a payload-shape change before
 it touches an operator's prices.</p>
 <hr />
-<h2 id="tuning">Tuning</h2>
+<h2 id="tuning">Tuning<a class="headerlink" href="#tuning" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
@@ -1696,7 +1805,7 @@ it touches an operator's prices.</p>
 </tbody>
 </table>
 <hr />
-<h2 id="known-edge-cases">Known edge cases</h2>
+<h2 id="known-edge-cases">Known edge cases<a class="headerlink" href="#known-edge-cases" title="Permanent link">&para;</a></h2>
 <p>Documented with reproduction detail in section 9 of <code>docs/BOKUN_PRICE_PUSH.md</code>:</p>
 <ul>
 <li>a schedule is created but does not cover the target date, so the price silently falls back</li>
@@ -1708,11 +1817,11 @@ it touches an operator's prices.</p>
 <code>inspect-bokun-schedule.ts</code>, <code>inspect-bokun-octo-availability.ts</code>,
 <code>audit-bokun-schedule-cache.ts</code>.</p>
 <hr />
-<h2 id="custom-app">Onboarding: the custom app</h2>
+<h2 id="custom-app">Onboarding: the custom app<a class="headerlink" href="#custom-app" title="Permanent link">&para;</a></h2>
 <p>Historically three separate credentials collected by hand. As of September 2026 a new
 operator <strong>pastes nothing</strong>: they give their Bokun short name, approve Walkway on Bokun's own
 consent screen, and the callback writes the credentials onto the subscription.</p>
-<h3 id="the-two-entry-points-and-why-only-one-works">The two entry points, and why only one works</h3>
+<h3 id="the-two-entry-points-and-why-only-one-works">The two entry points, and why only one works<a class="headerlink" href="#the-two-entry-points-and-why-only-one-works" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>FROM WALKWAY  (the only complete path)
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  /connect → "Your Bokun address" → Continue to Bokun
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    → GET /bokun/oauth/start        authenticated, canEditSubscription
@@ -1739,7 +1848,7 @@ operators to start from <code>/connect</code>.</p>
 <code>appInstalledByUserEmail</code>, which is stored to <em>propose</em> a subscription — it says who
 installed on Bokun's side, not who may speak for a Walkway account.</p>
 </div>
-<h3 id="what-bokun-actually-returns">What Bokun actually returns</h3>
+<h3 id="what-bokun-actually-returns">What Bokun actually returns<a class="headerlink" href="#what-bokun-actually-returns" title="Permanent link">&para;</a></h3>
 <p>Read off a real install on 2026-09-08 (<code>walkway-pizza</code>, all six scopes), logged as a shape
 with every value withheld:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>{ access_token: &lt;string:32&gt;,
@@ -1763,7 +1872,7 @@ price push works untouched. <code>bokunOctoToken</code> is left alone — existi
 a REST v2 equivalent before an OAuth-only operator can be fully configured. The other four
 OCTO callers (<code>getProducts</code>, <code>getProductById</code>, <code>getAvailability</code>, <code>getBookings</code>) are
 controller surface taking an <code>x-api-token</code> header, outside the push path.</p>
-<h3 id="app-credentials">App credentials</h3>
+<h3 id="app-credentials">App credentials<a class="headerlink" href="#app-credentials" title="Permanent link">&para;</a></h3>
 <p><code>BOKUN_APP_CLIENT_ID</code> and <code>BOKUN_APP_CLIENT_SECRET</code> identify <strong>one</strong> app. The secret does
 double duty: verifying the HMAC on inbound Bokun calls, and signing the token exchange.</p>
 <p>The code supports exactly one app at a time. Swapping apps means changing those two
@@ -1776,7 +1885,7 @@ without <code>LEGACY_API</code> no credentials come back and the callback lands 
 </code></pre></div>
 <p><code>BOKUN_OAUTH_REDIRECT_BASE_URL</code> must point at the <strong>backend</strong>. If unset it falls back to
 <code>FRONTEND_URL</code> and the redirect URI stops matching what Bokun has registered.</p>
-<h3 id="state-lives-in-the-database">State lives in the database</h3>
+<h3 id="state-lives-in-the-database">State lives in the database<a class="headerlink" href="#state-lives-in-the-database" title="Permanent link">&para;</a></h3>
 <p><code>bokun_oauth_states</code>, not memory. It was a <code>Map</code> on the service instance; production runs
 1–5 Cloud Run instances, so the install could be served by one and the callback by another —
 <code>Invalid or expired state</code> with nothing actually wrong — and any deploy between the two steps
@@ -1876,7 +1985,7 @@ reads these columns</strong>. It is idempotent.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "navigation.instant", "navigation.tracking", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>

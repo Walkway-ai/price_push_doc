@@ -18,7 +18,7 @@
         <link rel="prev" href="../xola/">
       
       
-        <link rel="next" href="../../operations/backend-handover/">
+        <link rel="next" href="../../features/market-intelligence-access-flag/">
       
       
         
@@ -285,6 +285,26 @@
   
   
   Integrations
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../features/market-intelligence-access-flag/" class="md-tabs__link">
+          
+  
+  
+  Features
 
         </a>
       </li>
@@ -1080,7 +1100,7 @@
   <span class="md-ellipsis">
     
   
-    Operations
+    Features
   
 
     
@@ -1093,6 +1113,95 @@
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Features
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/market-intelligence-access-flag/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Market Intelligence Access Flag
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Operations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1255,12 +1364,12 @@
   
 
 
-<h1 id="prioticket">Prioticket</h1>
+<h1 id="prioticket">Prioticket<a class="headerlink" href="#prioticket" title="Permanent link">&para;</a></h1>
 <p>The smallest rail by volume, and the only one whose write path is a <strong>webhook Prioticket built
 for us</strong> rather than a standard endpoint.</p>
 <p>Base URL: <code>https://distributor-api.prioticket.com</code></p>
 <hr />
-<h2 id="authentication-the-pipe-convention">Authentication — the pipe convention</h2>
+<h2 id="authentication-the-pipe-convention">Authentication — the pipe convention<a class="headerlink" href="#authentication-the-pipe-convention" title="Permanent link">&para;</a></h2>
 <p>Prioticket is OCTO-compliant for reads, but its auth is unlike any other rail. The operator
 identifier is appended to the bearer token after a <strong>pipe character</strong>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="err">Authorization: Bearer &lt;jwt&gt;|&lt;distributorId&gt;</span>
@@ -1283,7 +1392,7 @@ is no service-account refresh flow yet; it is tracked as a follow-up. If Priotic
 start failing with 401 across the board, an expired stored token is the first hypothesis,
 and the fix is a credential rotation, not a deploy.</p>
 </div>
-<h3 id="credential-resolution">Credential resolution</h3>
+<h3 id="credential-resolution">Credential resolution<a class="headerlink" href="#credential-resolution" title="Permanent link">&para;</a></h3>
 <p>Same subscription-level pattern as the other rails, first hit wins:</p>
 <ol>
 <li>explicit request headers, <strong>only when both</strong> the JWT and the pipe value are present</li>
@@ -1292,7 +1401,7 @@ and the fix is a credential rotation, not a deploy.</p>
    them to member users</li>
 </ol>
 <hr />
-<h2 id="endpoints">Endpoints</h2>
+<h2 id="endpoints">Endpoints<a class="headerlink" href="#endpoints" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
@@ -1338,7 +1447,7 @@ like a read response.</p>
 <p><code>productId</code> and <code>optionId</code> are frequently the same value on this vendor. That is normal, not a
 copy-paste bug.</p>
 <hr />
-<h2 id="the-push-step-by-step">The push, step by step</h2>
+<h2 id="the-push-step-by-step">The push, step by step<a class="headerlink" href="#the-push-step-by-step" title="Permanent link">&para;</a></h2>
 <p><code>PrioticketService.updateAvailabilityPriceWithHistory</code>.</p>
 <ol>
 <li><strong>Resolve credentials</strong> in the order above.</li>
@@ -1365,7 +1474,7 @@ when a Prioticket price looks misapplied, verify which availability id and unit 
 <code>feature_trace</code> row actually recorded before looking anywhere else.</p>
 </div>
 <hr />
-<h2 id="audit-and-undo">Audit and undo</h2>
+<h2 id="audit-and-undo">Audit and undo<a class="headerlink" href="#audit-and-undo" title="Permanent link">&para;</a></h2>
 <p>Prioticket is the one rail that does <strong>not</strong> have its own <code>*_price_changes</code> table. It writes to
 the vendor-neutral <strong><code>recommendation_price_pushes</code></strong> (ENG-920), which is the pattern any new
 rail should follow.</p>
@@ -1377,7 +1486,7 @@ the row <code>REVERTED</code>. It mirrors Ventrata and Bokun, with one precondit
 must have captured the old unit prices</strong>. Rows written before that capture existed cannot be
 reverted automatically.</p>
 <hr />
-<h2 id="operating-notes">Operating notes</h2>
+<h2 id="operating-notes">Operating notes<a class="headerlink" href="#operating-notes" title="Permanent link">&para;</a></h2>
 <ul>
 <li>No circuit breaker, no dry-run mode, no vendor-specific env flags. If Prioticket degrades,
   it degrades inside the batch alongside everything else — there is no single-vendor kill
@@ -1475,7 +1584,7 @@ reverted automatically.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "navigation.instant", "navigation.tracking", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
