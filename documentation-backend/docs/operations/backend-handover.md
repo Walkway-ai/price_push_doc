@@ -333,8 +333,12 @@ Knobs
     `BOKUN_DRIFT_THRESHOLD_PCT`
 
 Onboarding
-:   The app-store install flow is **already written and needs wiring** — one
-    click would replace all three credentials.
+:   Wired in September 2026. A new operator gives their Bokun short name on
+    `/connect` and approves the app; the callback writes the credentials. See
+    [the custom app](../integrations/bokun.md#custom-app). Two caveats: an
+    install started from **Bokun's app store** cannot be attributed and lands
+    unbound, and `getUnitTypesByExperienceId` still needs an OCTO token, which
+    the app does not grant.
 
 ### Xola — 5.9 s median push
 
@@ -348,9 +352,20 @@ What bites
     Booking-priced products are handled separately in guardrails and push
     (ENG-2423).
 
+What bites, part two
+:   Creating a schedule is how Walkway attaches a price, and that schedule is
+    `type: 'available'` — so pricing a slot the operator retired **puts it back
+    on sale**. Empire escalated exactly that in September 2026 (ENG-2574).
+    `slotOffering` now checks the operator's own schedules first. Read
+    [The operator's schedule wins](../integrations/xola.md#operator-schedule)
+    before touching anything schedule-related, and in particular the
+    [`timeRanges`](../integrations/xola.md#time-ranges) trap — hours are stated
+    two different ways and reading only `times` closes a whole day.
+
 Knobs
 :   `XOLA_RECOMMENDED_PRICE_ROUNDING_INCREMENT_MAJOR`,
-    `XOLA_RECOMMENDED_PRICE_ROUNDING_MODE`
+    `XOLA_RECOMMENDED_PRICE_ROUNDING_MODE`,
+    `XOLA_RESPECT_OPERATOR_SCHEDULE` (default on — off re-opens ENG-2574)
 
 Onboarding
 :   Every new supplier has to be registered **by Xola's own team**. No status
@@ -529,6 +544,29 @@ Emmanuel Gautier, gabriel, garikoitz, juan, laura, terry, Thiago Hernandez, vini
     `dist/` is committed; `stripe-cli.zip` (8.7 MB), `token.txt` and `storageState.json` sit
     in the repo root. The last two are worth reading before assuming they are inert.
 
+!!! danger "Deploying code before its SQL breaks the request that needs it"
+    The deploy image runs `prisma generate` only — there is no `migrate deploy` in the
+    pipeline, and several live tables (`bokun_oauth_installs` among them) reached production
+    through `db push` with no migration file. Manual SQL lives in `prisma/manual/`. **Run it
+    first, on dev then prod.** A schema file in the repo changes nothing in the database.
+
+!!! danger "`ventrata_price_change_units.unitType` is wrong before September 2026"
+    All 16,355,070 rows say `ADULT`, because the row was built from a field Ventrata does not
+    send. Rows were not backfilled. Any analysis of unit types over history has to treat
+    pre-fix rows as unlabelled. See
+    [the unit log](../integrations/ventrata.md#unit-log).
+
+!!! warning "Two Xola cleanup routes, one of them blunt"
+    `purge-by-name` deletes **every** Walkway override, correct ones included — on Empire
+    that is 1,776 schedules rather than 170. Use `purge-stale-overrides`, dry run first, and
+    read the list before passing `dryRun: false`. Deletion against a live storefront is
+    irreversible and the operator sees it.
+
+!!! warning "The Bokun app secret is one value for one app"
+    `BOKUN_APP_CLIENT_SECRET` both verifies inbound HMAC and signs the token exchange, and
+    the code supports a single app. Changing it immediately breaks installs begun from the
+    previous app. Running two apps at once needs a code change.
+
 !!! note "Two clones, one remote"
     Backend work belongs in the `walkway_backend_last` clone; `walkway_saas_backend` is a
     stale second clone. The backoffice has the same duplication.
@@ -624,12 +662,66 @@ Swagger is at `/api`.
 
 | Branch | What it is | State |
 | --- | --- | --- |
-| `feat/eng-2464-price-recommendation-impact-columns` | Impact columns on `price_recommendations`, plus the schema-sync commit. The branch I was on. | in progress |
+| `fix/xola-blackout-time-ranges` | **Read this first.** Teaches `scheduleCoversSlot` to read `timeRanges`. Until it ships, Walkway refuses to price Monday 9am on Empire's Capitol Hill tour and any other slot inside a range-stated blackout. | **open, needed** |
+| `feat/eng-2464-price-recommendation-impact-columns` | Impact columns on `price_recommendations`, plus the schema-sync commit. | in progress |
 | `fix/backport-2431-2346-2472-onto-dev` | Backport of the owner gate, waitlist calendar source, multipart fix onto `dev`. | open |
 | `fix/eng-2472-register-fastify-multipart` | Register `@fastify/multipart` — upload routes 500 without it. | open |
 | `feat/eng-2423-relanding-on-main` | Xola booking-priced products, re-landing after PR #462 was reverted in #463. **Read the revert first.** | needs care |
 | `feat/eng-2346-waitlist-calendar-pending-source` | Pending source on the waitlist calendar. | open |
 | `fix/eng-2431-auto-apply-gate-compset-owner` | Gates auto-apply on the compset owner's toggle. | open |
+
+### Shipped in the September 2026 window
+
+Merged and deployed unless stated. Listed because each changed operator-visible behaviour and
+the reasoning lives in the integration pages, not the diffs.
+
+| PR | What changed |
+| --- | --- |
+| #546, #547, #549 | Xola: operator-schedule guard, purchase-rule action reconciliation, stale-override purge reading the native experience |
+| #548 | Ventrata: first unit of a repeated type wins; `unitType` logged from the field Ventrata sends |
+| #551, #552, #554 | Bokun: OAuth secrets out of Cloud Logging, install bound to a subscription, `@CurrentSubscription` returns the id |
+| #604, #605 (frontend) | Data Hub 500 fix; Bokun connect-by-authorization on `/connect` |
+
+---
+
+## Open operational items {: #open-items }
+
+Things that are **not** in a branch and will not surface on their own.
+
+!!! danger "Empire's price pushes have been stopped since 2026-09-01"
+    Two commitments made to the customer depend on them running again: the ~66,600
+    accumulated purchase-rule actions only drain **as pushes run**, and the 26 Monday 9am
+    overrides deleted in error are only recreated by a push. Until pushes resume, the
+    checkout latency Aanand reported does not improve and those Mondays sit at base rate.
+    Restarting them requires `fix/xola-blackout-time-ranges` to be live first, or the guard
+    will refuse those slots again.
+
+!!! warning "Empire is owed a follow-up"
+    Philip Ferentinos asked whether he still needs to tell us when schedules change. The
+    answer is no — the guard re-reads their schedule on every push. He was also told his
+    blackout could come down once the fix shipped. Neither is true until the branch above is
+    deployed.
+
+!!! warning "The Bokun claim screen does not exist"
+    An install started from Bokun's app store lands with `subscriptionId: null` and no
+    credentials. Direct new operators to `/connect`. `appInstalledByUserEmail` is stored and
+    is the basis for the screen when someone builds it.
+
+!!! warning "`getUnitTypesByExperienceId` still needs an OCTO token"
+    The custom app grants none. It is the only OCTO dependency left in the pricing chain, so
+    an OAuth-only Bokun operator cannot be fully configured until it has a REST v2 path.
+    Keep the OCTO branch for the 32 existing subscriptions that do have a token.
+
+!!! note "Bokun uninstall is not handled"
+    `revokedAt` exists on `bokun_oauth_installs` and nothing sets it. A vendor who
+    uninstalls leaves a dead token behind and we will not know.
+
+!!! note "Compset → subscription migration is half done"
+    Applied on dev only: `Compset.subscription_id` backfilled 112 → 15,427, 932 setups
+    normalised, 181 rows created, 99 override groups. Nothing was deleted at any point — the
+    standing constraint was that this is a change in how data is *read*, not what is stored.
+    `groupId`, `SECONDARY`, `CompsetListFilter` and the two `SubscriptionMember` columns
+    reached dev through `db push` with **no migration files**.
 
 Conventions: Conventional Commits, one ENG ticket per branch, never edit a merged migration —
 always a follow-up. Every new vendor flow ships with a `*.push-origin.spec.ts` plus dispatcher
