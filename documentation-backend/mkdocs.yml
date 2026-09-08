@@ -27,6 +27,11 @@ theme:
     - navigation.sections
     - navigation.expand
     - navigation.top
+    # xola.md is ~480 lines and backend-handover.md ~745; without a visible
+    # table of contents the only way to find a section is to scroll.
+    - navigation.instant
+    - navigation.tracking
+    - toc.follow
     - search.suggest
     - search.highlight
     - content.code.copy
@@ -37,6 +42,11 @@ plugins:
   - tags
 
 markdown_extensions:
+  # Permalinks: every heading gets a ¶ anchor, so a section can be pasted into
+  # Slack rather than described.
+  - toc:
+      permalink: true
+      toc_depth: 3
   - pymdownx.highlight:
       anchor_linenums: true
   - pymdownx.inlinehilite
@@ -76,6 +86,8 @@ nav:
       - Bokun: integrations/bokun.md
       - Xola: integrations/xola.md
       - Prioticket: integrations/prioticket.md
+  - Features:
+      - Market Intelligence Access Flag: features/market-intelligence-access-flag.md
   - Operations:
       - Backend Handover Runbook: operations/backend-handover.md
 
