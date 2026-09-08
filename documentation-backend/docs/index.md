@@ -1,88 +1,100 @@
-# Welcome to Walkway SaaS Backend Documentation
+# Walkway SaaS Backend
 
-## Introduction
+How prices get from a recommendation to a booking platform, what breaks, and what to do
+about it.
 
-Welcome! This documentation will help you understand and use the Walkway SaaS backend features. Whether you're a business user, administrator, or developer, you'll find clear explanations and guides here.
-
-## What is Walkway SaaS?
-
-Walkway SaaS is a comprehensive platform designed to help tour operators and activity providers manage their pricing strategies effectively. Our backend handles complex pricing logic, user management, and integrations with third-party systems like Ventrata.
-
-## Key Features
-
-### 🎯 Price Push
-Automatically sync pricing data with Ventrata booking systems. Manage prices for multiple unit types, track changes, and revert when needed.
-
-[Learn more about Price Push →](price-push/overview.md)
-
-### 💰 Price Unit Management
-Manage pricing for different customer types (ADULT, CHILD, SENIOR, YOUTH, INFANT) with flexible pricing rules and automatic calculations.
-
-[Learn about Price Units →](price-push/price-units.md)
-
-### 📅 Availability Management
-Get real-time availability data and manage pricing for specific dates, times, and slots. Implement dynamic pricing based on demand.
-
-[Explore Availability →](price-push/availability.md)
-
-### 📊 Price Change History
-Complete audit trail of all pricing changes with detailed analytics, exports, and compliance reporting.
-
-[View History Features →](price-push/history.md)
-
-### ⏮️ Undo & Revert
-Quickly revert pricing mistakes with one-click undo. Preview impacts and maintain complete audit trails.
-
-[Learn about Undo →](price-push/undo.md)
-
-## Quick Start
-
-!!! tip "New to Walkway?"
-    Start with the [Price Push Overview](price-push/overview.md) to understand our most powerful feature.
-
-### For Business Users
-1. **Get Started**: Follow the [Configuration Guide](price-push/configuration.md)
-2. **Manage Pricing**: Learn about [Price Units](price-push/price-units.md)
-3. **Track Changes**: Explore [Price History](price-push/history.md)
-
-### For Revenue Managers
-1. **Availability Pricing**: Master [Availability Management](price-push/availability.md)
-2. **Dynamic Pricing**: See real-world [Use Cases](price-push/use-cases.md)
-3. **Undo Mistakes**: Learn about [Undo Features](price-push/undo.md)
-
-### For Developers
-1. **API Endpoints**: Explore [Price Push API](price-push/api-endpoints.md)
-2. **Integration**: See code examples and request/response formats
-3. **Technical Details**: Understand [How It Works](price-push/how-it-works.md)
-
-## Need Help?
-
-!!! question "Having Issues?"
-    Check our [Troubleshooting Guide](price-push/troubleshooting.md) for common problems and solutions.
-
-## Documentation Structure
-
-```
-📚 Documentation
-└── 🎯 Price Push Feature
-    ├── Overview - What is Price Push?
-    ├── How It Works - Technical architecture
-    ├── Configuration - Step-by-step setup
-    ├── Price Unit Management - ADULT, CHILD, SENIOR pricing
-    ├── Availability Management - Get availability, dynamic pricing
-    ├── Price Change History - Audit trail and analytics
-    ├── Undo & Revert Changes - Error recovery
-    ├── Use Cases - Real-world examples
-    ├── API Endpoints - Developer reference
-    └── Troubleshooting - Common issues
-```
-
-## Stay Updated
-
-This documentation is continuously updated. Check back regularly for new features and improvements.
+!!! tip "First time here? Two pages carry most of the load."
+    [**Integrations — how price push actually works**](integrations/index.md) for the shared
+    contract and the four rails.
+    [**Backend Handover Runbook**](operations/backend-handover.md) for what is deployed, what
+    is on fire, and what to do at 2am.
 
 ---
 
-**Last Updated**: November 2025  
-**Version**: 2.0
+## Start from what you are doing
 
+| I want to… | Go to |
+| --- | --- |
+| Understand the whole path, once | [How price push works](integrations/index.md) |
+| Work on a specific booking platform | [Ventrata](integrations/ventrata.md) · [Bokun](integrations/bokun.md) · [Xola](integrations/xola.md) · [Prioticket](integrations/prioticket.md) |
+| Fix something that is broken right now | [Triage ladder](operations/backend-handover.md#triage-ladder) |
+| Know what is deployed, and where | [What is deployed](operations/backend-handover.md#what-is-deployed) |
+| Turn something off in a hurry | [Kill switches](operations/backend-handover.md#playbooks) |
+| Know what is half-finished | [Open operational items](operations/backend-handover.md#open-items) |
+| Call the API | [API endpoints](price-push/api-endpoints.md) |
+| Configure pricing as a user | [Configuration guide](price-push/configuration.md) |
+
+---
+
+## Start from a symptom
+
+| Symptom | Where the answer is |
+| --- | --- |
+| One operator's prices did not move | [P1](operations/backend-handover.md#p1) |
+| The batch has not run at all | [P2](operations/backend-handover.md#p2) |
+| The batch takes hours, or two run at once | [P3](operations/backend-handover.md#p3) |
+| Bokun is failing or slow | [P4](operations/backend-handover.md#p4) · [circuit breaker](integrations/bokun.md#reliability-machinery) |
+| A schedule stopped firing | [P5](operations/backend-handover.md#p5) |
+| Notifications stopped, API is fine | [P6](operations/backend-handover.md#p6) |
+| A price landed on the wrong ticket category | [Ventrata unit selection](integrations/ventrata.md#unit-selection) |
+| We are selling a slot the operator retired | [Xola: the operator's schedule wins](integrations/xola.md#operator-schedule) |
+| An operator says checkout got slow | [Xola: `PUT` merges actions](integrations/xola.md#action-merge) |
+| A Bokun operator cannot finish connecting | [The custom app](integrations/bokun.md#custom-app) |
+| The push went through but the price is wrong | [Ventrata tax round-trip](integrations/ventrata.md) · [Bokun `PUT` semantics](integrations/bokun.md) |
+
+---
+
+## Read these before changing anything
+
+Three failures that were expensive, are not obvious from the code, and are easy to repeat.
+
+**A vendor's field names are not what the comment says.**
+:   Bokun returns `legacyApiCredentials`, not the `restApiCredentials` our own comment
+    claimed. Ventrata sends `unitType`, not `type`. Both cost real incidents. Read the
+    response, do not trust the note about it.
+    [Bokun](integrations/bokun.md#custom-app) · [Ventrata](integrations/ventrata.md#unit-log)
+
+**Creating an object on the vendor side has customer-visible consequences.**
+:   A Xola schedule is `type: 'available'`. Creating one to hang a price on puts that slot
+    **on sale**, and customers book departures that will not run.
+    [Xola](integrations/xola.md#operator-schedule)
+
+**"Update" does not mean replace.**
+:   Bokun's `PUT` is neither a full replace nor an upsert, and base rules and schedule rules
+    follow opposite rules about omission. Xola's `PUT /purchaseRules/{id}` **merges** the
+    actions array with no dedupe — that grew to 91,593 actions on one account.
+    [Bokun](integrations/bokun.md) · [Xola](integrations/xola.md#action-merge)
+
+---
+
+## Feature documentation
+
+The Price Push section is written for people configuring and using the product, rather than
+for people changing it.
+
+- [Overview](price-push/overview.md) — what price push is
+- [How it works](price-push/how-it-works.md) — the architecture
+- [Configuration guide](price-push/configuration.md) — setup, step by step
+- [Price unit management](price-push/price-units.md) — ADULT, CHILD, SENIOR and the rest
+- [Availability management](price-push/availability.md) — dates, times, slots
+- [Price change history](price-push/history.md) — the audit trail
+- [Undo and revert](price-push/undo.md) — recovering from a bad push
+- [Use cases](price-push/use-cases.md) — worked examples
+- [API endpoints](price-push/api-endpoints.md) — request and response formats
+- [Troubleshooting](price-push/troubleshooting.md) — common problems
+
+### Features
+
+- [Market intelligence access flag](features/market-intelligence-access-flag.md)
+
+---
+
+## Keeping this true
+
+A page that describes behaviour which no longer exists is worse than no page: it is trusted.
+When you change a rail, change its page in the same PR, and add the reasoning — the diff
+already records what changed, the page has to record **why**, and what it cost to find out.
+
+The [handover runbook](operations/backend-handover.md) carries the operational state: what is
+deployed, what is in flight, and what is open. It goes stale fastest, so check its dates
+before relying on it.
