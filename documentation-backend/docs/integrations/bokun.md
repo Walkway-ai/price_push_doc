@@ -172,8 +172,100 @@ Diagnostic scripts live in `scripts/` — `inspect-bokun-experience.ts`,
 
 ---
 
-## Onboarding
+## Onboarding: the custom app {: #custom-app }
 
-Three separate credentials when collected by hand. **The app-store install flow is already
-written and needs wiring** — one operator click would replace all three. It is the single
-highest-leverage onboarding change available on any rail.
+Historically three separate credentials collected by hand. As of September 2026 a new
+operator **pastes nothing**: they give their Bokun short name, approve Walkway on Bokun's own
+consent screen, and the callback writes the credentials onto the subscription.
+
+### The two entry points, and why only one works
+
+```
+FROM WALKWAY  (the only complete path)
+  /connect → "Your Bokun address" → Continue to Bokun
+    → GET /bokun/oauth/start        authenticated, canEditSubscription
+    → state row created WITH subscriptionId + userId
+    → {domain}.bokun.io/appstore/oauth/authorize   ← operator approves
+    → GET /bokun/oauth/callback     state redeemed, subscription known
+    → credentials written → /connect?bokun=connected
+
+FROM BOKUN'S APP STORE
+  Bokun → GET /bokun/install        no session at all
+    → state row WITHOUT subscriptionId
+    → … install saved, subscriptionId = null, NO credentials written
+    → /connect?bokun=unclaimed
+```
+
+Both build the identical authorize URL, so Bokun cannot tell them apart; the difference is
+entirely on our side — whether the pending state carries a subscription.
+
+!!! warning "An app-store install cannot be attributed"
+    Nothing in that request says which Walkway account the vendor is. The July 2026 install
+    sat with `subscriptionId: null` for two months for exactly this reason. **The claim
+    screen that would finish the binding does not exist yet.** Until it does, direct new
+    operators to start from `/connect`.
+
+    Never infer the account from products, currency or company name. Bokun does report
+    `appInstalledByUserEmail`, which is stored to *propose* a subscription — it says who
+    installed on Bokun's side, not who may speak for a Walkway account.
+
+### What Bokun actually returns
+
+Read off a real install on 2026-09-08 (`walkway-pizza`, all six scopes), logged as a shape
+with every value withheld:
+
+```
+{ access_token: <string:32>,
+  appInstalledByUserEmail: <string:27>,
+  appInstalledByUserFirstName: <string:2>, appInstalledByUserLastName: <string:7>,
+  legacyApiCredentials: { accessKey: <string:32>, secretKey: <string:32> },
+  pricing: { chargeType: <string:15>, pricePlan: object },
+  scope: <string:90>, vendor_id: <string:18> }
+```
+
+!!! danger "The field is `legacyApiCredentials`"
+    Not `restApiCredentials`, which is what the code comment claimed. Reading the documented
+    name yields `undefined`, stores blank credentials, and fails much later at push time,
+    far from the cause.
+
+**There is no OCTO token.** The two keys are the shape of the Access/Secret pair operators
+paste today, so they map straight onto `bokunApiKey` / `bokunSecretKey` and the REST v2
+price push works untouched. `bokunOctoToken` is left alone — existing customers keep theirs.
+
+That matters for one internal caller: `getUnitTypesByExperienceId` still reads OCTO via
+`getBokunOctoTokenOrThrow`. It is **the only OCTO dependency in the pricing chain** and needs
+a REST v2 equivalent before an OAuth-only operator can be fully configured. The other four
+OCTO callers (`getProducts`, `getProductById`, `getAvailability`, `getBookings`) are
+controller surface taking an `x-api-token` header, outside the push path.
+
+### App credentials
+
+`BOKUN_APP_CLIENT_ID` and `BOKUN_APP_CLIENT_SECRET` identify **one** app. The secret does
+double duty: verifying the HMAC on inbound Bokun calls, and signing the token exchange.
+
+The code supports exactly one app at a time. Swapping apps means changing those two
+variables; running two apps side by side would need a code change. Whichever app is
+configured must register these URLs **character for character**, and grant all six scopes —
+without `LEGACY_API` no credentials come back and the callback lands on
+`?bokun=failed&reason=no-credentials`:
+
+```
+Install URL   {BACKEND}/bokun/install
+Redirect URL  {BACKEND}/bokun/oauth/callback
+```
+
+`BOKUN_OAUTH_REDIRECT_BASE_URL` must point at the **backend**. If unset it falls back to
+`FRONTEND_URL` and the redirect URI stops matching what Bokun has registered.
+
+### State lives in the database
+
+`bokun_oauth_states`, not memory. It was a `Map` on the service instance; production runs
+1–5 Cloud Run instances, so the install could be served by one and the callback by another —
+`Invalid or expired state` with nothing actually wrong — and any deploy between the two steps
+did the same. Redemption is a conditional `updateMany`, so two concurrent callbacks cannot
+both bind. TTL 15 minutes.
+
+Schema for this and for `bokun_oauth_installs` lives in
+**`prisma/manual/bokun-oauth-state-and-install-binding.sql`**. The deploy image runs
+`prisma generate` only — no `migrate deploy` — so **run the SQL before deploying code that
+reads these columns**. It is idempotent.

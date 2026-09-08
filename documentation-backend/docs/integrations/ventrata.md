@@ -91,6 +91,60 @@ information is available. The price is right; the discount metadata is simply un
 
 ---
 
+## Which unit gets priced {: #unit-selection }
+
+!!! danger "A product can expose two units of the same type"
+    World of Illusion exposes two units typed `ADULT`. Ventrata reported in September 2026
+    that Walkway was pricing the wrong one, and they were right.
+
+Read live from their API, stable across dates:
+
+```
+[0] unit_fe1f5f86-…  ADULT  2125   the standard Adult
+[6] unit_3311ddfe-…  ADULT     0   "Carer / Companion (ID Required)"
+```
+
+The push built a `unitType → unitId` map like this:
+
+```js
+unitIdByUnitType = new Map(
+  liveUnits.filter((u) => !!u.unitId).map((u) => [u.unitType, u.unitId]),
+);
+```
+
+`new Map(entries)` keeps the **last** value for a repeated key, so `ADULT` resolved to the
+Carer id — on every push, for every date, not intermittently. The map is now built by
+iterating and skipping a type already resolved: **first wins**. When a product exposes
+several units of one type, a warning names them; the extras keep their current price, and
+deciding what to do about that is a product call, not a code fix.
+
+Three further defects made the same class of mistake possible elsewhere, fixed alongside
+though none caused that report: a case-sensitive `u.unitType === 'adult'` that never matched
+Ventrata's upper-case `"ADULT"`; `guessUnitTypeFromId()` ending in `return UnitType.ADULT`,
+which answered ADULT for every UUID and made any `find` using it stop on element 0; and a
+positional `|| availability.unitPricing[0]` fallback. The fallback path now throws rather
+than pricing an unidentified category.
+
+Walkway prices **every unit type a product exposes**, not only ADULT. A €0 unit is not
+necessarily a bug — a `FREE`/`OTHER` rule can legitimately set it.
+
+### `ventrata_price_change_units.unitType` is wrong before September 2026 {: #unit-log }
+
+!!! warning "Do not trust this column on historical rows"
+    All **16,355,070** rows say `ADULT`.
+
+The row was built from `currentUnitPrice?.type`, but Ventrata sends `unitType`. The read was
+`undefined` every time and fell through to `guessUnitTypeFromId`, which answered ADULT for
+everything. The one table that could have surfaced the mis-push instead agreed with it: four
+pushes, six units each, all labelled ADULT, the correct Adult id absent from every row.
+
+Fixed to read `unitType`, then `type`, then the id hint, with `'UNKNOWN'` as a last resort —
+the column is non-nullable, so an unidentifiable unit gets a label a query can find rather
+than a guess. **Existing rows were not backfilled.** Any analysis of unit types over history
+has to treat pre-fix rows as unlabelled.
+
+---
+
 ## Verification and undo
 
 Ventrata is the only rail that can **verify and self-correct**: after pushing it re-reads and,
