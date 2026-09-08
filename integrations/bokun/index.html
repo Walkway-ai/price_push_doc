@@ -1010,13 +1010,63 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#onboarding" class="md-nav__link">
+  <a href="#custom-app" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Onboarding
+        Onboarding: the custom app
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Onboarding: the custom app">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-two-entry-points-and-why-only-one-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The two entry points, and why only one works
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-bokun-actually-returns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Bokun actually returns
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#app-credentials" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        App credentials
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#state-lives-in-the-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        State lives in the database
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1313,13 +1363,63 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#onboarding" class="md-nav__link">
+  <a href="#custom-app" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Onboarding
+        Onboarding: the custom app
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Onboarding: the custom app">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-two-entry-points-and-why-only-one-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The two entry points, and why only one works
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-bokun-actually-returns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Bokun actually returns
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#app-credentials" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        App credentials
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#state-lives-in-the-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        State lives in the database
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1608,10 +1708,84 @@ it touches an operator's prices.</p>
 <code>inspect-bokun-schedule.ts</code>, <code>inspect-bokun-octo-availability.ts</code>,
 <code>audit-bokun-schedule-cache.ts</code>.</p>
 <hr />
-<h2 id="onboarding">Onboarding</h2>
-<p>Three separate credentials when collected by hand. <strong>The app-store install flow is already
-written and needs wiring</strong> — one operator click would replace all three. It is the single
-highest-leverage onboarding change available on any rail.</p>
+<h2 id="custom-app">Onboarding: the custom app</h2>
+<p>Historically three separate credentials collected by hand. As of September 2026 a new
+operator <strong>pastes nothing</strong>: they give their Bokun short name, approve Walkway on Bokun's own
+consent screen, and the callback writes the credentials onto the subscription.</p>
+<h3 id="the-two-entry-points-and-why-only-one-works">The two entry points, and why only one works</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>FROM WALKWAY  (the only complete path)
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  /connect → "Your Bokun address" → Continue to Bokun
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    → GET /bokun/oauth/start        authenticated, canEditSubscription
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    → state row created WITH subscriptionId + userId
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    → {domain}.bokun.io/appstore/oauth/authorize   ← operator approves
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    → GET /bokun/oauth/callback     state redeemed, subscription known
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    → credentials written → /connect?bokun=connected
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>FROM BOKUN'S APP STORE
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>  Bokun → GET /bokun/install        no session at all
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>    → state row WITHOUT subscriptionId
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>    → … install saved, subscriptionId = null, NO credentials written
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>    → /connect?bokun=unclaimed
+</code></pre></div>
+<p>Both build the identical authorize URL, so Bokun cannot tell them apart; the difference is
+entirely on our side — whether the pending state carries a subscription.</p>
+<div class="admonition warning">
+<p class="admonition-title">An app-store install cannot be attributed</p>
+<p>Nothing in that request says which Walkway account the vendor is. The July 2026 install
+sat with <code>subscriptionId: null</code> for two months for exactly this reason. <strong>The claim
+screen that would finish the binding does not exist yet.</strong> Until it does, direct new
+operators to start from <code>/connect</code>.</p>
+<p>Never infer the account from products, currency or company name. Bokun does report
+<code>appInstalledByUserEmail</code>, which is stored to <em>propose</em> a subscription — it says who
+installed on Bokun's side, not who may speak for a Walkway account.</p>
+</div>
+<h3 id="what-bokun-actually-returns">What Bokun actually returns</h3>
+<p>Read off a real install on 2026-09-08 (<code>walkway-pizza</code>, all six scopes), logged as a shape
+with every value withheld:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>{ access_token: &lt;string:32&gt;,
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  appInstalledByUserEmail: &lt;string:27&gt;,
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  appInstalledByUserFirstName: &lt;string:2&gt;, appInstalledByUserLastName: &lt;string:7&gt;,
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  legacyApiCredentials: { accessKey: &lt;string:32&gt;, secretKey: &lt;string:32&gt; },
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  pricing: { chargeType: &lt;string:15&gt;, pricePlan: object },
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  scope: &lt;string:90&gt;, vendor_id: &lt;string:18&gt; }
+</code></pre></div>
+<div class="admonition danger">
+<p class="admonition-title">The field is <code>legacyApiCredentials</code></p>
+<p>Not <code>restApiCredentials</code>, which is what the code comment claimed. Reading the documented
+name yields <code>undefined</code>, stores blank credentials, and fails much later at push time,
+far from the cause.</p>
+</div>
+<p><strong>There is no OCTO token.</strong> The two keys are the shape of the Access/Secret pair operators
+paste today, so they map straight onto <code>bokunApiKey</code> / <code>bokunSecretKey</code> and the REST v2
+price push works untouched. <code>bokunOctoToken</code> is left alone — existing customers keep theirs.</p>
+<p>That matters for one internal caller: <code>getUnitTypesByExperienceId</code> still reads OCTO via
+<code>getBokunOctoTokenOrThrow</code>. It is <strong>the only OCTO dependency in the pricing chain</strong> and needs
+a REST v2 equivalent before an OAuth-only operator can be fully configured. The other four
+OCTO callers (<code>getProducts</code>, <code>getProductById</code>, <code>getAvailability</code>, <code>getBookings</code>) are
+controller surface taking an <code>x-api-token</code> header, outside the push path.</p>
+<h3 id="app-credentials">App credentials</h3>
+<p><code>BOKUN_APP_CLIENT_ID</code> and <code>BOKUN_APP_CLIENT_SECRET</code> identify <strong>one</strong> app. The secret does
+double duty: verifying the HMAC on inbound Bokun calls, and signing the token exchange.</p>
+<p>The code supports exactly one app at a time. Swapping apps means changing those two
+variables; running two apps side by side would need a code change. Whichever app is
+configured must register these URLs <strong>character for character</strong>, and grant all six scopes —
+without <code>LEGACY_API</code> no credentials come back and the callback lands on
+<code>?bokun=failed&amp;reason=no-credentials</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Install URL   {BACKEND}/bokun/install
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>Redirect URL  {BACKEND}/bokun/oauth/callback
+</code></pre></div>
+<p><code>BOKUN_OAUTH_REDIRECT_BASE_URL</code> must point at the <strong>backend</strong>. If unset it falls back to
+<code>FRONTEND_URL</code> and the redirect URI stops matching what Bokun has registered.</p>
+<h3 id="state-lives-in-the-database">State lives in the database</h3>
+<p><code>bokun_oauth_states</code>, not memory. It was a <code>Map</code> on the service instance; production runs
+1–5 Cloud Run instances, so the install could be served by one and the callback by another —
+<code>Invalid or expired state</code> with nothing actually wrong — and any deploy between the two steps
+did the same. Redemption is a conditional <code>updateMany</code>, so two concurrent callbacks cannot
+both bind. TTL 15 minutes.</p>
+<p>Schema for this and for <code>bokun_oauth_installs</code> lives in
+<strong><code>prisma/manual/bokun-oauth-state-and-install-binding.sql</code></strong>. The deploy image runs
+<code>prisma generate</code> only — no <code>migrate deploy</code> — so <strong>run the SQL before deploying code that
+reads these columns</strong>. It is idempotent.</p>
 
 
 

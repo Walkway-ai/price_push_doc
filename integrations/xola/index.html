@@ -1005,6 +1005,56 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#purge-stale" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Purging retired slots
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operator-schedule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The operator's schedule wins
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The operator&#39;s schedule wins">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#time-ranges" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hours are stated two different ways
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#blackouts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Blackouts are also a workaround
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1057,6 +1107,17 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#action-merge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PUT /purchaseRules/{id} merges, it does not replace
+      
+    </span>
+  </a>
   
 </li>
       
@@ -1115,6 +1176,17 @@
     <span class="md-ellipsis">
       
         Tuning
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#empire-incident" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Empire incident, September 2026
       
     </span>
   </a>
@@ -1364,6 +1436,56 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#purge-stale" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Purging retired slots
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operator-schedule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The operator's schedule wins
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The operator&#39;s schedule wins">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#time-ranges" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hours are stated two different ways
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#blackouts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Blackouts are also a workaround
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1416,6 +1538,17 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#action-merge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PUT /purchaseRules/{id} merges, it does not replace
+      
+    </span>
+  </a>
   
 </li>
       
@@ -1474,6 +1607,17 @@
     <span class="md-ellipsis">
       
         Tuning
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#empire-incident" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Empire incident, September 2026
       
     </span>
   </a>
@@ -1658,9 +1802,112 @@ Walkway-created schedules by it.</p>
 <p><code>purgeOutdatedOverrideSchedulesForExperience</code> deletes Walkway's own past override schedules,
 identified by the name convention plus <code>repeat: custom</code> plus a date entirely in the past.
 Left unchecked these accumulate on every experience, and Xola's own UI becomes unusable.</p>
+<h3 id="purge-stale">Purging retired slots</h3>
+<p>Past-dated cleanup is not enough: the overrides that cause trouble are the <strong>future</strong> ones
+sitting on slots the operator has withdrawn. The code fix stops new ones being created; it
+does not remove what is already there.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>POST /xola/experiences/{id}/schedules/purge-stale-overrides
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>X-API-KEY: &lt;key&gt;          Body: {"dryRun": true}
+</code></pre></div>
+<p>Dry run by default. It re-reads the experience, keeps only schedules named <code>Override date …</code>
+carrying exactly one date and one time, and deletes those whose slot <code>slotOffering</code> says is
+no longer offered. Prices still correct survive. Deletes run <strong>sequentially</strong> — a burst
+against a live storefront is the load that makes the checkout widget slower.</p>
+<div class="admonition warning">
+<p class="admonition-title">It reads the native REST experience, not OCTO</p>
+<p>An earlier version called <code>getExperienceById</code>, which hits <code>/octo/products/:id</code>. That
+representation carries no <code>schedules</code>, so the route found zero overrides, deleted
+nothing and returned <code>200</code>. Both the push and the cleanup must read
+<code>getExperienceFromXolaApi</code> or the cleanup cannot see what the push created.</p>
+</div>
+<p>The blunt <code>purge-by-name</code> route deletes <strong>every</strong> Walkway override including the correct
+ones. On Empire that would have removed 1,776 schedules instead of 170. Prefer the stale
+route unless you actually mean to unwind the whole integration.</p>
 <p><code>DELETE</code> can return <strong>423 Locked</strong>, which Xola uses when a resource is locked, when there are
 active or future bookings tied to the schedule, or per seller policy. Walkway logs it and
 moves on — it is not a push failure. A 404 is treated as already-deleted.</p>
+<hr />
+<h2 id="operator-schedule">The operator's schedule wins</h2>
+<div class="admonition danger">
+<p class="admonition-title">Creating a schedule puts a slot on sale</p>
+<p>A Walkway override is <code>type: 'available'</code>. Creating one for a time slot the operator
+has retired <strong>puts that slot back on sale</strong>, and customers book a departure that will
+not run. This is not theoretical: Empire Tours reported exactly that in September 2026
+(ENG-2574).</p>
+</div>
+<p>The original check only looked at schedules with <code>repeat === 'custom'</code>, which are Walkway's
+own overrides:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">// Do not map weekly schedules for dynamic slot pricing</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">repeat</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="s1">'custom'</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span>
+</code></pre></div>
+<p>So the question being asked was <em>"do I already have an override here?"</em>, never <em>"does the
+operator still offer this slot?"</em>. When an operator retired a slot, the next push found no
+override, created one, and reopened it. Worse, an override created last month then counted
+as evidence that the slot was offered — the check confirmed its own mistake.</p>
+<p><code>slotOffering(schedules, date, arrivalTime)</code> in <code>src/xola/xola-slot-offering.ts</code> now asks the
+real question, judged on the operator's schedules <strong>only</strong> — ours are excluded from the
+evidence on purpose. It returns one of:</p>
+<table>
+<thead>
+<tr>
+<th><code>reason</code></th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>offered</code></td>
+<td>An operator <code>available</code> schedule covers this slot. Push proceeds.</td>
+</tr>
+<tr>
+<td><code>no-operator-schedule-covers-slot</code></td>
+<td>No operator schedule covers it — retired, or past the end of their season.</td>
+</tr>
+<tr>
+<td><code>blacked-out-by-operator</code></td>
+<td>An operator <code>unavailable</code> schedule covers it. A blackout beats any availability on the same slot.</td>
+</tr>
+</tbody>
+</table>
+<p>The guard runs <strong>whether or not a schedule id was already resolved</strong>. Guarding only the
+create path would have missed the reported failure entirely: for a slot Walkway had already
+overridden, <code>resolveExistingScheduleIdFromExperienceData</code> finds that override — it matches on
+<code>repeat === 'custom'</code>, which is ours — so the push sailed through and put a fresh price on a
+withdrawn slot.</p>
+<p>Kill switch: <code>XOLA_RESPECT_OPERATOR_SCHEDULE=false</code> restores the old behaviour. Default on.
+It exists because the check depends on parsing operator schedules correctly, and an
+experience whose schedules we misparse stops being priced entirely — a loud failure, but one
+someone may need to unblock without a deploy.</p>
+<h3 id="time-ranges">Hours are stated two different ways</h3>
+<div class="admonition warning">
+<p class="admonition-title">The most expensive mistake in this file</p>
+<p>A schedule's hours live in <code>times</code> <strong>or</strong> in <code>timeRanges</code>. Reading only <code>times</code> treats a
+<code>timeRanges</code> schedule as covering the whole day.</p>
+</div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">{</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Mon 8.30am Start time (until fixed)"</span><span class="p">,</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="nt">"days"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="nt">"repeat"</span><span class="p">:</span><span class="w"> </span><span class="s2">"weekly"</span><span class="p">,</span><span class="w"> </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unavailable"</span><span class="p">,</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="nt">"timeRanges"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w"> </span><span class="nt">"startTime"</span><span class="p">:</span><span class="w"> </span><span class="mi">800</span><span class="p">,</span><span class="w"> </span><span class="nt">"endTime"</span><span class="p">:</span><span class="w"> </span><span class="mi">845</span><span class="w"> </span><span class="p">}]</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="p">}</span>
+</code></pre></div>
+<p>That schedule has no <code>times</code> at all. Because an empty <code>times</code> means "all day" — which is how
+a genuine day-wide blackout such as Thanksgiving is expressed — an 8:00–8:45 blackout was
+read as closing all of Monday, including the 9am departure the operator sells through a
+separate <code>Monday: 9am - No End Date</code> schedule.</p>
+<p>Two things went wrong as a result: the push guard refused to price Monday 9am, and the
+cleanup judged it retired. <strong>26 override schedules were deleted that should have been kept.</strong>
+The slots stayed on sale — the operator's own schedule covered them — but lost their Walkway
+price until the next push.</p>
+<p><code>scheduleCoversSlot</code> now reads both. Only a schedule stating <strong>neither</strong> covers the whole
+day. Range bounds are inclusive, so a slot exactly on the edge counts as inside; for a
+blackout that errs toward not selling, which is the direction the rest of the module takes.</p>
+<h3 id="blackouts">Blackouts are also a workaround</h3>
+<p>Operators use <code>type: 'unavailable'</code> schedules to close dates. Empire also adopted them as a
+<strong>workaround for the bug above</strong> — "I have instructed the Empire team to use blackouts to
+retire time slots" — so a blackout dated around September 2026 on their account may be a
+patch rather than an intention. Once the fix is live they should be able to remove them.</p>
+<p>When reading a blackout, check the name against <code>timeRanges</code>: an operator who means 8:30
+may write a schedule that closes the day, and only the name says otherwise.</p>
 <hr />
 <h2 id="purchase-rules-two-shapes">Purchase rules — two shapes</h2>
 <p>Which shape gets built depends entirely on whether a schedule id is available.</p>
@@ -1684,23 +1931,61 @@ sees, even though it returned success. <strong>Treat it as a failure even when t
 otherwise.</strong></p>
 </div>
 <h3 id="the-link-payload">The link payload</h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Schedule Price Variations"</span><span class="p">,</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nt">"seller"</span><span class="p">:</span><span class="w">   </span><span class="p">{</span><span class="w"> </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;sellerId&gt;"</span><span class="w"> </span><span class="p">},</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">"entities"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w"> </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;experienceId&gt;"</span><span class="p">,</span><span class="w"> </span><span class="nt">"object"</span><span class="p">:</span><span class="w"> </span><span class="s2">"experience"</span><span class="w"> </span><span class="p">}],</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="nt">"tags"</span><span class="p">:</span><span class="w">     </span><span class="p">[{</span><span class="w"> </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"walkway"</span><span class="w"> </span><span class="p">}],</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="nt">"purchaseRules"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">"purchaseRule"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;ruleId&gt;"</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="nt">"sequence"</span><span class="p">:</span><span class="w"> </span><span class="mi">7500001</span><span class="w"> </span><span class="p">}</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">  </span><span class="p">]</span>
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="p">}</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">{</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Schedule Price Variations"</span><span class="p">,</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="nt">"seller"</span><span class="p">:</span><span class="w">   </span><span class="p">{</span><span class="w"> </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;sellerId&gt;"</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="nt">"entities"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w"> </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;experienceId&gt;"</span><span class="p">,</span><span class="w"> </span><span class="nt">"object"</span><span class="p">:</span><span class="w"> </span><span class="s2">"experience"</span><span class="w"> </span><span class="p">}],</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">  </span><span class="nt">"tags"</span><span class="p">:</span><span class="w">     </span><span class="p">[{</span><span class="w"> </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"walkway"</span><span class="w"> </span><span class="p">}],</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">  </span><span class="nt">"purchaseRules"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">"purchaseRule"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;ruleId&gt;"</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="nt">"sequence"</span><span class="p">:</span><span class="w"> </span><span class="mi">7500001</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">  </span><span class="p">]</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="p">}</span>
 </code></pre></div>
 <p>The <code>walkway</code> tag is how our rules are told apart from the operator's own. <code>sequence</code>
 determines precedence against other rules — the high value puts ours late, so it wins.</p>
 <hr />
+<h2 id="action-merge"><code>PUT /purchaseRules/{id}</code> merges, it does not replace</h2>
+<div class="admonition danger">
+<p class="admonition-title">The single most damaging Xola defect to date</p>
+<p>Xola, confirming the semantics on 2026-09-08:</p>
+<blockquote>
+<p>Actions are keyed by id. On every rule update, the actions array you send is merged
+into the existing rule — it is not a full replacement. Add — omit id. A new action is
+created and appended. <strong>There is no dedupe.</strong></p>
+</blockquote>
+</div>
+<p>Walkway built its actions with <strong>no <code>id</code></strong> and PUT the rule on every push, precisely to
+avoid stacking. Every push therefore appended a fresh set instead of replacing one.</p>
+<p>On Chicago Gangsters and Ghosts Tours that reached <strong>91,593 actions across 611 rules</strong>, of
+which roughly 3,050 have any effect. One rule alone carried 4,386 actions over 5 demographic
+templates — 877 pushes' worth, matching its cadence since 2026-05-20 exactly. Xola mitigated
+it on their side and asked us to fix the logic.</p>
+<p>This is what the operator feels: Aanand at Empire reported <strong>up to a minute of latency in the
+checkout widget</strong> and higher cart abandonment. Schedules are not the driver here — measured
+on their account, 1,939 schedules against roughly 66,600 live actions.</p>
+<p><code>reconcileRuleActions(existing, templatePrices)</code> in <code>src/xola/xola-rule-actions.ts</code> now
+reconciles instead of appending:</p>
+<ul>
+<li>the <strong>first</strong> attributable action per template keeps its id and is updated in place;</li>
+<li>every other action for that template is sent back with <code>{ id, _remove: true }</code>;</li>
+<li>templates with no action yet get a new one;</li>
+<li>actions for templates we are not pricing, and actions we cannot attribute, are <strong>left
+  alone</strong> — they may be the operator's own, and deleting someone else's pricing rule to tidy
+  ours would be a far worse bug than the one being fixed.</li>
+</ul>
+<p>An action is ours when its filter reads
+<code>{ object: 'equals_filter', field: 'template.id', operand: &lt;templateId&gt; }</code>. Anything else is
+not attributable.</p>
+<p><code>_remove</code> requires a matching id, and an id Xola does not know returns 400, so only actions
+carrying one are ever removed.</p>
+<p><strong>It drains as it runs.</strong> A rule holding 889 actions for one template converges to 1 on its
+next push — no separate sweep needed. Which also means: <em>the bloat only clears if pushes are
+running</em>. Empire's had been stopped since 2026-09-01, so nothing was draining.</p>
+<hr />
 <h2 id="rule-reuse-by-price-signature">Rule reuse by price signature</h2>
 <p>Creating a rule per push would leave thousands of rules on an experience. Instead Walkway
 fingerprints the price set:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>sha256( sorted([{ templateId, cents }, …]) )
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>sha256( sorted([{ templateId, cents }, …]) )
 </code></pre></div>
 <p>Prices are normalised to integer cents and sorted by template id, so the signature is stable
 regardless of ordering or float representation. When an existing rule carries the same
@@ -1712,9 +1997,9 @@ schedule list</strong> rather than creating another rule.</p>
 <h3 id="stale-schedule-recovery">Stale schedule recovery</h3>
 <p>If a schedule was deleted on Xola's side but is still referenced by a rule, the <code>PUT</code> fails
 with a 400 shaped like:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">"field"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"filter.filters.0.schedules.items"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">    </span><span class="nt">"reason"</span><span class="p">:</span><span class="w"> </span><span class="s2">"no_schedule_found"</span><span class="p">,</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Could not find a schedule with id …"</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">"field"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"filter.filters.0.schedules.items"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span><span class="nt">"reason"</span><span class="p">:</span><span class="w"> </span><span class="s2">"no_schedule_found"</span><span class="p">,</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Could not find a schedule with id …"</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span>
 </code></pre></div>
 <p><code>extractNoScheduleFoundIdsFromXolaError</code> pulls the offending 24-hex ids out of that payload —
 from the structured field <em>or</em> by regex over the message text — so the rule can be retried
@@ -1806,7 +2091,59 @@ skips-only breakdown alongside. A rising <code>no-op-same-price</code> is health
 key look like a working push against whatever account the key belongs to.</dd>
 <dt><code>XOLA_RECOMMENDED_PRICE_ROUNDING_INCREMENT_MAJOR</code> / <code>_MODE</code></dt>
 <dd>Rounding applied to the recommended price before it becomes a template price.</dd>
+<dt><code>XOLA_RESPECT_OPERATOR_SCHEDULE</code></dt>
+<dd>Default on. <code>false</code> restores pre-ENG-2574 behaviour: Walkway creates an override for any
+slot it has a recommendation for, including ones the operator retired. Only turn it off
+if an experience has stopped being priced entirely because we misparse its schedules,
+and say so in the incident channel — it re-opens the failure Empire escalated.</dd>
 </dl>
+<hr />
+<h2 id="empire-incident">The Empire incident, September 2026</h2>
+<p>Worth reading once, because it exercises everything above and every number here was measured
+on their live account rather than estimated.</p>
+<p>Aanand reported two things: Walkway reopening retired slots, and up to a minute of checkout
+latency. <strong>They are separate defects with separate fixes</strong>, and it is easy to claim the first
+fix addresses the second. It does not.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Cause</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Retired slots on sale</td>
+<td>The <code>repeat === 'custom'</code> check</td>
+<td><a href="#operator-schedule">Operator schedule guard</a> + <a href="#purge-stale">stale purge</a></td>
+</tr>
+<tr>
+<td>Checkout latency</td>
+<td>Actions appended per push</td>
+<td><a href="#action-merge">Action reconciliation</a>, drains as pushes run</td>
+</tr>
+</tbody>
+</table>
+<p>What the purge actually found across their 9 experiences:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>1,776 Walkway overrides total
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>  170 no longer offered   →  deleted
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>1,606 still correct       →  untouched
+</code></pre></div>
+<p>The 170 broke down as 102 future and 68 past, and by reason: 46 <code>no-operator-schedule-covers-slot</code>,
+124 <code>blacked-out-by-operator</code>. Of those 124, <strong>26 were the <code>timeRanges</code> misreading</strong> described
+above and should not have been deleted.</p>
+<p>The genuine ones are unambiguous. On the Minibus tour the operator's own schedules say:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>until 2026-11-01 : "Thru Nov 1 2026 Daily 6pm &amp; 8pm"  days=[0..6]      times=[1800,2000]
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>from  2026-11-02 : "Nov 2 2026 - Mar 13 2027 …"       days=[0,2,4,5,6] times=[1800]
+</code></pre></div>
+<p>Winter schedule: no Monday, no Wednesday, no 8pm at all. Walkway's overrides were holding
+<code>Mon 02/11 18h</code>, <code>Mon 02/11 20h</code>, <code>Tue 03/11 20h</code>, <code>Wed 04/11 18h</code>, <code>Wed 04/11 20h</code> on sale.</p>
+<p>Two things to carry forward. <strong>Deleting an override does not always take a slot off sale</strong> —
+if an operator <code>available</code> schedule still covers it, only the Walkway price goes, and the
+slot sells at their base rate. And <strong>the operator's own account state is evidence, not
+decoration</strong>: Capitol Hill carried 58 operator schedules of which 56 were <code>unavailable</code>,
+which is what a blackout-based workaround looks like from the outside.</p>
 <hr />
 <h2 id="onboarding">Onboarding</h2>
 <p>Every new supplier must be registered <strong>by Xola's own team</strong>. There is no status endpoint and

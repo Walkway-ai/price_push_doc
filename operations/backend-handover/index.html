@@ -1516,6 +1516,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="In flight at handover">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#shipped-in-the-september-2026-window" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shipped in the September 2026 window
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open operational items
+      
+    </span>
+  </a>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2040,6 +2068,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="In flight at handover">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#shipped-in-the-september-2026-window" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shipped in the September 2026 window
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open operational items
+      
+    </span>
+  </a>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2544,8 +2600,12 @@ consecutive 5xx, then a global half-open cooldown of 30 s once cumulative
 <code>BOKUN_GLOBAL_COOLDOWN_MS</code>, <code>BOKUN_MAX_COOLDOWN_ROUNDS</code>, <code>BOKUN_SKIP_NOOP</code>,
 <code>BOKUN_DRIFT_THRESHOLD_PCT</code></dd>
 <dt>Onboarding</dt>
-<dd>The app-store install flow is <strong>already written and needs wiring</strong> — one
-click would replace all three credentials.</dd>
+<dd>Wired in September 2026. A new operator gives their Bokun short name on
+<code>/connect</code> and approves the app; the callback writes the credentials. See
+<a href="../../integrations/bokun/#custom-app">the custom app</a>. Two caveats: an
+install started from <strong>Bokun's app store</strong> cannot be attributed and lands
+unbound, and <code>getUnitTypesByExperienceId</code> still needs an OCTO token, which
+the app does not grant.</dd>
 </dl>
 <h3 id="xola-59-s-median-push">Xola — 5.9 s median push</h3>
 <dl>
@@ -2557,9 +2617,19 @@ header → <code>subscription.xolaApiKey</code> → <code>XOLA_DEFAULT_API_KEY</
 why — an inherited request header wins over the subscription's own key.
 Booking-priced products are handled separately in guardrails and push
 (ENG-2423).</dd>
+<dt>What bites, part two</dt>
+<dd>Creating a schedule is how Walkway attaches a price, and that schedule is
+<code>type: 'available'</code> — so pricing a slot the operator retired <strong>puts it back
+on sale</strong>. Empire escalated exactly that in September 2026 (ENG-2574).
+<code>slotOffering</code> now checks the operator's own schedules first. Read
+<a href="../../integrations/xola/#operator-schedule">The operator's schedule wins</a>
+before touching anything schedule-related, and in particular the
+<a href="../../integrations/xola/#time-ranges"><code>timeRanges</code></a> trap — hours are stated
+two different ways and reading only <code>times</code> closes a whole day.</dd>
 <dt>Knobs</dt>
 <dd><code>XOLA_RECOMMENDED_PRICE_ROUNDING_INCREMENT_MAJOR</code>,
-<code>XOLA_RECOMMENDED_PRICE_ROUNDING_MODE</code></dd>
+<code>XOLA_RECOMMENDED_PRICE_ROUNDING_MODE</code>,
+<code>XOLA_RESPECT_OPERATOR_SCHEDULE</code> (default on — off re-opens ENG-2574)</dd>
 <dt>Onboarding</dt>
 <dd>Every new supplier has to be registered <strong>by Xola's own team</strong>. No status
 endpoint, no agreed turnaround — an operator can be signed and unreachable
@@ -2818,6 +2888,33 @@ Check the host before debugging.</p>
 <p><code>dist/</code> is committed; <code>stripe-cli.zip</code> (8.7 MB), <code>token.txt</code> and <code>storageState.json</code> sit
 in the repo root. The last two are worth reading before assuming they are inert.</p>
 </div>
+<div class="admonition danger">
+<p class="admonition-title">Deploying code before its SQL breaks the request that needs it</p>
+<p>The deploy image runs <code>prisma generate</code> only — there is no <code>migrate deploy</code> in the
+pipeline, and several live tables (<code>bokun_oauth_installs</code> among them) reached production
+through <code>db push</code> with no migration file. Manual SQL lives in <code>prisma/manual/</code>. <strong>Run it
+first, on dev then prod.</strong> A schema file in the repo changes nothing in the database.</p>
+</div>
+<div class="admonition danger">
+<p class="admonition-title"><code>ventrata_price_change_units.unitType</code> is wrong before September 2026</p>
+<p>All 16,355,070 rows say <code>ADULT</code>, because the row was built from a field Ventrata does not
+send. Rows were not backfilled. Any analysis of unit types over history has to treat
+pre-fix rows as unlabelled. See
+<a href="../../integrations/ventrata/#unit-log">the unit log</a>.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Two Xola cleanup routes, one of them blunt</p>
+<p><code>purge-by-name</code> deletes <strong>every</strong> Walkway override, correct ones included — on Empire
+that is 1,776 schedules rather than 170. Use <code>purge-stale-overrides</code>, dry run first, and
+read the list before passing <code>dryRun: false</code>. Deletion against a live storefront is
+irreversible and the operator sees it.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">The Bokun app secret is one value for one app</p>
+<p><code>BOKUN_APP_CLIENT_SECRET</code> both verifies inbound HMAC and signs the token exchange, and
+the code supports a single app. Changing it immediately breaks installs begun from the
+previous app. Running two apps at once needs a code change.</p>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Two clones, one remote</p>
 <p>Backend work belongs in the <code>walkway_backend_last</code> clone; <code>walkway_saas_backend</code> is a
@@ -2900,8 +2997,13 @@ stale second clone. The backoffice has the same duplication.</p>
 </thead>
 <tbody>
 <tr>
+<td><code>fix/xola-blackout-time-ranges</code></td>
+<td><strong>Read this first.</strong> Teaches <code>scheduleCoversSlot</code> to read <code>timeRanges</code>. Until it ships, Walkway refuses to price Monday 9am on Empire's Capitol Hill tour and any other slot inside a range-stated blackout.</td>
+<td><strong>open, needed</strong></td>
+</tr>
+<tr>
 <td><code>feat/eng-2464-price-recommendation-impact-columns</code></td>
-<td>Impact columns on <code>price_recommendations</code>, plus the schema-sync commit. The branch I was on.</td>
+<td>Impact columns on <code>price_recommendations</code>, plus the schema-sync commit.</td>
 <td>in progress</td>
 </tr>
 <tr>
@@ -2931,6 +3033,79 @@ stale second clone. The backoffice has the same duplication.</p>
 </tr>
 </tbody>
 </table>
+<h3 id="shipped-in-the-september-2026-window">Shipped in the September 2026 window</h3>
+<p>Merged and deployed unless stated. Listed because each changed operator-visible behaviour and
+the reasoning lives in the integration pages, not the diffs.</p>
+<table>
+<thead>
+<tr>
+<th>PR</th>
+<th>What changed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>#546, #547, #549</td>
+<td>Xola: operator-schedule guard, purchase-rule action reconciliation, stale-override purge reading the native experience</td>
+</tr>
+<tr>
+<td>#548</td>
+<td>Ventrata: first unit of a repeated type wins; <code>unitType</code> logged from the field Ventrata sends</td>
+</tr>
+<tr>
+<td>#551, #552, #554</td>
+<td>Bokun: OAuth secrets out of Cloud Logging, install bound to a subscription, <code>@CurrentSubscription</code> returns the id</td>
+</tr>
+<tr>
+<td>#604, #605 (frontend)</td>
+<td>Data Hub 500 fix; Bokun connect-by-authorization on <code>/connect</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="open-items">Open operational items</h2>
+<p>Things that are <strong>not</strong> in a branch and will not surface on their own.</p>
+<div class="admonition danger">
+<p class="admonition-title">Empire's price pushes have been stopped since 2026-09-01</p>
+<p>Two commitments made to the customer depend on them running again: the ~66,600
+accumulated purchase-rule actions only drain <strong>as pushes run</strong>, and the 26 Monday 9am
+overrides deleted in error are only recreated by a push. Until pushes resume, the
+checkout latency Aanand reported does not improve and those Mondays sit at base rate.
+Restarting them requires <code>fix/xola-blackout-time-ranges</code> to be live first, or the guard
+will refuse those slots again.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Empire is owed a follow-up</p>
+<p>Philip Ferentinos asked whether he still needs to tell us when schedules change. The
+answer is no — the guard re-reads their schedule on every push. He was also told his
+blackout could come down once the fix shipped. Neither is true until the branch above is
+deployed.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">The Bokun claim screen does not exist</p>
+<p>An install started from Bokun's app store lands with <code>subscriptionId: null</code> and no
+credentials. Direct new operators to <code>/connect</code>. <code>appInstalledByUserEmail</code> is stored and
+is the basis for the screen when someone builds it.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title"><code>getUnitTypesByExperienceId</code> still needs an OCTO token</p>
+<p>The custom app grants none. It is the only OCTO dependency left in the pricing chain, so
+an OAuth-only Bokun operator cannot be fully configured until it has a REST v2 path.
+Keep the OCTO branch for the 32 existing subscriptions that do have a token.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Bokun uninstall is not handled</p>
+<p><code>revokedAt</code> exists on <code>bokun_oauth_installs</code> and nothing sets it. A vendor who
+uninstalls leaves a dead token behind and we will not know.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Compset → subscription migration is half done</p>
+<p>Applied on dev only: <code>Compset.subscription_id</code> backfilled 112 → 15,427, 932 setups
+normalised, 181 rows created, 99 override groups. Nothing was deleted at any point — the
+standing constraint was that this is a change in how data is <em>read</em>, not what is stored.
+<code>groupId</code>, <code>SECONDARY</code>, <code>CompsetListFilter</code> and the two <code>SubscriptionMember</code> columns
+reached dev through <code>db push</code> with <strong>no migration files</strong>.</p>
+</div>
 <p>Conventions: Conventional Commits, one ENG ticket per branch, never edit a merged migration —
 always a follow-up. Every new vendor flow ships with a <code>*.push-origin.spec.ts</code> plus dispatcher
 coverage in <code>ventrata.service.spec.ts</code>.</p>

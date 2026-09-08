@@ -955,6 +955,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#unit-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Which unit gets priced
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Which unit gets priced">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#unit-log" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ventrata_price_change_units.unitType is wrong before September 2026
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#verification-and-undo" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1281,6 +1309,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#unit-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Which unit gets priced
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Which unit gets priced">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#unit-log" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ventrata_price_change_units.unitType is wrong before September 2026
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#verification-and-undo" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1415,6 +1471,48 @@ columns. Reading <code>has_offer</code> as "this product has some price complexi
 <p>Fall back to the pushed value from <code>updateDto.unitPricing[0].retail</code>: both <code>original_price</code> and
 <code>discounted_price</code> are set to it, and <code>has_offer</code> defaults to <code>false</code> because no discount
 information is available. The price is right; the discount metadata is simply unknown.</p>
+<hr />
+<h2 id="unit-selection">Which unit gets priced</h2>
+<div class="admonition danger">
+<p class="admonition-title">A product can expose two units of the same type</p>
+<p>World of Illusion exposes two units typed <code>ADULT</code>. Ventrata reported in September 2026
+that Walkway was pricing the wrong one, and they were right.</p>
+</div>
+<p>Read live from their API, stable across dates:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>[0] unit_fe1f5f86-…  ADULT  2125   the standard Adult
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>[6] unit_3311ddfe-…  ADULT     0   "Carer / Companion (ID Required)"
+</code></pre></div>
+<p>The push built a <code>unitType → unitId</code> map like this:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nx">unitIdByUnitType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nb">Map</span><span class="p">(</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nx">liveUnits</span><span class="p">.</span><span class="nx">filter</span><span class="p">((</span><span class="nx">u</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="o">!!</span><span class="nx">u</span><span class="p">.</span><span class="nx">unitId</span><span class="p">).</span><span class="nx">map</span><span class="p">((</span><span class="nx">u</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">[</span><span class="nx">u</span><span class="p">.</span><span class="nx">unitType</span><span class="p">,</span><span class="w"> </span><span class="nx">u</span><span class="p">.</span><span class="nx">unitId</span><span class="p">]),</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="p">);</span>
+</code></pre></div>
+<p><code>new Map(entries)</code> keeps the <strong>last</strong> value for a repeated key, so <code>ADULT</code> resolved to the
+Carer id — on every push, for every date, not intermittently. The map is now built by
+iterating and skipping a type already resolved: <strong>first wins</strong>. When a product exposes
+several units of one type, a warning names them; the extras keep their current price, and
+deciding what to do about that is a product call, not a code fix.</p>
+<p>Three further defects made the same class of mistake possible elsewhere, fixed alongside
+though none caused that report: a case-sensitive <code>u.unitType === 'adult'</code> that never matched
+Ventrata's upper-case <code>"ADULT"</code>; <code>guessUnitTypeFromId()</code> ending in <code>return UnitType.ADULT</code>,
+which answered ADULT for every UUID and made any <code>find</code> using it stop on element 0; and a
+positional <code>|| availability.unitPricing[0]</code> fallback. The fallback path now throws rather
+than pricing an unidentified category.</p>
+<p>Walkway prices <strong>every unit type a product exposes</strong>, not only ADULT. A €0 unit is not
+necessarily a bug — a <code>FREE</code>/<code>OTHER</code> rule can legitimately set it.</p>
+<h3 id="unit-log"><code>ventrata_price_change_units.unitType</code> is wrong before September 2026</h3>
+<div class="admonition warning">
+<p class="admonition-title">Do not trust this column on historical rows</p>
+<p>All <strong>16,355,070</strong> rows say <code>ADULT</code>.</p>
+</div>
+<p>The row was built from <code>currentUnitPrice?.type</code>, but Ventrata sends <code>unitType</code>. The read was
+<code>undefined</code> every time and fell through to <code>guessUnitTypeFromId</code>, which answered ADULT for
+everything. The one table that could have surfaced the mis-push instead agreed with it: four
+pushes, six units each, all labelled ADULT, the correct Adult id absent from every row.</p>
+<p>Fixed to read <code>unitType</code>, then <code>type</code>, then the id hint, with <code>'UNKNOWN'</code> as a last resort —
+the column is non-nullable, so an unidentifiable unit gets a label a query can find rather
+than a guess. <strong>Existing rows were not backfilled.</strong> Any analysis of unit types over history
+has to treat pre-fix rows as unlabelled.</p>
 <hr />
 <h2 id="verification-and-undo">Verification and undo</h2>
 <p>Ventrata is the only rail that can <strong>verify and self-correct</strong>: after pushing it re-reads and,
