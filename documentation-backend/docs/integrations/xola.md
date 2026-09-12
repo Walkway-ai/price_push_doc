@@ -13,6 +13,11 @@ Median push **5.9 s**. Native Xola REST, `x-api-key` auth.
     silently falls back to the experience's catalog price. Most Xola incidents are one of
     those three being wrong.
 
+    One exception, since September 2026: a **booking-priced** experience (one price per
+    bus, not per guest) gets **no schedule** — its rule is linked to the *timeslot* itself,
+    and it sets `amount` on the fixed-price line rather than `price` on a guest type. Why
+    that matters is [its own section](#booking-priced).
+
 ---
 
 ## Authentication
@@ -75,12 +80,15 @@ pushes.
    rounding and the min/max clamp.
 3. **Ensure a schedule id.** Reuse the one in the request body; else reuse the one recorded on
    the last history row for the same slot; else `POST /experiences/:id/schedules` — but only
-   when both `date` and `arrivalTime` are set.
-4. **Build the purchase rule payload** — shape depends on whether a schedule id exists, see
-   below.
+   when both `date` and `arrivalTime` are set. **Skipped entirely for a booking-priced
+   product** — see [below](#booking-priced).
+4. **Build the purchase rule payload** — shape depends on whether a schedule id exists and on
+   `products.pricing_per`, see below.
 5. **Create or update the rule.** `PUT` when reusing a rule id from the request, from history,
-   or from a price-signature match; `POST` otherwise.
-6. **`POST /purchaseRuleLinks`** — only when step 5 created a new rule.
+   or from a price-signature match; `POST` otherwise. A booking push only ever reuses a rule
+   of its own shape.
+6. **`POST /purchaseRuleLinks`** — only when step 5 created a new rule. Entity is the
+   experience at sequence `7500001`, or the **timeslot** at `9500001` for a booking push.
 7. **Persist `xolaPriceChange`** — the history row undo reads from.
 8. **Update the local `price` table.**
 
@@ -94,7 +102,11 @@ pushes.
 | Create purchase rule | `POST` | `/purchaseRules` |
 | Update purchase rule | `PUT` | `/purchaseRules/{id}` |
 | Read purchase rule | `GET` | `/purchaseRules/{id}` |
-| Link rule to experience | `POST` | `/purchaseRuleLinks` |
+| Delete purchase rule | `DELETE` | `/purchaseRules/{id}` — **soft delete**: `GET` still returns 200 with `deletedAt` set |
+| Link rule to experience or timeslot | `POST` | `/purchaseRuleLinks` |
+| Delete link | `DELETE` | `/purchaseRuleLinks/{id}` |
+| Slot prices as Xola computes them | `GET` | `/timeslots?product=&seller=&start=&end=&include=units&privacy=` |
+| Seller line item templates | `GET` | `/lineItemTemplates?seller=` |
 
 ---
 
@@ -245,9 +257,10 @@ may write a schedule that closes the day, and only the name says otherwise.
 
 ---
 
-## Purchase rules — two shapes
+## Purchase rules — three shapes
 
-Which shape gets built depends entirely on whether a schedule id is available.
+Which shape gets built depends on whether a schedule id is available and on whether the
+product is priced per guest or per booking (`products.pricing_per`).
 
 ### Schedule-scoped (the correct one)
 
@@ -271,6 +284,28 @@ The fallback when no schedule id could be resolved: an `and_filter` over `arriva
     sees, even though it returned success. **Treat it as a failure even when the status says
     otherwise.**
 
+### Booking-priced (`pricing_per = BOOKING`)
+
+No schedule, no shortcut, no `template.id`. One action, filtered on the template **code**,
+setting **`amount`**:
+
+```json
+{
+  "object": "update_line_item_action",
+  "filter": { "object": "equals_filter", "field": "template.code", "operand": "per_outing_price" },
+  "modifiers": [{
+    "object": "line_item_modifier", "operation": "set", "field": "amount",
+    "aggregator": { "object": "return_value_aggregator", "operand": 526 }
+  }]
+}
+```
+
+The rule filter names the product only — `in_product_schedule_filter` with
+`schedules: { all: true }` — and the link carries the slot. Built by
+`buildBookingOutingPurchaseRulePayload` in `src/xola/helpers/booking-outing-rule.helper.ts`.
+The reasons are in the [booking-priced section](#booking-priced); do not "fix" this shape
+back toward the per-guest one.
+
 ### The link payload
 
 ```json
@@ -285,8 +320,26 @@ The fallback when no schedule id could be resolved: an `and_filter` over `arriva
 }
 ```
 
-The `walkway` tag is how our rules are told apart from the operator's own. `sequence`
-determines precedence against other rules — the high value puts ours late, so it wins.
+For a booking push the entity is the **timeslot**, spelled `{experienceId}_{date}_{time}` with
+the time as a plain integer (`…_2027-03-08_1100`, `…_2024-12-15_900` — no zero-padding), and
+the sequence is `9500001`:
+
+```json
+"entities": [{ "id": "5d1b5c425a4d7c163141c500_2027-03-08_1100", "object": "timeslot" }],
+"purchaseRules": [{ "purchaseRule": { "id": "<ruleId>" }, "sequence": 9500001 }]
+```
+
+The `walkway` tag is how our rules are told apart from the operator's own.
+
+!!! warning "`sequence` is an order, not a priority — and 7500001 does not put us last"
+    Rules run in ascending `sequence`. Measured on TC Brew Bus, the seller's own account
+    carries: the fixed-price insert at `0`, their weekly-schedule variations at **`7500001`**
+    — the same value we use — merchandise and tip rules at `10000005`–`10000010`, and
+    Xola's system subtotal rules from `10000000` up to `100000002`. Xola's guidance
+    (September 2026) is `9500001` for timeslot-linked rules: "applies after all schedule
+    rules and partner related pricing overrides". The per-guest push keeps `7500001`
+    because changing it changes every existing operator's checkout; the booking push uses
+    `9500001`.
 
 ---
 
@@ -369,17 +422,119 @@ without them. Without this, one deleted schedule would poison a rule permanently
 
 ---
 
-## Booking-priced products (ENG-2423)
+## Booking-priced products (ENG-2423, ENG-2607) {: #booking-priced }
 
-Some Xola experiences are priced **once per booking**, not per guest. They still return a
-single demographic (`Guests`, `guests-over-21`, `beer-tour`) and express the per-booking
-nature only as `priceType: "outing"`.
+Some Xola experiences are priced **once per booking**, not per guest — a private bus, a limo.
+They still return a single demographic (`Guests`, `guests-over-21`, `beer-tour`) and express
+the per-booking nature only as `priceType: "outing"`.
 
 The authority is **`products.pricing_per` in our database, not the Xola payload**. A
 "vendor returned no templates" check never fires for these, so payload-shape detection would
 miss them entirely. When a `product_grade_channel_code` is supplied it is preferred for the
 lookup, because one Xola experience can map to several Walkway product rows and the pgcc names
 exactly one.
+
+### What went wrong on TC Brew Bus (ENG-2607) {: #brew-bus-incident }
+
+!!! danger "The customer paid both prices"
+    September 2026. TC Brew Bus sells 13 buses at a fixed price per bus ($639, $539 Sun–Thu).
+    Auto-pilot pushed a Walkway price onto the one demographic Xola returned ("Beer Tour"),
+    with the per-guest shape above. Xola read it as a **per-person** price and added a line
+    next to the fixed one: the checkout showed *Fixed Price $639* **and** *Beer Tour $625.60*,
+    and charged the sum. Switching auto-pilot off changed nothing — the rules were still on
+    Xola. 374 rules and about 4,600 Walkway schedules had to be removed by hand.
+
+Read back from the seller's own account, this is how Xola itself prices such a product:
+
+```
+seq 0          "Private Purchase Rule for Bus #10"
+                 update_line_item_action  type=demographic AND templateCode≠per_outing_price  → set amount = 0
+                 insert_line_item_action  (the "Fixed Price (up to 12 guests)" cart line)    → set amount = 639
+seq 7 500 001  "Schedule pricing rules for Bus #10: <weekly schedule id>"
+                 update_line_item_action  template.id = <per_outing_price template>          → inc amount = -100
+```
+
+Three facts fall out of that, and each one was verified live on a far-future slot before the
+fix shipped:
+
+| Fact | Consequence |
+| --- | --- |
+| The amount the customer pays is the **`amount`** field of the line whose template `code` is `per_outing_price`. | `set price` on that template does **nothing visible** — tested with `template.id`, with `template.code`, with the shortcut and with raw modifiers. `set amount` on it moves the cart. |
+| The visible demographic ("Beer Tour") is zeroed by the seller's own rule at `seq 0`. | Any price we put on it comes back as a second, per-person line. This is the double charge. |
+| The seller's weekly variation runs at `7500001`. | A rule of ours at the same sequence is not guaranteed to run after it. Xola's recommendation for slot pricing is a **timeslot-linked** rule at `9500001`. |
+
+### What the push does now
+
+For a product with `pricing_per = BOOKING`, `updateExperiencePriceWithHistory` sets
+`bookingOutingPush` and:
+
+- prices the outing line: `update_line_item_action` filtered on `template.code ==
+  per_outing_price`, modifier `set amount = <whole units>` — a decimal reached the cart as
+  $625.60 for a 626 recommendation, so the amount is rounded;
+- **creates no schedule** and names none in the rule filter (`schedules: { all: true }` on the
+  product). The 4,600 `[walkway …]` schedules on TC Brew Bus came from the per-guest flow;
+- links the rule to the **timeslot entity** at sequence `9500001`;
+- only `PUT`s a previous rule **of its own shape**. History rows written by this path carry the
+  template *code* in `units.demographicId` where per-guest rows carry a template ObjectId;
+  `findLatestBookingOutingRuleIdForSlot` filters on that. Rewriting an old experience-linked
+  rule to `schedules: all` would have repriced every slot of the bus;
+- records `scheduleId: null` on the history row, so the per-guest path never reuses a schedule
+  from a booking push.
+
+Per-guest pushes are untouched: same shortcut, same schedule flow, same `7500001` link.
+
+### Undo is a `DELETE`
+
+`undoPriceChange` recognises a booking row with `isBookingOutingPriceChange(units)` and
+**deletes the rule and its link** instead of `PUT`ting the snapshotted old price back. The
+seller's own rules then price the slot again — which is the real "old price" even if they
+changed it since. A `PUT` of the stored `oldPrice` would have frozen a value we only
+snapshotted once, and would have kept a Walkway rule alive on a slot the operator asked us to
+leave.
+
+!!! warning "`/timeslots` does not show the fixed price"
+    `GET /timeslots?include=units` reports the outing price on the **guest type's** template
+    (`priceType: "outing"`, template = Beer Tour), and it does **not** reflect a rule on the
+    `per_outing_price` template. It is fine for reading the *previous* outing price into the
+    history row, and useless for verifying a booking push. The checkout cart is the only
+    verification. Cart items are priced when added: delete and re-add the item before reading.
+
+### Cleaning up after the incident
+
+`scripts/xola-remove-walkway-purchase-rules.ts` (branch
+`fix/eng-2607-remove-walkway-purchase-rules`) lists every purchase rule referenced by an
+applied, un-reverted `xola_price_changes` row for a subscription, verifies each one on Xola
+(name `Walkway Price Push…`, tag `walkway`, right seller) and, with `--apply`, deletes it;
+`--purge-schedules` also removes the `[walkway …]` schedules on the affected experiences;
+`--skip-experience <id>` leaves one product's schedules alone; `--mark` stamps `revertedAt`
+(needs the production database). Dry run by default; it writes a plan/applied JSON to
+`PLAN_DIR`.
+
+Things learned running it, all measured:
+
+- **Xola soft-deletes rules.** `DELETE /purchaseRules/{id}` returns 204 and the rule keeps
+  answering `GET` with `deletedAt` set. A "still present after DELETE" check that looks for a
+  404 reports every deletion as a failure.
+- **A rule with no link is inert**, but stays listed. Four merged rules ("Walkway Price Push -
+  … - 143 schedules") survived their `DELETE` without `deletedAt`; none had a link left.
+- **Our override schedules allowed `["public", "private"]`.** The seller's own are private
+  only. While our schedules remained, private-only buses answered public `/timeslots`
+  queries — one more reason to purge them, not just the rules.
+- **Do not purge a product whose seller schedules are gone.** The operator deleted her own
+  "Fri/Sat" and "Weekdays" schedules on one experience while investigating; our overrides
+  were the only availability it had left. Purging them would have zeroed its calendar.
+  Rebuild the seller's schedules first (`eng-2552/xola-restore-14-schedules.ts` has the shape:
+  weekly, `times [1100, 1600]`, `allowedPrivacies ["private"]`, a `-100` weekday
+  `priceDelta` **plus** the paired "Schedule pricing rules" purchase rule — the schedule's
+  own `priceDelta` does nothing to the outing price by itself).
+
+### Before re-enabling a booking-priced operator
+
+- Guardrails. TC Brew Bus ran with a $299 floor against $539/$639 list prices; the first
+  auto-push after the fix would send `set amount = 299`. Set `minPrice` to the operator's real
+  floor per product **before** `canAutoPricePush` is on.
+- One manual push on a far-future slot, cart check (one line, the pushed amount), undo, cart
+  check (seller price back). Then auto-pilot.
 
 ---
 

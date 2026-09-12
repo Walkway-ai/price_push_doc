@@ -350,7 +350,10 @@ What bites
 :   If a push ever authenticates as the wrong operator, that resolution order is
     why — an inherited request header wins over the subscription's own key.
     Booking-priced products are handled separately in guardrails and push
-    (ENG-2423).
+    (ENG-2423) — and since ENG-2607 their rule sets `amount` on the
+    `per_outing_price` line and is linked to the timeslot, never to a guest
+    type. Pricing the guest type charged TC Brew Bus customers twice; see
+    [Xola → booking-priced](../integrations/xola.md#booking-priced).
 
 What bites, part two
 :   Creating a schedule is how Walkway attaches a price, and that schedule is
