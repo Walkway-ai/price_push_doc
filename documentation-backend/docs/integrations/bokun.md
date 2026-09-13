@@ -238,21 +238,66 @@ a REST v2 equivalent before an OAuth-only operator can be fully configured. The 
 OCTO callers (`getProducts`, `getProductById`, `getAvailability`, `getBookings`) are
 controller surface taking an `x-api-token` header, outside the push path.
 
-### App credentials
+### App credentials — one custom app per operator {: #bokun-apps }
 
-`BOKUN_APP_CLIENT_ID` and `BOKUN_APP_CLIENT_SECRET` identify **one** app. The secret does
-double duty: verifying the HMAC on inbound Bokun calls, and signing the token exchange.
+Bokun will not give Walkway a public App Store app, and a custom app can only be installed
+on the vendor account that created it. So every operator has **their own** custom app, and
+onboarding N operators means N client id/secret pairs. Since September 2026 those live in the
+`bokun_apps` table, not in the environment:
 
-The code supports exactly one app at a time. Swapping apps means changing those two
-variables; running two apps side by side would need a code change. Whichever app is
-configured must register these URLs **character for character**, and grant all six scopes —
-without `LEGACY_API` no credentials come back and the callback lands on
-`?bokun=failed&reason=no-credentials`:
+| Column | Meaning |
+| --- | --- |
+| `domain` | The vendor's Bokun short name (`walkway-pizza` in `walkway-pizza.bokun.io`), unique. `null` = fallback app used for any vendor without a row. |
+| `clientId` / `clientSecretEnc` | The app's credentials. The secret is sealed with AES-256-GCM under **`BOKUN_APP_SECRETS_KEY`** (`src/common/utils/secret-box.ts`) and is never returned by any endpoint or written to a log — the back-office sees a 4-character hint. |
+| `scopes`, `active`, `label`, `notes` | Housekeeping. Deactivate rather than delete: installs and pending states point at the row. |
+
+`BOKUN_APP_CLIENT_ID` / `BOKUN_APP_CLIENT_SECRET` still work as the **last fallback** (the
+pre-registry app), so the installs made before the table keep their meaning.
+
+**Which app signs what** (`BokunAppsService`):
 
 ```
-Install URL   {BACKEND}/bokun/install
-Redirect URL  {BACKEND}/bokun/oauth/callback
+/bokun/oauth/start?domain=X   → app for X, else fallback row, else env pair; appId written on the state
+/bokun/oauth/callback         → state peeked (not consumed) → its appId → HMAC verified with THAT secret
+                                → only then the state is consumed and the code exchanged with the same app
+/bokun/install (cold, from Bokun) → domain's app, else every active app tried against the HMAC, else env
 ```
+
+!!! warning "Secrets need the key, and the key needs to exist before the first row"
+    Without `BOKUN_APP_SECRETS_KEY` the registry refuses to store or read anything
+    (`BadRequestException`), on purpose: the alternative is a plaintext client secret in
+    Postgres. Generate it once (`openssl rand -base64 32`), keep it in Secret Manager, and
+    never rotate it without re-sealing every row (`scripts/register-bokun-app.ts --list`
+    shows `(unreadable)` for rows sealed under another key).
+
+**Onboarding an operator, step by step**
+
+1. The operator creates a custom app in their Bokun account (Settings → Apps) with these two
+   URLs **character for character** and all six scopes — without `LEGACY_API` no credentials
+   come back and the callback lands on `?bokun=failed&reason=no-credentials`:
+
+    ```
+    Install URL   {BACKEND}/bokun/install
+    Redirect URL  {BACKEND}/bokun/oauth/callback
+    ```
+
+    `GET api/admin/bokun-apps/registration-urls` returns them filled in.
+
+2. They send us the app's client id and secret. We register the row:
+   `POST api/admin/bokun-apps { label, domain, clientId, clientSecret }` from the back-office, or
+
+    ```
+    DATABASE_URL=<prod> BOKUN_APP_SECRETS_KEY=<key> BOKUN_NEW_APP_SECRET=<secret> \
+      npx ts-node -r dotenv/config scripts/register-bokun-app.ts \
+      --label "<Operator> custom app" --domain <short name> --client-id <id> --client-secret-env BOKUN_NEW_APP_SECRET
+    ```
+
+3. The operator opens `/connect`, types their short name, approves on Bokun's consent screen.
+   The callback writes `bokunApiKey` / `bokunSecretKey` onto the subscription. Done — they
+   pasted nothing.
+
+Schema for `bokun_apps` and the `appId` columns: **`prisma/manual/bokun-apps.sql`**, applied
+by hand before the deploy (same `db push` convention as the OAuth tables).
 
 `BOKUN_OAUTH_REDIRECT_BASE_URL` must point at the **backend**. If unset it falls back to
 `FRONTEND_URL` and the redirect URI stops matching what Bokun has registered.
