@@ -1064,10 +1064,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#app-credentials" class="md-nav__link">
+  <a href="#bokun-apps" class="md-nav__link">
     <span class="md-ellipsis">
       
-        App credentials
+        App credentials — one custom app per operator
       
     </span>
   </a>
@@ -1506,10 +1506,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#app-credentials" class="md-nav__link">
+  <a href="#bokun-apps" class="md-nav__link">
     <span class="md-ellipsis">
       
-        App credentials
+        App credentials — one custom app per operator
       
     </span>
   </a>
@@ -1872,17 +1872,76 @@ price push works untouched. <code>bokunOctoToken</code> is left alone — existi
 a REST v2 equivalent before an OAuth-only operator can be fully configured. The other four
 OCTO callers (<code>getProducts</code>, <code>getProductById</code>, <code>getAvailability</code>, <code>getBookings</code>) are
 controller surface taking an <code>x-api-token</code> header, outside the push path.</p>
-<h3 id="app-credentials">App credentials<a class="headerlink" href="#app-credentials" title="Permanent link">&para;</a></h3>
-<p><code>BOKUN_APP_CLIENT_ID</code> and <code>BOKUN_APP_CLIENT_SECRET</code> identify <strong>one</strong> app. The secret does
-double duty: verifying the HMAC on inbound Bokun calls, and signing the token exchange.</p>
-<p>The code supports exactly one app at a time. Swapping apps means changing those two
-variables; running two apps side by side would need a code change. Whichever app is
-configured must register these URLs <strong>character for character</strong>, and grant all six scopes —
-without <code>LEGACY_API</code> no credentials come back and the callback lands on
-<code>?bokun=failed&amp;reason=no-credentials</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Install URL   {BACKEND}/bokun/install
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>Redirect URL  {BACKEND}/bokun/oauth/callback
+<h3 id="bokun-apps">App credentials — one custom app per operator<a class="headerlink" href="#bokun-apps" title="Permanent link">&para;</a></h3>
+<p>Bokun will not give Walkway a public App Store app, and a custom app can only be installed
+on the vendor account that created it. So every operator has <strong>their own</strong> custom app, and
+onboarding N operators means N client id/secret pairs. Since September 2026 those live in the
+<code>bokun_apps</code> table, not in the environment:</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>domain</code></td>
+<td>The vendor's Bokun short name (<code>walkway-pizza</code> in <code>walkway-pizza.bokun.io</code>), unique. <code>null</code> = fallback app used for any vendor without a row.</td>
+</tr>
+<tr>
+<td><code>clientId</code> / <code>clientSecretEnc</code></td>
+<td>The app's credentials. The secret is sealed with AES-256-GCM under <strong><code>BOKUN_APP_SECRETS_KEY</code></strong> (<code>src/common/utils/secret-box.ts</code>) and is never returned by any endpoint or written to a log — the back-office sees a 4-character hint.</td>
+</tr>
+<tr>
+<td><code>scopes</code>, <code>active</code>, <code>label</code>, <code>notes</code></td>
+<td>Housekeeping. Deactivate rather than delete: installs and pending states point at the row.</td>
+</tr>
+</tbody>
+</table>
+<p><code>BOKUN_APP_CLIENT_ID</code> / <code>BOKUN_APP_CLIENT_SECRET</code> still work as the <strong>last fallback</strong> (the
+pre-registry app), so the installs made before the table keep their meaning.</p>
+<p><strong>Which app signs what</strong> (<code>BokunAppsService</code>):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>/bokun/oauth/start?domain=X   → app for X, else fallback row, else env pair; appId written on the state
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>/bokun/oauth/callback         → state peeked (not consumed) → its appId → HMAC verified with THAT secret
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>                                → only then the state is consumed and the code exchanged with the same app
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>/bokun/install (cold, from Bokun) → domain's app, else every active app tried against the HMAC, else env
 </code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Secrets need the key, and the key needs to exist before the first row</p>
+<p>Without <code>BOKUN_APP_SECRETS_KEY</code> the registry refuses to store or read anything
+(<code>BadRequestException</code>), on purpose: the alternative is a plaintext client secret in
+Postgres. Generate it once (<code>openssl rand -base64 32</code>), keep it in Secret Manager, and
+never rotate it without re-sealing every row (<code>scripts/register-bokun-app.ts --list</code>
+shows <code>(unreadable)</code> for rows sealed under another key).</p>
+</div>
+<p><strong>Onboarding an operator, step by step</strong></p>
+<ol>
+<li>
+<p>The operator creates a custom app in their Bokun account (Settings → Apps) with these two
+   URLs <strong>character for character</strong> and all six scopes — without <code>LEGACY_API</code> no credentials
+   come back and the callback lands on <code>?bokun=failed&amp;reason=no-credentials</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Install URL   {BACKEND}/bokun/install
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>Redirect URL  {BACKEND}/bokun/oauth/callback
+</code></pre></div>
+<p><code>GET api/admin/bokun-apps/registration-urls</code> returns them filled in.</p>
+</li>
+<li>
+<p>They send us the app's client id and secret. We register the row:
+   <code>POST api/admin/bokun-apps { label, domain, clientId, clientSecret }</code> from the back-office, or</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>DATABASE_URL=&lt;prod&gt; BOKUN_APP_SECRETS_KEY=&lt;key&gt; BOKUN_NEW_APP_SECRET=&lt;secret&gt; \
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>  npx ts-node -r dotenv/config scripts/register-bokun-app.ts \
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>  --label "&lt;Operator&gt; custom app" --domain &lt;short name&gt; --client-id &lt;id&gt; --client-secret-env BOKUN_NEW_APP_SECRET
+</code></pre></div>
+</li>
+<li>
+<p>The operator opens <code>/connect</code>, types their short name, approves on Bokun's consent screen.
+   The callback writes <code>bokunApiKey</code> / <code>bokunSecretKey</code> onto the subscription. Done — they
+   pasted nothing.</p>
+</li>
+</ol>
+<p>Schema for <code>bokun_apps</code> and the <code>appId</code> columns: <strong><code>prisma/manual/bokun-apps.sql</code></strong>, applied
+by hand before the deploy (same <code>db push</code> convention as the OAuth tables).</p>
 <p><code>BOKUN_OAUTH_REDIRECT_BASE_URL</code> must point at the <strong>backend</strong>. If unset it falls back to
 <code>FRONTEND_URL</code> and the redirect URI stops matching what Bokun has registered.</p>
 <h3 id="state-lives-in-the-database">State lives in the database<a class="headerlink" href="#state-lives-in-the-database" title="Permanent link">&para;</a></h3>
