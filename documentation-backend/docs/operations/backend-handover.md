@@ -684,7 +684,7 @@ the reasoning lives in the integration pages, not the diffs.
 | #548 | Ventrata: first unit of a repeated type wins; `unitType` logged from the field Ventrata sends |
 | #551, #552, #554 | Bokun: OAuth secrets out of Cloud Logging, install bound to a subscription, `@CurrentSubscription` returns the id |
 | #604, #605 (frontend) | Data Hub 500 fix; Bokun connect-by-authorization on `/connect` |
-| `feat/bokun-daily-pricing` (branch, not merged) | Bokun REST 2.1.19: daily-pricing write path behind `BOKUN_DAILY_PRICING_MODE=off`, Walkway schedules moved to the top after creation. See [Bokun › Daily pricing](../integrations/bokun.md#daily-pricing) |
+| `feat/bokun-daily-pricing` (branch, not merged) | Bokun REST 2.1.19: daily-pricing write path behind `BOKUN_DAILY_PRICING_MODE=off`, schedule reorder behind `BOKUN_REORDER_SCHEDULES=true`. See [Bokun › Daily pricing](../integrations/bokun.md#daily-pricing) |
 
 ---
 

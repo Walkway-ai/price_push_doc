@@ -172,7 +172,9 @@ the `PUT` was accepted, the rule existed, the operator's rule simply outranked i
 backend now calls it right after creating a schedule (`getOrCreateScheduleForDate`): every
 schedule id known in `bokun_supplier_price_schedules` for the subscription goes first, the
 operator's schedules keep their relative order. The call is non-fatal and logged as
-`[REST Price Push] Reordered …`; `BOKUN_REORDER_SCHEDULES=false` turns it off.
+`[REST Price Push] Reordered …`. It is **opt-in** (`BOKUN_REORDER_SCHEDULES=true`): the
+call has not been exercised against a live account yet, and it rewrites the operator's whole
+schedule order. The script below ignores the flag, which is how it gets exercised first.
 
 The backlog (schedules created before this landed) is fixed once per subscription:
 
@@ -183,8 +185,10 @@ npx ts-node -r tsconfig-paths/register scripts/bokun-reorder-schedules.ts --all
 
 ### Rollout plan
 
-1. Merge with the defaults (`BOKUN_DAILY_PRICING_MODE=off`, reorder on). Watch for
-   `Reordered` lines and for any `Schedule reorder failed` warning.
+1. Merge with the defaults (`BOKUN_DAILY_PRICING_MODE=off`, `BOKUN_REORDER_SCHEDULES` unset):
+   no behaviour changes. Run `scripts/bokun-reorder-schedules.ts --subscription` on the test
+   account, check the order in the Bokun UI, then set `BOKUN_REORDER_SCHEDULES=true` and watch
+   for `Reordered` lines and any `Schedule reorder failed` warning.
 2. Switch the test product **1174595** (`pricepush2@walkway.ai`) to daily pricing in the Bokun
    UI, set `BOKUN_DAILY_PRICING_EXPERIENCES=1174595`, push one date, check the `GET`, undo,
    check again.
@@ -245,7 +249,7 @@ it touches an operator's prices.
 | `BOKUN_PRICING_PUT_DEBUG` / `_TO_SLACK` | — | Dump the `PUT` body to logs or Slack |
 | `BOKUN_DAILY_PRICING_MODE` | `off` | `on` or `auto` switches date pushes to `POST dailyPricing` (see [above](#daily-pricing)) |
 | `BOKUN_DAILY_PRICING_EXPERIENCES` | — | Comma-separated experience ids forced into daily mode |
-| `BOKUN_REORDER_SCHEDULES` | on | Move Walkway schedules to the top after creating one |
+| `BOKUN_REORDER_SCHEDULES` | off | `true` moves Walkway schedules to the top after creating one |
 
 ---
 
