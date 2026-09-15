@@ -62,6 +62,10 @@ All requests are HMAC-signed. Credentials per subscription via
 | List schedules | `GET` | `/restapi/v2.0/pricing/schedules?pageNo=&pageSize=` |
 | Read schedule | `GET` | `/restapi/v2.0/pricing/schedule/{id}` |
 | Create schedule | `POST` | `/restapi/v2.0/pricing/schedule` |
+| Reorder schedules (2.1.19) | `POST` | `/restapi/v2.0/pricing/schedules/reorder` |
+| Read daily prices (2.1.19) | `GET` | `/restapi/v2.0/experience/{id}/dailyPricing?from&to` |
+| **Write daily prices** (2.1.19) | `POST` | `/restapi/v2.0/experience/{id}/dailyPricing` |
+| Delete a daily price (2.1.19) | `DELETE` | `/restapi/v2.0/experience/{id}/dailyPricing?travelDate&rateId&priceCatalogId` |
 
 Three `GET`s precede every push — rates to resolve `rateId` from `tour_grade_code`, `PRICING`
 to build the body, `ALL` for `defaultPricingCategoryId`. That round-trip count is a large part
@@ -101,6 +105,91 @@ verbatim.
     contract. See the post-mortem of 19 May 2026. If you are about to make this `PUT` send
     less data, read section 11 of `docs/BOKUN_PRICE_PUSH.md` first — it is a checklist written
     for this specific temptation.
+
+---
+
+## Daily pricing and schedule priority (REST 2.1.19) {: #daily-pricing }
+
+Bokun shipped REST v2 spec **2.1.19** in September 2026. Nothing was deprecated; two things
+were added, and both matter to the push. They live on the branch `feat/bokun-daily-pricing`
+(backend) and are **off by default**.
+
+### Daily pricing: one rule per date
+
+A product can be switched, on Bokun's side, from price schedules to *daily pricing*. In that
+mode a price is a flat rule keyed by travel date:
+
+```json
+{ "travelDate": "2026-10-01", "rate": { "id": 2331221 }, "priceCatalogId": 1,
+  "pricingCategoryId": 10, "amount": "42.00", "currency": "EUR" }
+```
+
+`POST /experience/{id}/dailyPricing` with `{ "items": [...] }` writes the rules sent and
+**leaves every other rule alone** (max 512 rules per product). Compare with the `PUT` above:
+no schedule to create for the date, no body that must carry every base and schedule rule the
+experience ever had, no risk of deactivating a rule by omission. This is the shape a Walkway
+push has always wanted.
+
+Two constraints:
+
+- A product still on schedules answers **409** `Experience#… is not configured to use daily
+  pricing`. The switch is done by the operator in the Bokun UI (product > Pricing), not by us.
+- `GET` accepts a `from`/`to` window of at most two months.
+
+How the backend uses it (`updateBasePriceWithHistory`, `src/bokun/bokun-daily-pricing.ts`):
+
+1. **Mode** is decided once per push, before any schedule would be created.
+   `BOKUN_DAILY_PRICING_MODE` is `off` (default, nothing changes), `on` (every date push goes
+   through daily pricing) or `auto` (one `GET dailyPricing` per experience, cached six hours:
+   200 means daily, 409 means schedules). `BOKUN_DAILY_PRICING_EXPERIENCES` is a
+   comma-separated allowlist that forces daily mode for those experiences whatever the global
+   switch says. That allowlist is the intended rollout tool: one experience, then one operator.
+2. In daily mode the push builds `pushes × catalogs` items for the one travel date, reads the
+   current rules for that date, and either skips (same no-op rule as the `PUT` path,
+   `BOKUN_SKIP_NOOP`) or issues one `POST`. No price schedule is created or cached, and the
+   history row has `bokunScheduleId = null`.
+3. **Undo** works. The history row stores a snapshot under `revertPricingBody` marked
+   `__bokunDailyPricing`: the rules that existed for the touched tuples and the rules pushed.
+   Undo `POST`s the previous rules back and `DELETE`s the tuples that had none, so the date
+   falls back to the base price exactly as before. A no-op push stores nothing to revert and
+   undo says so.
+4. Dry run (`BOKUN_PRICE_PUSH_DRY_RUN`) logs the items it would `POST`.
+
+!!! note "What does not change in daily mode"
+    Rate resolution, currency and catalog filtering, pricing-rule expansion (Child = 80 % of
+    Adult), the drift guard, the circuit breaker, the price-table mirror and the history row are
+    all the same code. Only the write and the undo differ.
+
+### Schedule priority: the top one wins
+
+When two price schedules cover the same date, Bokun applies **the first in the list** (help
+center: "the price schedule at the top of the list overrides the ones below it"). A new
+schedule lands at the bottom. Every Walkway single-day schedule created under an operator's
+seasonal schedule was therefore ignored on that date, and the push still reported success:
+the `PUT` was accepted, the rule existed, the operator's rule simply outranked it.
+
+`POST /pricing/schedules/reorder` with `{ "priceScheduleIds": [...] }` sets the order. The
+backend now calls it right after creating a schedule (`getOrCreateScheduleForDate`): every
+schedule id known in `bokun_supplier_price_schedules` for the subscription goes first, the
+operator's schedules keep their relative order. The call is non-fatal and logged as
+`[REST Price Push] Reordered …`; `BOKUN_REORDER_SCHEDULES=false` turns it off.
+
+The backlog (schedules created before this landed) is fixed once per subscription:
+
+```
+npx ts-node -r tsconfig-paths/register scripts/bokun-reorder-schedules.ts --subscription <id>
+npx ts-node -r tsconfig-paths/register scripts/bokun-reorder-schedules.ts --all
+```
+
+### Rollout plan
+
+1. Merge with the defaults (`BOKUN_DAILY_PRICING_MODE=off`, reorder on). Watch for
+   `Reordered` lines and for any `Schedule reorder failed` warning.
+2. Switch the test product **1174595** (`pricepush2@walkway.ai`) to daily pricing in the Bokun
+   UI, set `BOKUN_DAILY_PRICING_EXPERIENCES=1174595`, push one date, check the `GET`, undo,
+   check again.
+3. Widen the allowlist operator by operator, only for products the operator has switched.
+   `auto` is for later, once several operators are on daily pricing.
 
 ---
 
@@ -154,6 +243,9 @@ it touches an operator's prices.
 | `BOKUN_RATES_FETCH_ATTEMPTS` | — | Retries on the rates `GET` |
 | `BOKUN_PUSH_ONLY_NEW_RULES` | — | Narrows what the `PUT` sends. See the warning above |
 | `BOKUN_PRICING_PUT_DEBUG` / `_TO_SLACK` | — | Dump the `PUT` body to logs or Slack |
+| `BOKUN_DAILY_PRICING_MODE` | `off` | `on` or `auto` switches date pushes to `POST dailyPricing` (see [above](#daily-pricing)) |
+| `BOKUN_DAILY_PRICING_EXPERIENCES` | — | Comma-separated experience ids forced into daily mode |
+| `BOKUN_REORDER_SCHEDULES` | on | Move Walkway schedules to the top after creating one |
 
 ---
 
@@ -162,6 +254,8 @@ it touches an operator's prices.
 Documented with reproduction detail in section 9 of `docs/BOKUN_PRICE_PUSH.md`:
 
 - a schedule is created but does not cover the target date, so the price silently falls back
+- a schedule covers the date but sits below an operator's seasonal schedule, so the operator's
+  price wins (fixed by the [reorder](#daily-pricing); run the backlog script on old accounts)
 - `applyPricingRules` returns an unexpected amount
 - rate id resolution fails and `rateId` comes back `null`
 - OCTO availability and the `PRICING` component disagree
