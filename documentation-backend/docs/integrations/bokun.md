@@ -185,6 +185,24 @@ How the backend uses it (`updateBasePriceWithHistory`, `src/bokun/bokun-daily-pr
    catalog filtering, pricing-rule expansion, drift guard, circuit breaker, price-table
    mirror and history row are the same code; only the write and the undo differ.
 
+### Switching a product by hand
+
+Same HMAC signing as every REST v2 call (`X-Bokun-Date` UTC `YYYY-MM-DD HH:mm:ss`,
+`X-Bokun-AccessKey`, `X-Bokun-Signature = base64(HMAC-SHA1(secret, date + accessKey + METHOD
++ path))`), with the account's Access/Secret pair from `subscriptions.bokunApiKey` /
+`bokunSecretKey`:
+
+```
+GET  /restapi/v2.0/experience/{id}/components?componentType=ALL   → read "priceType"
+PUT  /restapi/v2.0/experience/{id}/components                     body {"priceType": "DAILY"}
+GET  /restapi/v2.0/experience/{id}/dailyPricing?from=YYYY-MM-DD&to=YYYY-MM-DD  → 200 (was 409)
+PUT  /restapi/v2.0/experience/{id}/components                     body {"priceType": "SCHEDULE"} to undo
+```
+
+`PUT components` accepts a partial body: only `priceType` changes, rates and rules are left
+alone. The whole sequence with backup and OCTO checks is what the pilot script below runs;
+prefer it to a raw `PUT` on a client product.
+
 ### Moving one experience to daily pricing (the pilot script)
 
 `scripts/bokun-daily-pricing-pilot.ts --subscription <id> --experience <id> [--apply]`
