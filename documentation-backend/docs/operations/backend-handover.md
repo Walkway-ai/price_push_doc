@@ -684,7 +684,13 @@ the reasoning lives in the integration pages, not the diffs.
 | #548 | Ventrata: first unit of a repeated type wins; `unitType` logged from the field Ventrata sends |
 | #551, #552, #554 | Bokun: OAuth secrets out of Cloud Logging, install bound to a subscription, `@CurrentSubscription` returns the id |
 | #604, #605 (frontend) | Data Hub 500 fix; Bokun connect-by-authorization on `/connect` |
-| `feat/bokun-daily-pricing` (branch, not merged) | Bokun REST 2.1.19: daily-pricing write path behind `BOKUN_DAILY_PRICING_MODE=off`, schedule reorder behind `BOKUN_REORDER_SCHEDULES=true`. See [Bokun › Daily pricing](../integrations/bokun.md#daily-pricing) |
+| #567 | Xola: booking-priced products price the outing line as `amount` (ENG-2607, TC Brew Bus). See [Xola › Booking-priced](../integrations/xola.md#booking-priced) |
+| #568, #569 | Time-slot exclusions on the auto-apply (ENG-2584) and the boot hotfix (`SlotExclusionModule` imports `SubscriptionsModule`). See [Features › Time-slot exclusions](../features/price-push-slot-exclusions.md) |
+| #570, #571 | Bokun: one custom app per operator, `bokun_apps` registry with sealed secrets, app tied to a subscription; back office #138. See [Bokun › App credentials](../integrations/bokun.md#bokun-apps) |
+| #573 | Ventrata: price-table upsert names the ADULT unit from the pre-push availability; ends three days of `no_adult_price` (ENG-2619). See [Ventrata](../integrations/ventrata.md#no-adult-price) |
+| #579 | Bokun REST 2.1.19: daily-pricing write path behind `BOKUN_DAILY_PRICING_MODE=off`, schedule reorder opt-in `BOKUN_REORDER_SCHEDULES=true`. Verified live 2026-09-16. See [Bokun › Daily pricing](../integrations/bokun.md#daily-pricing) |
+| `feat/billing-stripe-customers` (branch) | `billing_stripe_customers`: several Stripe customers per subscription routed by product; table and Boost Portugal rows applied in production. See [Features › Billing](../features/billing-accounts.md) |
+| #583 (**dev only**) | Compsets at the subscription grain behind `Subscription.compsetAccountGrainEnabled`; back office `feat/compset-account-grain-toggle`, front `feat/compset-account-grain-gate`. See [Features › Compsets at the subscription grain](../features/compset-subscription-grain.md) |
 
 ---
 
@@ -720,12 +726,57 @@ Things that are **not** in a branch and will not surface on their own.
     `revokedAt` exists on `bokun_oauth_installs` and nothing sets it. A vendor who
     uninstalls leaves a dead token behind and we will not know.
 
+!!! danger "The admin panel endpoints are open"
+    `src/admin-panel/admin-panel.controller.ts` has `@UseGuards(JwtAuthGuard, RolesGuard)`
+    **commented out** (lines 7 and 31), and Cloud Run does not require authentication on
+    the API service. Every `api/admin/users/*` endpoint — entitlement flags, Calendar v2,
+    Data Hub, the tours, the new account-grain flag — accepts an anonymous `PATCH` in
+    production. Found on 2026-09-17 when an unauthenticated probe of
+    `…/calendar-v2-access` returned 200 and wrote the row. Re-enable the guards (ADMIN role)
+    after checking how the back office authenticates (it has an OIDC layer in
+    `backend-config.ts`).
+
 !!! note "Compset → subscription migration is half done"
     Applied on dev only: `Compset.subscription_id` backfilled 112 → 15,427, 932 setups
     normalised, 181 rows created, 99 override groups. Nothing was deleted at any point — the
     standing constraint was that this is a change in how data is *read*, not what is stored.
     `groupId`, `SECONDARY`, `CompsetListFilter` and the two `SubscriptionMember` columns
-    reached dev through `db push` with **no migration files**.
+    reached dev through `db push` with **no migration files**. The soft-release flag (PR
+    #583) is on dev and set to `true` on every dev subscription; production gets it with
+    `dev → main`. `demote-non-primary-copies.ts` and `backfill-seasonal-override-groups.ts`
+    still lack a `--subscription` filter and must not run fleet-wide. See
+    [Features › Compsets at the subscription grain](../features/compset-subscription-grain.md).
+
+!!! note "Bokun daily pricing: test product left in DAILY mode"
+    Experience 1174595 on `pricepush2@walkway.ai` has `priceType: DAILY` since 2026-09-16
+    (switched by API during verification; there is no vendor screen). Its 332 schedule rules
+    are stored but not served. No client product is on daily pricing; the first real
+    candidate is Urban Saunters 971189. Before any wider rollout the service must prune
+    daily rules with `travelDate < today` (512-rule cap per product). See
+    [Bokun › Daily pricing](../integrations/bokun.md#daily-pricing).
+
+!!! note "TC Brew Bus clean-up is not finished"
+    Walkway purchase rules and schedules remain on 11 of the 12 buses
+    (`scripts/xola-remove-walkway-purchase-rules.ts --skip-experience 61c9eed246c64a696c667feb`
+    purges them), the #14 seller schedules have to be restored, and the 539 / 499 guardrails
+    must hold before auto-pilot goes back on. See [Xola › Cleaning up](../integrations/xola.md#brew-bus-incident).
+
+!!! note "World of Illusion: exclusions seeded, auto-apply still off"
+    Two time-slot exclusions are live on their subscription; `autoApply` on the Ventrata
+    product setup is still `false`. Flipping it is the step that makes ENG-2584 visible.
+
+!!! note "Extranomical (ENG-2619): our side is fixed, Viator is not"
+    Every push writes `VERIFIED` since 2026-09-15. The price still missing on Viator is
+    Ventrata → Viator propagation; the operator's "remove all rules" also removed our 19
+    September pricing rule, and the *Airbnb - 20% YOS* promotion is still active. Test
+    protocol in [Ventrata](../integrations/ventrata.md#no-adult-price).
+
+!!! note "Billing: 15 Stripe customers unmatched"
+    Six ambiguous and nine unmatched customers from the `billing_accounts` backfill await
+    finance's decisions (`--decisions` file). The invoice pipeline does not read
+    `billing_stripe_customers.product_ids` yet, so Boost Portugal's Sintra lines still go to
+    the default customer. The live Stripe webhook destination is not created. See
+    [Features › Billing](../features/billing-accounts.md).
 
 Conventions: Conventional Commits, one ENG ticket per branch, never edit a merged migration —
 always a follow-up. Every new vendor flow ships with a `*.push-origin.spec.ts` plus dispatcher
