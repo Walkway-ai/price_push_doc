@@ -300,7 +300,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../features/market-intelligence-access-flag/" class="md-tabs__link">
+        <a href="../../features/compset-subscription-grain/" class="md-tabs__link">
           
   
   
@@ -958,6 +958,67 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#daily-pricing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Daily pricing and schedule priority (REST 2.1.19)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Daily pricing and schedule priority (REST 2.1.19)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#daily-pricing-one-rule-per-date" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Daily pricing: one rule per date
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#moving-one-experience-to-daily-pricing-the-pilot-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Moving one experience to daily pricing (the pilot script)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schedule-priority-the-top-one-wins-but-it-did-not-matter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schedule priority: the top one wins — but it did not matter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rollout-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rollout plan
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#reliability-machinery" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1223,6 +1284,90 @@
   
   
     <li class="md-nav__item">
+      <a href="../../features/compset-subscription-grain/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compsets at the subscription grain (soft release)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/price-push-slot-exclusions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Time-slot exclusions (ENG-2584)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/billing-accounts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Billing accounts and Stripe customers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../features/market-intelligence-access-flag/" class="md-nav__link">
         
   
@@ -1396,6 +1541,67 @@
       
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#daily-pricing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Daily pricing and schedule priority (REST 2.1.19)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Daily pricing and schedule priority (REST 2.1.19)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#daily-pricing-one-rule-per-date" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Daily pricing: one rule per date
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#moving-one-experience-to-daily-pricing-the-pilot-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Moving one experience to daily pricing (the pilot script)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schedule-priority-the-top-one-wins-but-it-did-not-matter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schedule priority: the top one wins — but it did not matter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rollout-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rollout plan
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1671,6 +1877,26 @@ push reports success. This is the most common cause of "we pushed but nothing ch
 <td><code>POST</code></td>
 <td><code>/restapi/v2.0/pricing/schedule</code></td>
 </tr>
+<tr>
+<td>Reorder schedules (2.1.19)</td>
+<td><code>POST</code></td>
+<td><code>/restapi/v2.0/pricing/schedules/reorder</code></td>
+</tr>
+<tr>
+<td>Read daily prices (2.1.19)</td>
+<td><code>GET</code></td>
+<td><code>/restapi/v2.0/experience/{id}/dailyPricing?from&amp;to</code></td>
+</tr>
+<tr>
+<td><strong>Write daily prices</strong> (2.1.19)</td>
+<td><code>POST</code></td>
+<td><code>/restapi/v2.0/experience/{id}/dailyPricing</code></td>
+</tr>
+<tr>
+<td>Delete a daily price (2.1.19)</td>
+<td><code>DELETE</code></td>
+<td><code>/restapi/v2.0/experience/{id}/dailyPricing?travelDate&amp;rateId&amp;priceCatalogId</code></td>
+</tr>
 </tbody>
 </table>
 <p>Three <code>GET</code>s precede every push — rates to resolve <code>rateId</code> from <code>tour_grade_code</code>, <code>PRICING</code>
@@ -1705,6 +1931,153 @@ contract. See the post-mortem of 19 May 2026. If you are about to make this <cod
 less data, read section 11 of <code>docs/BOKUN_PRICE_PUSH.md</code> first — it is a checklist written
 for this specific temptation.</p>
 </div>
+<hr />
+<h2 id="daily-pricing">Daily pricing and schedule priority (REST 2.1.19)<a class="headerlink" href="#daily-pricing" title="Permanent link">&para;</a></h2>
+<p>Bokun shipped REST v2 spec <strong>2.1.19</strong> in September 2026. Nothing was deprecated; two things
+were added. Both are implemented (PR #579, merged 2026-09-16) and <strong>off by default</strong>. What
+follows was verified live on our test account (<code>pricepush2@walkway.ai</code>, experience
+1174595) on 2026-09-16, not read off the spec.</p>
+<h3 id="daily-pricing-one-rule-per-date">Daily pricing: one rule per date<a class="headerlink" href="#daily-pricing-one-rule-per-date" title="Permanent link">&para;</a></h3>
+<p>A product is either on <strong>price schedules</strong> (<code>priceType: "SCHEDULE"</code>, every product today) or
+on <strong>daily pricing</strong> (<code>priceType: "DAILY"</code>). In daily mode a price is a flat rule keyed by
+travel date:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">"travelDate"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2026-10-01"</span><span class="p">,</span><span class="w"> </span><span class="nt">"rate"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2331221</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="nt">"priceCatalogId"</span><span class="p">:</span><span class="w"> </span><span class="mi">155425</span><span class="p">,</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">"pricingCategoryId"</span><span class="p">:</span><span class="w"> </span><span class="mi">1138109</span><span class="p">,</span><span class="w"> </span><span class="nt">"amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"61.00"</span><span class="p">,</span><span class="w"> </span><span class="nt">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EUR"</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+<p><code>POST /experience/{id}/dailyPricing { "items": [...] }</code> writes the rules sent and <strong>leaves
+every other rule alone</strong>. Compare with the <code>PUT</code> above: no schedule to create for the date,
+no body that must carry every base and schedule rule the experience ever had, no risk of
+deactivating a rule by omission. The full round trip measured on 1174595:</p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Base served (OCTO) before</td>
+<td>93.00 / 83.70 / 79.05 / 88.00</td>
+</tr>
+<tr>
+<td><code>POST</code> 4 rules for 2026-10-01</td>
+<td><code>200 {"changed": 4}</code></td>
+</tr>
+<tr>
+<td><code>GET dailyPricing?from&amp;to</code></td>
+<td>the 4 rules, key <code>experienceDailyPrices</code></td>
+</tr>
+<tr>
+<td>OCTO after</td>
+<td><strong>61.00 / 51.00 / 56.00 / 46.00</strong>, served immediately</td>
+</tr>
+<tr>
+<td>Same <code>POST</code> again</td>
+<td><strong><code>204</code>, empty body</strong> (not <code>{changed: 0}</code> as the spec implies)</td>
+</tr>
+<tr>
+<td>Undo: 4 <code>DELETE ?travelDate&amp;rateId&amp;priceCatalogId&amp;pricingCategoryId</code></td>
+<td><code>200 {"changed": 1}</code> each</td>
+</tr>
+<tr>
+<td>OCTO after undo</td>
+<td>base again</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition danger">
+<p class="admonition-title">Three facts the spec does not tell you</p>
+<p><strong>1. The switch is API-only.</strong> Nothing in the vendor dashboard changes <code>priceType</code>; the
+help centre does not mention daily pricing. <code>PUT /experience/{id}/components
+{"priceType": "DAILY"}</code> does it (200, <code>lastModified</code> bumps), and <code>"SCHEDULE"</code> puts it
+back. There is no vendor-facing screen for it, so <strong>a client cannot opt in alone</strong> and
+an account that says "we switched it" has not.</p>
+<p><strong>2. In DAILY mode the schedule rules stop being served.</strong> They stay stored (the 332
+rules on 1174595 were all still there) but OCTO falls back to the base price: a schedule
+rule at 70.00 that was served in SCHEDULE mode served 93.00 (base) the moment the
+product went DAILY. Every Walkway single-day price already pushed for a future date
+disappears at the switch unless it is re-created as a daily rule. <code>PUT</code> with schedule
+rules is refused afterwards: <em>"Cannot set daily pricing when there are scheduled
+rules"</em>. A daily rule and a schedule rule on the same date: the daily one wins.</p>
+<p><strong>3. Max 512 daily rules per product</strong>, past dates included. A push writes
+<code>rates × pricing categories × price catalogs</code> rules per date. On the accounts pushing
+today that is 360 rules per date for Ciao Florence 328399 (one date fits), 72 for
+328344, 15 to 30 for the others, 6 for Urban Saunters 971195 (90 future dates already
+pushed = 540, over the cap), 4 for Urban Saunters 971189 (7 dates, fits). <strong>Before the
+gates open the service needs to prune daily rules with <code>travelDate &lt; today</code></strong>; it does
+not yet.</p>
+</div>
+<p>How the backend uses it (<code>updateBasePriceWithHistory</code>, <code>src/bokun/bokun-daily-pricing.ts</code>):</p>
+<ol>
+<li><strong>Mode</strong> is decided once per push, per experience, before any schedule would be created.
+   <code>BOKUN_DAILY_PRICING_MODE</code> is <code>off</code> (default, nothing changes), <code>auto</code> (one
+   <code>GET dailyPricing</code> per experience, cached six hours: 200 means daily, 409
+   <em>"Experience#… is not configured to use daily pricing"</em> means schedules) or <code>on</code> (every
+   date push goes daily, so <strong>never</strong> set it while one product is still on schedules).
+   <code>BOKUN_DAILY_PRICING_EXPERIENCES</code> is a comma-separated allowlist that forces daily mode
+   for those experiences whatever the global switch says: the rollout tool.</li>
+<li>In daily mode the push builds <code>pushes × catalogs</code> items for the one travel date, reads
+   the current rules for that date, and either skips (same no-op rule as the <code>PUT</code> path,
+   <code>BOKUN_SKIP_NOOP</code>) or issues one <code>POST</code>. No price schedule is created or cached, and the
+   history row has <code>bokunScheduleId = null</code>.</li>
+<li><strong>Undo</strong> works. The history row stores a snapshot under <code>revertPricingBody</code> marked
+   <code>__bokunDailyPricing</code>: the rules that existed for the touched tuples and the rules pushed.
+   Undo <code>POST</code>s the previous rules back and <code>DELETE</code>s the tuples that had none. A no-op push
+   stores nothing to revert and undo says so.</li>
+<li>Both modes coexist on one account, one product at a time. Rate resolution, currency and
+   catalog filtering, pricing-rule expansion, drift guard, circuit breaker, price-table
+   mirror and history row are the same code; only the write and the undo differ.</li>
+</ol>
+<h3 id="moving-one-experience-to-daily-pricing-the-pilot-script">Moving one experience to daily pricing (the pilot script)<a class="headerlink" href="#moving-one-experience-to-daily-pricing-the-pilot-script" title="Permanent link">&para;</a></h3>
+<p><code>scripts/bokun-daily-pricing-pilot.ts --subscription &lt;id&gt; --experience &lt;id&gt; [--apply]</code>
+(branch <code>feat/bokun-daily-pricing-pilot</code>) does the switch safely: backs up the PRICING
+component, turns the Walkway schedule rules of <strong>future</strong> dates into daily rules
+(schedule → date through <code>bokun_supplier_price_schedules</code>), refuses above the 512 cap,
+switches <code>priceType</code>, <code>POST</code>s the migration, and compares what OCTO serves for the next 14
+days before and after (expected: 0 slots different). <code>--rollback</code> deletes the daily rules
+from today on and puts <code>priceType</code> back to <code>SCHEDULE</code>; the schedule rules were never
+removed, so the previous prices are served again.</p>
+<p>Order matters when enabling a real account: set <code>BOKUN_DAILY_PRICING_EXPERIENCES=&lt;id&gt;</code> on
+Cloud Run <strong>first</strong>, then run the script with <code>--apply</code> right after. A product in DAILY mode
+while the backend still takes the schedules path fails every push with the 400 above; the
+allowlist set while the product is still on schedules fails with 409. Either gap costs a few
+pushes, never money.</p>
+<p>Candidate for the first real pilot, measured 2026-09-16: <strong>Urban Saunters 971189</strong> (4 rules
+per date, 7 future dates, 28 rules to migrate, no operator schedule rule on the experience
+that DAILY mode would stop serving). Every other pushed experience either exceeds the cap or
+belongs to an inactive account.</p>
+<h3 id="schedule-priority-the-top-one-wins-but-it-did-not-matter">Schedule priority: the top one wins — but it did not matter<a class="headerlink" href="#schedule-priority-the-top-one-wins-but-it-did-not-matter" title="Permanent link">&para;</a></h3>
+<p>The help centre says overlapping schedules resolve by list order, first wins, and a new
+schedule lands at the bottom. So <code>POST /pricing/schedules/reorder {priceScheduleIds: [...]}</code>
+was wired to run after every schedule creation, moving Walkway's schedules to the top
+(<code>reorderPriceSchedulesWalkwayFirst</code>, backlog script <code>scripts/bokun-reorder-schedules.ts</code>).
+Verified live on the test account: 200, order relu = order sent.</p>
+<p>Then the premise was checked on the real accounts. Ciao Florence and Urban Saunters both
+have operator schedules <strong>above</strong> ours covering the pushed dates (11 049 and 4 982 pushes
+in 45 days ranked below an overlapping operator schedule). OCTO served the Walkway price on
+<strong>5 of 5</strong> pushed slots sampled anyway: the operator schedules carry no rule for the same
+rate/catalog tuple, so there is nothing to outrank. The reorder is therefore <strong>opt-in and
+off</strong> (<code>BOKUN_REORDER_SCHEDULES=true</code> turns it on); it rewrites the operator's whole
+schedule order and there is no evidence it fixes anything. Keep it off until a case shows a
+Walkway schedule genuinely outranked.</p>
+<div class="admonition note">
+<p class="admonition-title">Other people push prices on these accounts too</p>
+<p>Ciao Florence and Urban Saunters carry single-day schedules titled <code>…-aloja-ai</code>
+(15 to 20 September, 28 and 30 October 2026). A competitor writes to the same accounts
+through the same API.</p>
+</div>
+<h3 id="rollout-plan">Rollout plan<a class="headerlink" href="#rollout-plan" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Merged with the defaults (<code>BOKUN_DAILY_PRICING_MODE=off</code>, <code>BOKUN_REORDER_SCHEDULES</code>
+   unset): no behaviour change. This is the state of production since 2026-09-16.</li>
+<li>Test account: 1174595 is in <code>DAILY</code> mode (switched during verification, left there).
+   <code>BOKUN_DAILY_PRICING_EXPERIENCES=1174595</code> on Cloud Run, a push from the SaaS as
+   <code>pricepush2@walkway.ai</code>, <code>GET dailyPricing</code>, undo, <code>GET</code> again.</li>
+<li>First real account: Urban Saunters 971189 with the pilot script, one week of auto-pilot
+   watching the FAILED rows and the 512 headroom.</li>
+<li>Before widening: prune past daily rules in the service, then <code>auto</code>.</li>
+</ol>
 <hr />
 <h2 id="reliability-machinery">Reliability machinery<a class="headerlink" href="#reliability-machinery" title="Permanent link">&para;</a></h2>
 <p>Bokun degrades often enough to justify three separate mechanisms.</p>
@@ -1802,6 +2175,21 @@ it touches an operator's prices.</p>
 <td>—</td>
 <td>Dump the <code>PUT</code> body to logs or Slack</td>
 </tr>
+<tr>
+<td><code>BOKUN_DAILY_PRICING_MODE</code></td>
+<td><code>off</code></td>
+<td><code>on</code> or <code>auto</code> switches date pushes to <code>POST dailyPricing</code> (see <a href="#daily-pricing">above</a>)</td>
+</tr>
+<tr>
+<td><code>BOKUN_DAILY_PRICING_EXPERIENCES</code></td>
+<td>—</td>
+<td>Comma-separated experience ids forced into daily mode</td>
+</tr>
+<tr>
+<td><code>BOKUN_REORDER_SCHEDULES</code></td>
+<td>off</td>
+<td><code>true</code> moves Walkway schedules to the top after creating one</td>
+</tr>
 </tbody>
 </table>
 <hr />
@@ -1809,6 +2197,8 @@ it touches an operator's prices.</p>
 <p>Documented with reproduction detail in section 9 of <code>docs/BOKUN_PRICE_PUSH.md</code>:</p>
 <ul>
 <li>a schedule is created but does not cover the target date, so the price silently falls back</li>
+<li>a schedule covers the date but sits below an operator's seasonal schedule, so the operator's
+  price wins (fixed by the <a href="#daily-pricing">reorder</a>; run the backlog script on old accounts)</li>
 <li><code>applyPricingRules</code> returns an unexpected amount</li>
 <li>rate id resolution fails and <code>rateId</code> comes back <code>null</code></li>
 <li>OCTO availability and the <code>PRICING</code> component disagree</li>
@@ -1822,19 +2212,19 @@ it touches an operator's prices.</p>
 operator <strong>pastes nothing</strong>: they give their Bokun short name, approve Walkway on Bokun's own
 consent screen, and the callback writes the credentials onto the subscription.</p>
 <h3 id="the-two-entry-points-and-why-only-one-works">The two entry points, and why only one works<a class="headerlink" href="#the-two-entry-points-and-why-only-one-works" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>FROM WALKWAY  (the only complete path)
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  /connect → "Your Bokun address" → Continue to Bokun
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    → GET /bokun/oauth/start        authenticated, canEditSubscription
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    → state row created WITH subscriptionId + userId
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    → {domain}.bokun.io/appstore/oauth/authorize   ← operator approves
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    → GET /bokun/oauth/callback     state redeemed, subscription known
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    → credentials written → /connect?bokun=connected
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
-<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>FROM BOKUN'S APP STORE
-<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>  Bokun → GET /bokun/install        no session at all
-<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>    → state row WITHOUT subscriptionId
-<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>    → … install saved, subscriptionId = null, NO credentials written
-<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>    → /connect?bokun=unclaimed
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>FROM WALKWAY  (the only complete path)
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  /connect → "Your Bokun address" → Continue to Bokun
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    → GET /bokun/oauth/start        authenticated, canEditSubscription
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    → state row created WITH subscriptionId + userId
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    → {domain}.bokun.io/appstore/oauth/authorize   ← operator approves
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    → GET /bokun/oauth/callback     state redeemed, subscription known
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    → credentials written → /connect?bokun=connected
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>FROM BOKUN'S APP STORE
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>  Bokun → GET /bokun/install        no session at all
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>    → state row WITHOUT subscriptionId
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>    → … install saved, subscriptionId = null, NO credentials written
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>    → /connect?bokun=unclaimed
 </code></pre></div>
 <p>Both build the identical authorize URL, so Bokun cannot tell them apart; the difference is
 entirely on our side — whether the pending state carries a subscription.</p>
@@ -1851,12 +2241,12 @@ installed on Bokun's side, not who may speak for a Walkway account.</p>
 <h3 id="what-bokun-actually-returns">What Bokun actually returns<a class="headerlink" href="#what-bokun-actually-returns" title="Permanent link">&para;</a></h3>
 <p>Read off a real install on 2026-09-08 (<code>walkway-pizza</code>, all six scopes), logged as a shape
 with every value withheld:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>{ access_token: &lt;string:32&gt;,
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  appInstalledByUserEmail: &lt;string:27&gt;,
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  appInstalledByUserFirstName: &lt;string:2&gt;, appInstalledByUserLastName: &lt;string:7&gt;,
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  legacyApiCredentials: { accessKey: &lt;string:32&gt;, secretKey: &lt;string:32&gt; },
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  pricing: { chargeType: &lt;string:15&gt;, pricePlan: object },
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  scope: &lt;string:90&gt;, vendor_id: &lt;string:18&gt; }
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>{ access_token: &lt;string:32&gt;,
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  appInstalledByUserEmail: &lt;string:27&gt;,
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>  appInstalledByUserFirstName: &lt;string:2&gt;, appInstalledByUserLastName: &lt;string:7&gt;,
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>  legacyApiCredentials: { accessKey: &lt;string:32&gt;, secretKey: &lt;string:32&gt; },
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>  pricing: { chargeType: &lt;string:15&gt;, pricePlan: object },
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>  scope: &lt;string:90&gt;, vendor_id: &lt;string:18&gt; }
 </code></pre></div>
 <div class="admonition danger">
 <p class="admonition-title">The field is <code>legacyApiCredentials</code></p>
@@ -1902,10 +2292,10 @@ onboarding N operators means N client id/secret pairs. Since September 2026 thos
 <p><code>BOKUN_APP_CLIENT_ID</code> / <code>BOKUN_APP_CLIENT_SECRET</code> still work as the <strong>last fallback</strong> (the
 pre-registry app), so the installs made before the table keep their meaning.</p>
 <p><strong>Which app signs what</strong> (<code>BokunAppsService</code>):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>/bokun/oauth/start?domain=X   → app for X, else fallback row, else env pair; appId written on the state
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>/bokun/oauth/callback         → state peeked (not consumed) → its appId → HMAC verified with THAT secret
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>                                → only then the state is consumed and the code exchanged with the same app
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>/bokun/install (cold, from Bokun) → domain's app, else every active app tried against the HMAC, else env
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>/bokun/oauth/start?domain=X   → app for X, else fallback row, else env pair; appId written on the state
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>/bokun/oauth/callback         → state peeked (not consumed) → its appId → HMAC verified with THAT secret
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>                                → only then the state is consumed and the code exchanged with the same app
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>/bokun/install (cold, from Bokun) → domain's app, else every active app tried against the HMAC, else env
 </code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">Secrets need the key, and the key needs to exist before the first row</p>
@@ -1921,17 +2311,17 @@ shows <code>(unreadable)</code> for rows sealed under another key).</p>
 <p>The operator creates a custom app in their Bokun account (Settings → Apps) with these two
    URLs <strong>character for character</strong> and all six scopes — without <code>LEGACY_API</code> no credentials
    come back and the callback lands on <code>?bokun=failed&amp;reason=no-credentials</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Install URL   {BACKEND}/bokun/install
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>Redirect URL  {BACKEND}/bokun/oauth/callback
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Install URL   {BACKEND}/bokun/install
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>Redirect URL  {BACKEND}/bokun/oauth/callback
 </code></pre></div>
 <p><code>GET api/admin/bokun-apps/registration-urls</code> returns them filled in.</p>
 </li>
 <li>
 <p>They send us the app's client id and secret. We register the row:
    <code>POST api/admin/bokun-apps { label, domain, clientId, clientSecret }</code> from the back-office, or</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>DATABASE_URL=&lt;prod&gt; BOKUN_APP_SECRETS_KEY=&lt;key&gt; BOKUN_NEW_APP_SECRET=&lt;secret&gt; \
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>  npx ts-node -r dotenv/config scripts/register-bokun-app.ts \
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>  --label "&lt;Operator&gt; custom app" --domain &lt;short name&gt; --client-id &lt;id&gt; --client-secret-env BOKUN_NEW_APP_SECRET
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>DATABASE_URL=&lt;prod&gt; BOKUN_APP_SECRETS_KEY=&lt;key&gt; BOKUN_NEW_APP_SECRET=&lt;secret&gt; \
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>  npx ts-node -r dotenv/config scripts/register-bokun-app.ts \
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>  --label "&lt;Operator&gt; custom app" --domain &lt;short name&gt; --client-id &lt;id&gt; --client-secret-env BOKUN_NEW_APP_SECRET
 </code></pre></div>
 </li>
 <li>
@@ -1940,7 +2330,18 @@ shows <code>(unreadable)</code> for rows sealed under another key).</p>
    pasted nothing.</p>
 </li>
 </ol>
-<p>Schema for <code>bokun_apps</code> and the <code>appId</code> columns: <strong><code>prisma/manual/bokun-apps.sql</code></strong>, applied
+<p><strong>In the back office</strong> (PR #138): <code>/settings/bokun-apps</code> lists every app (label, domain,
+client id, 4-character secret hint, scopes, active) and creates new ones; the subscription
+page's Credentials tab shows a <strong>Bokun app card</strong> for the account's own app, always
+rendered, even before the account has a Bokun credential, because new customers have
+<code>integrationType: null</code> until they connect. An app is tied to a subscription
+(<code>bokun_apps.subscriptionId</code>, unique): <code>/oauth/start</code> resolves the app by subscription
+first, then by domain, then the fallback row, then the env pair; a cold install from
+Bokun's store is bound to <code>app.subscriptionId</code> when the app has one. There is no delete
+button: a row created by mistake goes with <code>DELETE FROM bokun_apps WHERE id = '&lt;id&gt;'</code>
+after checking <code>bokun_oauth_installs</code> and <code>bokun_oauth_states</code> do not reference it.</p>
+<p>Schema for <code>bokun_apps</code> and the <code>appId</code> columns: <strong><code>prisma/manual/bokun-apps.sql</code></strong> and
+<strong><code>prisma/manual/bokun-apps-subscription.sql</code></strong>, applied
 by hand before the deploy (same <code>db push</code> convention as the OAuth tables).</p>
 <p><code>BOKUN_OAUTH_REDIRECT_BASE_URL</code> must point at the <strong>backend</strong>. If unset it falls back to
 <code>FRONTEND_URL</code> and the redirect URI stops matching what Bokun has registered.</p>

@@ -298,7 +298,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="features/market-intelligence-access-flag/" class="md-tabs__link">
+        <a href="features/compset-subscription-grain/" class="md-tabs__link">
           
   
   
@@ -1124,6 +1124,90 @@
   
   
     <li class="md-nav__item">
+      <a href="features/compset-subscription-grain/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compsets at the subscription grain (soft release)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="features/price-push-slot-exclusions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Time-slot exclusions (ENG-2584)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="features/billing-accounts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Billing accounts and Stripe customers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="features/market-intelligence-access-flag/" class="md-nav__link">
         
   
@@ -1464,6 +1548,18 @@ is on fire, and what to do at 2am.</p>
 <td><a href="integrations/bokun/#custom-app">The custom app</a></td>
 </tr>
 <tr>
+<td>A Bokun product should move to daily pricing</td>
+<td><a href="integrations/bokun/#daily-pricing">Daily pricing, verified live</a></td>
+</tr>
+<tr>
+<td>Ventrata pushes show <code>no_adult_price</code></td>
+<td><a href="integrations/ventrata/#no-adult-price">The price table lost every push</a></td>
+</tr>
+<tr>
+<td>A member cannot edit a compset, or sees a colleague's</td>
+<td><a href="features/compset-subscription-grain/">Compsets at the subscription grain</a></td>
+</tr>
+<tr>
 <td>The push went through but the price is wrong</td>
 <td><a href="integrations/ventrata/">Ventrata tax round-trip</a> · <a href="integrations/bokun/">Bokun <code>PUT</code> semantics</a></td>
 </tr>
@@ -1506,6 +1602,9 @@ for people changing it.</p>
 </ul>
 <h3 id="features">Features<a class="headerlink" href="#features" title="Permanent link">&para;</a></h3>
 <ul>
+<li><a href="features/compset-subscription-grain/">Compsets at the subscription grain</a> — the per-subscription soft-release flag, what it gates, how to enable one account</li>
+<li><a href="features/price-push-slot-exclusions/">Time-slot exclusions</a> — keep auto-pilot off a promotional departure (ENG-2584)</li>
+<li><a href="features/billing-accounts/">Billing accounts and Stripe customers</a> — who gets invoiced for what, the webhook</li>
 <li><a href="features/market-intelligence-access-flag/">Market intelligence access flag</a></li>
 </ul>
 <hr />

@@ -296,7 +296,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../features/market-intelligence-access-flag/" class="md-tabs__link">
+        <a href="../../features/compset-subscription-grain/" class="md-tabs__link">
           
   
   
@@ -1005,6 +1005,90 @@
   
   
     <li class="md-nav__item">
+      <a href="../../features/compset-subscription-grain/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compsets at the subscription grain (soft release)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/price-push-slot-exclusions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Time-slot exclusions (ENG-2584)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/billing-accounts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Billing accounts and Stripe customers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../features/market-intelligence-access-flag/" class="md-nav__link">
         
   
@@ -1627,17 +1711,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#keeping-this-page-true" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Keeping this page true
-      
-    </span>
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -2145,17 +2218,6 @@
     <span class="md-ellipsis">
       
         Open operational items
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#keeping-this-page-true" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Keeping this page true
       
     </span>
   </a>
@@ -3116,6 +3178,34 @@ the reasoning lives in the integration pages, not the diffs.</p>
 <td>#604, #605 (frontend)</td>
 <td>Data Hub 500 fix; Bokun connect-by-authorization on <code>/connect</code></td>
 </tr>
+<tr>
+<td>#567</td>
+<td>Xola: booking-priced products price the outing line as <code>amount</code> (ENG-2607, TC Brew Bus). See <a href="../../integrations/xola/#booking-priced">Xola › Booking-priced</a></td>
+</tr>
+<tr>
+<td>#568, #569</td>
+<td>Time-slot exclusions on the auto-apply (ENG-2584) and the boot hotfix (<code>SlotExclusionModule</code> imports <code>SubscriptionsModule</code>). See <a href="../../features/price-push-slot-exclusions/">Features › Time-slot exclusions</a></td>
+</tr>
+<tr>
+<td>#570, #571</td>
+<td>Bokun: one custom app per operator, <code>bokun_apps</code> registry with sealed secrets, app tied to a subscription; back office #138. See <a href="../../integrations/bokun/#bokun-apps">Bokun › App credentials</a></td>
+</tr>
+<tr>
+<td>#573</td>
+<td>Ventrata: price-table upsert names the ADULT unit from the pre-push availability; ends three days of <code>no_adult_price</code> (ENG-2619). See <a href="../../integrations/ventrata/#no-adult-price">Ventrata</a></td>
+</tr>
+<tr>
+<td>#579</td>
+<td>Bokun REST 2.1.19: daily-pricing write path behind <code>BOKUN_DAILY_PRICING_MODE=off</code>, schedule reorder opt-in <code>BOKUN_REORDER_SCHEDULES=true</code>. Verified live 2026-09-16. See <a href="../../integrations/bokun/#daily-pricing">Bokun › Daily pricing</a></td>
+</tr>
+<tr>
+<td><code>feat/billing-stripe-customers</code> (branch)</td>
+<td><code>billing_stripe_customers</code>: several Stripe customers per subscription routed by product; table and Boost Portugal rows applied in production. See <a href="../../features/billing-accounts/">Features › Billing</a></td>
+</tr>
+<tr>
+<td>#583 (<strong>dev only</strong>)</td>
+<td>Compsets at the subscription grain behind <code>Subscription.compsetAccountGrainEnabled</code>; back office <code>feat/compset-account-grain-toggle</code>, front <code>feat/compset-account-grain-gate</code>. See <a href="../../features/compset-subscription-grain/">Features › Compsets at the subscription grain</a></td>
+</tr>
 </tbody>
 </table>
 <hr />
@@ -3154,13 +3244,64 @@ Keep the OCTO branch for the 32 existing subscriptions that do have a token.</p>
 <p><code>revokedAt</code> exists on <code>bokun_oauth_installs</code> and nothing sets it. A vendor who
 uninstalls leaves a dead token behind and we will not know.</p>
 </div>
+<div class="admonition danger">
+<p class="admonition-title">The admin panel endpoints are open</p>
+<p><code>src/admin-panel/admin-panel.controller.ts</code> has <code>@UseGuards(JwtAuthGuard, RolesGuard)</code>
+<strong>commented out</strong> (lines 7 and 31), and Cloud Run does not require authentication on
+the API service. Every <code>api/admin/users/*</code> endpoint — entitlement flags, Calendar v2,
+Data Hub, the tours, the new account-grain flag — accepts an anonymous <code>PATCH</code> in
+production. Found on 2026-09-17 when an unauthenticated probe of
+<code>…/calendar-v2-access</code> returned 200 and wrote the row. Re-enable the guards (ADMIN role)
+after checking how the back office authenticates (it has an OIDC layer in
+<code>backend-config.ts</code>).</p>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Compset → subscription migration is half done</p>
 <p>Applied on dev only: <code>Compset.subscription_id</code> backfilled 112 → 15,427, 932 setups
 normalised, 181 rows created, 99 override groups. Nothing was deleted at any point — the
 standing constraint was that this is a change in how data is <em>read</em>, not what is stored.
 <code>groupId</code>, <code>SECONDARY</code>, <code>CompsetListFilter</code> and the two <code>SubscriptionMember</code> columns
-reached dev through <code>db push</code> with <strong>no migration files</strong>.</p>
+reached dev through <code>db push</code> with <strong>no migration files</strong>. The soft-release flag (PR</p>
+<h1 id="583-is-on-dev-and-set-to-true-on-every-dev-subscription-production-gets-it-with">583) is on dev and set to <code>true</code> on every dev subscription; production gets it with<a class="headerlink" href="#583-is-on-dev-and-set-to-true-on-every-dev-subscription-production-gets-it-with" title="Permanent link">&para;</a></h1>
+<p><code>dev → main</code>. <code>demote-non-primary-copies.ts</code> and <code>backfill-seasonal-override-groups.ts</code>
+still lack a <code>--subscription</code> filter and must not run fleet-wide. See
+<a href="../../features/compset-subscription-grain/">Features › Compsets at the subscription grain</a>.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Bokun daily pricing: test product left in DAILY mode</p>
+<p>Experience 1174595 on <code>pricepush2@walkway.ai</code> has <code>priceType: DAILY</code> since 2026-09-16
+(switched by API during verification; there is no vendor screen). Its 332 schedule rules
+are stored but not served. No client product is on daily pricing; the first real
+candidate is Urban Saunters 971189. Before any wider rollout the service must prune
+daily rules with <code>travelDate &lt; today</code> (512-rule cap per product). See
+<a href="../../integrations/bokun/#daily-pricing">Bokun › Daily pricing</a>.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">TC Brew Bus clean-up is not finished</p>
+<p>Walkway purchase rules and schedules remain on 11 of the 12 buses
+(<code>scripts/xola-remove-walkway-purchase-rules.ts --skip-experience 61c9eed246c64a696c667feb</code>
+purges them), the #14 seller schedules have to be restored, and the 539 / 499 guardrails
+must hold before auto-pilot goes back on. See <a href="../../integrations/xola/#brew-bus-incident">Xola › Cleaning up</a>.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">World of Illusion: exclusions seeded, auto-apply still off</p>
+<p>Two time-slot exclusions are live on their subscription; <code>autoApply</code> on the Ventrata
+product setup is still <code>false</code>. Flipping it is the step that makes ENG-2584 visible.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Extranomical (ENG-2619): our side is fixed, Viator is not</p>
+<p>Every push writes <code>VERIFIED</code> since 2026-09-15. The price still missing on Viator is
+Ventrata → Viator propagation; the operator's "remove all rules" also removed our 19
+September pricing rule, and the <em>Airbnb - 20% YOS</em> promotion is still active. Test
+protocol in <a href="../../integrations/ventrata/#no-adult-price">Ventrata</a>.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Billing: 15 Stripe customers unmatched</p>
+<p>Six ambiguous and nine unmatched customers from the <code>billing_accounts</code> backfill await
+finance's decisions (<code>--decisions</code> file). The invoice pipeline does not read
+<code>billing_stripe_customers.product_ids</code> yet, so Boost Portugal's Sintra lines still go to
+the default customer. The live Stripe webhook destination is not created. See
+<a href="../../features/billing-accounts/">Features › Billing</a>.</p>
 </div>
 <p>Conventions: Conventional Commits, one ENG ticket per branch, never edit a merged migration —
 always a follow-up. Every new vendor flow ships with a <code>*.push-origin.spec.ts</code> plus dispatcher
