@@ -87,6 +87,9 @@ nav:
       - Xola: integrations/xola.md
       - Prioticket: integrations/prioticket.md
   - Features:
+      - Compsets at the subscription grain (soft release): features/compset-subscription-grain.md
+      - Time-slot exclusions (ENG-2584): features/price-push-slot-exclusions.md
+      - Billing accounts and Stripe customers: features/billing-accounts.md
       - Market Intelligence Access Flag: features/market-intelligence-access-flag.md
   - Operations:
       - Backend Handover Runbook: operations/backend-handover.md

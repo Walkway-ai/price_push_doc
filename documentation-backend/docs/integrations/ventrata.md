@@ -128,6 +128,32 @@ than pricing an unidentified category.
 Walkway prices **every unit type a product exposes**, not only ADULT. A €0 unit is not
 necessarily a bug — a `FREE`/`OTHER` rule can legitimately set it.
 
+### The local price table lost every push for three days (ENG-2619) {: #no-adult-price }
+
+The fix above had a side effect. After each push the local `price` table is upserted from
+the pushed payload (the post-push GET is off in production, `VENTRATA_VERIFY_AFTER_PUSH`
+unset). That upsert found the ADULT unit with `guessUnitTypeFromId`, whose ADULT default is
+what PR #548 removed — so from 2026-09-07 it found **no** adult unit, and every Ventrata push
+wrote `priceUpsertStatus = SKIPPED / no_adult_price`: **401,938 rows across 10 operators in
+three days**, while the vendor write itself kept succeeding. The calendar showed the push as
+done and the local price never moved.
+
+Fixed in PR #573 (2026-09-14, `src/ventrata/price-table-adult-unit.ts`): the upsert now
+names the adult unit from the **pre-push availability**, where Ventrata labels every unit's
+type; a single-unit payload is the base price by construction; the id hint is the last
+resort, for the few ids that spell their type. Since 2026-09-15 every row is `VERIFIED`.
+
+What the same ticket taught about Extranomical (product `39f74fa7`, Yosemite): our write
+does reach Ventrata and is served on both the `CHECKOUT` and `CONNECT` sources. The price
+still not showing on Viator is Ventrata → Viator propagation, not us — and two things on
+the operator's side: pushes are written as Ventrata pricing rules (`PATCH
+/products/{id}/pricing`), so when the operator "removed all rules" our 19 September price
+went with them (279.00 → base 229.00); and the promotion *Airbnb - 20% YOS* was still
+active on every date checked, served at 183.20 against a 229.00 base. Test protocol for
+such a case: one manual push on a date with no promotion, no revert, check the `CONNECT`
+source with `scripts/inspect-ventrata-availability.ts --source=CONNECT`, and have the
+operator check Viator the same day.
+
 ### `ventrata_price_change_units.unitType` is wrong before September 2026 {: #unit-log }
 
 !!! warning "Do not trust this column on historical rows"

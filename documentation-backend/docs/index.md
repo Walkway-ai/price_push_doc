@@ -40,6 +40,9 @@ about it.
 | We are selling a slot the operator retired | [Xola: the operator's schedule wins](integrations/xola.md#operator-schedule) |
 | An operator says checkout got slow | [Xola: `PUT` merges actions](integrations/xola.md#action-merge) |
 | A Bokun operator cannot finish connecting | [The custom app](integrations/bokun.md#custom-app) |
+| A Bokun product should move to daily pricing | [Daily pricing, verified live](integrations/bokun.md#daily-pricing) |
+| Ventrata pushes show `no_adult_price` | [The price table lost every push](integrations/ventrata.md#no-adult-price) |
+| A member cannot edit a compset, or sees a colleague's | [Compsets at the subscription grain](features/compset-subscription-grain.md) |
 | The push went through but the price is wrong | [Ventrata tax round-trip](integrations/ventrata.md) · [Bokun `PUT` semantics](integrations/bokun.md) |
 
 ---
@@ -85,6 +88,9 @@ for people changing it.
 
 ### Features
 
+- [Compsets at the subscription grain](features/compset-subscription-grain.md) — the per-subscription soft-release flag, what it gates, how to enable one account
+- [Time-slot exclusions](features/price-push-slot-exclusions.md) — keep auto-pilot off a promotional departure (ENG-2584)
+- [Billing accounts and Stripe customers](features/billing-accounts.md) — who gets invoiced for what, the webhook
 - [Market intelligence access flag](features/market-intelligence-access-flag.md)
 
 ---
