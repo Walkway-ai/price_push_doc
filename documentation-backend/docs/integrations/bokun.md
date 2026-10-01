@@ -375,11 +375,30 @@ with every value withheld:
 paste today, so they map straight onto `bokunApiKey` / `bokunSecretKey` and the REST v2
 price push works untouched. `bokunOctoToken` is left alone — existing customers keep theirs.
 
-That matters for one internal caller: `getUnitTypesByExperienceId` still reads OCTO via
-`getBokunOctoTokenOrThrow`. It is **the only OCTO dependency in the pricing chain** and needs
-a REST v2 equivalent before an OAuth-only operator can be fully configured. The other four
-OCTO callers (`getProducts`, `getProductById`, `getAvailability`, `getBookings`) are
-controller surface taking an `x-api-token` header, outside the push path.
+!!! warning "The OCTO dependency was in the frontend, not the backend push"
+    The backend push never reads OCTO. The **frontend** manual push did: before every push
+    it gated on `bokunOctoToken`, then called `GET /bokun/products/:id` and
+    `POST /bokun/availability` (both OCTO, `x-api-token`) to get an option id and a
+    fallback currency. Neither is needed to build the `PATCH`. So every app-only operator
+    was blocked: no token opened the API key prompt, and a leftover dead token failed as
+    "Product mapping not found / HTTP 502" (Friends Guides, ENG-2741, 2026-10-01).
+
+    Fixed in `walkway_saas_frontend` #627: a working OCTO token keeps the OCTO path
+    unchanged; a **missing or rejected** token (`FORBIDDEN`, `Bokun authentication failed`)
+    falls back to the REST v2 keys alone; any other OCTO failure fails as before. On that
+    path the fallback currency comes from the operator's price catalogs, never a guessed EUR.
+
+What still reads OCTO, verified 2026-10-01:
+
+| Caller | Who calls it | Blocks an app-only operator? |
+| --- | --- | --- |
+| `getUnitTypesByExperienceId` / `getUnitTypesByWalkwayProduct` (`GET /bokun/experiences/:id/unit-types`, `GET /bokun/products/:id/unit-types`) | nothing, neither the frontend nor the backend | no |
+| `getProducts`, `getBookings` (`x-api-token` routes) | nothing in the frontend; catalog and bookings come from the Mage REST pipelines | no |
+| `getProductById`, `getAvailability` | the frontend push, only when a working OCTO token exists | no, since #627 |
+
+Everything else an app-only operator touches signs with the REST v2 keys or reads our own
+tables: rates, pricing, pricing categories, the price rules modal, Auto Pilot (setup,
+toggle, batch push), history and undo.
 
 ### App credentials — one custom app per operator {: #bokun-apps }
 
