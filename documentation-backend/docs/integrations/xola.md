@@ -424,6 +424,30 @@ without them. Without this, one deleted schedule would poison a rule permanently
 
 ## Booking-priced products (ENG-2423, ENG-2607) {: #booking-priced }
 
+!!! tip "Runbook: an operator says the checkout shows two prices, or the wrong fixed price"
+    1. **Is the product booking-priced?** `SELECT pricing_per FROM products WHERE product_id =
+       '<xola experience id>'` → `BOOKING`. If not, this section does not apply.
+    2. **Look at the cart, not `/timeslots`.** Open the operator's booking widget on the slot,
+       delete and re-add the item. Two price lines (*Fixed Price* + a guest type) = a rule on
+       the guest type is still live. One line at the wrong amount = a rule on the outing line.
+    3. **Find our rules.** Dry run the cleanup script for the subscription (below): it lists
+       every rule our history references and whether Xola still has it live.
+    4. **Stop the bleeding.** Undo the pushes from the price-change history (booking pushes
+       undo by deleting the rule), or run the script with `--apply` for the whole account.
+       Prices go back to the seller's own within a minute; verify in the cart.
+    5. **Before switching auto-pilot back on**, check the product's `minPrice` guardrail
+       against the operator's list price. A $299 floor on a $639 bus is what a bad rule looks
+       like before it is pushed.
+
+    Code: `src/xola/helpers/booking-outing-rule.helper.ts` (rule shape, read its header),
+    `XolaService.updateExperiencePriceWithHistory` (`bookingOutingPush`), `undoPriceChange`.
+    Xola's API team answers on the shared Slack channel; the September 2026 thread with them
+    is where the timeslot-link guidance came from.
+
+    **Prices frozen at the first push instead** (Walkway shows the new price, the cart keeps
+    the old one): that is the later ENG-2707 incident, fixed in backend #599. See the
+    integrations post-mortem of 2026-09-25 in `voyager_knowledge`.
+
 Some Xola experiences are priced **once per booking**, not per guest — a private bus, a limo.
 They still return a single demographic (`Guests`, `guests-over-21`, `beer-tour`) and express
 the per-booking nature only as `priceType: "outing"`.
@@ -501,8 +525,9 @@ leave.
 
 ### Cleaning up after the incident
 
-`scripts/xola-remove-walkway-purchase-rules.ts` (branch
-`fix/eng-2607-remove-walkway-purchase-rules`) lists every purchase rule referenced by an
+`scripts/xola-remove-walkway-purchase-rules.ts` (backend repo, branch
+`fix/eng-2607-remove-walkway-purchase-rules`, not merged to `main` as of 2026-10-01) lists
+every purchase rule referenced by an
 applied, un-reverted `xola_price_changes` row for a subscription, verifies each one on Xola
 (name `Walkway Price Push…`, tag `walkway`, right seller) and, with `--apply`, deletes it;
 `--purge-schedules` also removes the `[walkway …]` schedules on the affected experiences;
@@ -523,10 +548,17 @@ Things learned running it, all measured:
 - **Do not purge a product whose seller schedules are gone.** The operator deleted her own
   "Fri/Sat" and "Weekdays" schedules on one experience while investigating; our overrides
   were the only availability it had left. Purging them would have zeroed its calendar.
-  Rebuild the seller's schedules first (`eng-2552/xola-restore-14-schedules.ts` has the shape:
-  weekly, `times [1100, 1600]`, `allowedPrivacies ["private"]`, a `-100` weekday
-  `priceDelta` **plus** the paired "Schedule pricing rules" purchase rule — the schedule's
-  own `priceDelta` does nothing to the outing price by itself).
+  Rebuild the seller's schedules first. `scripts/xola-restore-seller-schedules-example.ts`
+  (same branch) is the worked example: weekly, `times [1100, 1600]`, `allowedPrivacies
+  ["private"]`, a `-100` weekday `priceDelta` **plus** the paired "Schedule pricing rules"
+  purchase rule; the schedule's own `priceDelta` does nothing to the outing price by
+  itself. Mirror the seller's other experiences, and prefer having the operator re-create
+  them in Xola's UI when they can: Xola then pairs the rule natively.
+
+!!! warning "Two dead-end branches"
+    `fix/eng-2607-booking-price-via-schedule` and `fix/eng-2607-booking-price-on-outing-template`
+    are not to be merged: both set `price`. The fix that shipped is
+    `fix/eng-2607-booking-outing-amount-main`.
 
 ### Before re-enabling a booking-priced operator
 
