@@ -2257,11 +2257,49 @@ far from the cause.</p>
 <p><strong>There is no OCTO token.</strong> The two keys are the shape of the Access/Secret pair operators
 paste today, so they map straight onto <code>bokunApiKey</code> / <code>bokunSecretKey</code> and the REST v2
 price push works untouched. <code>bokunOctoToken</code> is left alone — existing customers keep theirs.</p>
-<p>That matters for one internal caller: <code>getUnitTypesByExperienceId</code> still reads OCTO via
-<code>getBokunOctoTokenOrThrow</code>. It is <strong>the only OCTO dependency in the pricing chain</strong> and needs
-a REST v2 equivalent before an OAuth-only operator can be fully configured. The other four
-OCTO callers (<code>getProducts</code>, <code>getProductById</code>, <code>getAvailability</code>, <code>getBookings</code>) are
-controller surface taking an <code>x-api-token</code> header, outside the push path.</p>
+<div class="admonition warning">
+<p class="admonition-title">The OCTO dependency was in the frontend, not the backend push</p>
+<p>The backend push never reads OCTO. The <strong>frontend</strong> manual push did: before every push
+it gated on <code>bokunOctoToken</code>, then called <code>GET /bokun/products/:id</code> and
+<code>POST /bokun/availability</code> (both OCTO, <code>x-api-token</code>) to get an option id and a
+fallback currency. Neither is needed to build the <code>PATCH</code>. So every app-only operator
+was blocked: no token opened the API key prompt, and a leftover dead token failed as
+"Product mapping not found / HTTP 502" (Friends Guides, ENG-2741, 2026-10-01).</p>
+<p>Fixed in <code>walkway_saas_frontend</code> #627: a working OCTO token keeps the OCTO path
+unchanged; a <strong>missing or rejected</strong> token (<code>FORBIDDEN</code>, <code>Bokun authentication failed</code>)
+falls back to the REST v2 keys alone; any other OCTO failure fails as before. On that
+path the fallback currency comes from the operator's price catalogs, never a guessed EUR.</p>
+</div>
+<p>What still reads OCTO, verified 2026-10-01:</p>
+<table>
+<thead>
+<tr>
+<th>Caller</th>
+<th>Who calls it</th>
+<th>Blocks an app-only operator?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>getUnitTypesByExperienceId</code> / <code>getUnitTypesByWalkwayProduct</code> (<code>GET /bokun/experiences/:id/unit-types</code>, <code>GET /bokun/products/:id/unit-types</code>)</td>
+<td>nothing, neither the frontend nor the backend</td>
+<td>no</td>
+</tr>
+<tr>
+<td><code>getProducts</code>, <code>getBookings</code> (<code>x-api-token</code> routes)</td>
+<td>nothing in the frontend; catalog and bookings come from the Mage REST pipelines</td>
+<td>no</td>
+</tr>
+<tr>
+<td><code>getProductById</code>, <code>getAvailability</code></td>
+<td>the frontend push, only when a working OCTO token exists</td>
+<td>no, since #627</td>
+</tr>
+</tbody>
+</table>
+<p>Everything else an app-only operator touches signs with the REST v2 keys or reads our own
+tables: rates, pricing, pricing categories, the price rules modal, Auto Pilot (setup,
+toggle, batch push), history and undo.</p>
 <h3 id="bokun-apps">App credentials — one custom app per operator<a class="headerlink" href="#bokun-apps" title="Permanent link">&para;</a></h3>
 <p>Bokun will not give Walkway a public App Store app, and a custom app can only be installed
 on the vendor account that created it. So every operator has <strong>their own</strong> custom app, and

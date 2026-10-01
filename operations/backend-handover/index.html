@@ -2719,8 +2719,9 @@ consecutive 5xx, then a global half-open cooldown of 30 s once cumulative
 <code>/connect</code> and approves the app; the callback writes the credentials. See
 <a href="../../integrations/bokun/#custom-app">the custom app</a>. Two caveats: an
 install started from <strong>Bokun's app store</strong> cannot be attributed and lands
-unbound, and <code>getUnitTypesByExperienceId</code> still needs an OCTO token, which
-the app does not grant.</dd>
+unbound, and the app grants no OCTO token. Nothing an app-only operator uses
+needs one since <code>walkway_saas_frontend</code> #627 (see
+<a href="../../integrations/bokun/#custom-app">the custom app</a>).</dd>
 </dl>
 <h3 id="xola-59-s-median-push">Xola — 5.9 s median push<a class="headerlink" href="#xola-59-s-median-push" title="Permanent link">&para;</a></h3>
 <dl>
@@ -3234,10 +3235,12 @@ credentials. Direct new operators to <code>/connect</code>. <code>appInstalledBy
 is the basis for the screen when someone builds it.</p>
 </div>
 <div class="admonition warning">
-<p class="admonition-title"><code>getUnitTypesByExperienceId</code> still needs an OCTO token</p>
-<p>The custom app grants none. It is the only OCTO dependency left in the pricing chain, so
-an OAuth-only Bokun operator cannot be fully configured until it has a REST v2 path.
-Keep the OCTO branch for the 32 existing subscriptions that do have a token.</p>
+<p class="admonition-title">The custom app grants no OCTO token</p>
+<p>Until 2026-10-01 the frontend manual push required one, so app-only operators could not
+push (ENG-2741). Since <code>walkway_saas_frontend</code> #627 a missing or rejected token falls
+back to the REST v2 keys. <code>getUnitTypesByExperienceId</code> still reads OCTO but has no
+caller. Keep the OCTO branch for the existing subscriptions that do have a token; they
+migrate to the custom app once it is validated.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Bokun uninstall is not handled</p>
