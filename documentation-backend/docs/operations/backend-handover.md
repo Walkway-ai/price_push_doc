@@ -337,8 +337,9 @@ Onboarding
     `/connect` and approves the app; the callback writes the credentials. See
     [the custom app](../integrations/bokun.md#custom-app). Two caveats: an
     install started from **Bokun's app store** cannot be attributed and lands
-    unbound, and `getUnitTypesByExperienceId` still needs an OCTO token, which
-    the app does not grant.
+    unbound, and the app grants no OCTO token. Nothing an app-only operator uses
+    needs one since `walkway_saas_frontend` #627 (see
+    [the custom app](../integrations/bokun.md#custom-app)).
 
 ### Xola — 5.9 s median push
 
@@ -717,10 +718,12 @@ Things that are **not** in a branch and will not surface on their own.
     credentials. Direct new operators to `/connect`. `appInstalledByUserEmail` is stored and
     is the basis for the screen when someone builds it.
 
-!!! warning "`getUnitTypesByExperienceId` still needs an OCTO token"
-    The custom app grants none. It is the only OCTO dependency left in the pricing chain, so
-    an OAuth-only Bokun operator cannot be fully configured until it has a REST v2 path.
-    Keep the OCTO branch for the 32 existing subscriptions that do have a token.
+!!! warning "The custom app grants no OCTO token"
+    Until 2026-10-01 the frontend manual push required one, so app-only operators could not
+    push (ENG-2741). Since `walkway_saas_frontend` #627 a missing or rejected token falls
+    back to the REST v2 keys. `getUnitTypesByExperienceId` still reads OCTO but has no
+    caller. Keep the OCTO branch for the existing subscriptions that do have a token; they
+    migrate to the custom app once it is validated.
 
 !!! note "Bokun uninstall is not handled"
     `revokedAt` exists on `bokun_oauth_installs` and nothing sets it. A vendor who
