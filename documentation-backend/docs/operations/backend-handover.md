@@ -699,6 +699,44 @@ the reasoning lives in the integration pages, not the diffs.
 
 Things that are **not** in a branch and will not surface on their own.
 
+!!! danger "Viator opens the clickout to every supplier on 2026-10-06 (ENG-2755)"
+    The entry is `POST /api/viator/accept`, called by the **frontend server**
+    (`/api/partners/user-info`), never by the browser. Until ENG-2755 it carried a
+    10 requests/minute throttle keyed on the caller's IP, i.e. one counter for every
+    partner per instance, and the eleventh partner in a minute saw "invalid
+    invitation". Shipped on `fix/eng-2755-viator-clickout-launch` (backend) and
+    `fix/eng-2755-clickout-retry` (frontend, from `release/partners-onboarding`):
+
+    - no per-route throttle (global 10,000/min stays); a 429 is still counted;
+    - the single-use `jti` lives in **`viator_handoff_nonces`** (apply
+      `prisma/manual/viator-handoff-nonces.sql` with `db push` **before** the deploy;
+      already on dev), so a reload is not refused by the instance that redeemed it;
+    - every rejection is a `feature_usage_events` row (`viator_partner` /
+      `entry_refused`, `props.reason` ∈ `rate_limited`, `invalid_token`,
+      `invalid_claims`, `replayed`, `server_error`, `existing_customer`);
+    - `ViatorEntryAlertService` posts to Slack every 5 minutes when rejections pass
+      **`VIATOR_ENTRY_REJECTION_ALERT_THRESHOLD`** (default 3) —
+      `SLACK_VIATOR_ALERTS_WEBHOOK_URL`, else `SLACK_WEBHOOK_URL`;
+      `VIATOR_ENTRY_REJECTION_ALERT_DISABLED=true` silences it;
+    - the frontend retries a busy backend four times (1/2/4/8 s) behind "we're
+      setting up your account" and keeps "invalid invitation" for a real 401; a
+      successful exchange is remembered in the `viatorHandoff` cookie so a reload
+      does not spend the token twice.
+
+    On launch day, watch:
+
+    ```sql
+    SELECT date_trunc('minute', occurred_at) AS m, event, props->>'reason' AS reason, count(*)
+    FROM feature_usage_events
+    WHERE feature = 'viator_partner' AND occurred_at > now() - interval '2 hours'
+    GROUP BY 1, 2, 3 ORDER BY 1 DESC;
+    ```
+
+    Load test against dev (never prod), with the secret the dev backend verifies with:
+    `VIATOR_JWT_SECRET=… node scripts/viator-accept-load-test.js --count 100 --concurrency 20`.
+    Still to do: Cloud Run max instances / concurrency check on the API, the frontend
+    and the ML service; ask Viator whether the announcement is one blast or staggered.
+
 !!! danger "Empire's price pushes have been stopped since 2026-09-01"
     Two commitments made to the customer depend on them running again: the ~66,600
     accumulated purchase-rule actions only drain **as pushes run**, and the 26 Monday 9am
