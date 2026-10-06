@@ -91,6 +91,7 @@ nav:
       - Time-slot exclusions (ENG-2584): features/price-push-slot-exclusions.md
       - Billing accounts and Stripe customers: features/billing-accounts.md
       - Market Intelligence Access Flag: features/market-intelligence-access-flag.md
+      - Viator lifecycle emails (ENG-2777): features/viator-lifecycle-emails.md
   - Operations:
       - Backend Handover Runbook: operations/backend-handover.md
 
