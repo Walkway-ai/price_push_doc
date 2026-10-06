@@ -570,6 +570,65 @@ Things learned running it, all measured:
 
 ---
 
+## Per-person prices on the timeslot, not on a schedule (ENG-2749, ENG-2708) {: #timeslot-rules }
+
+The per-person path used to attach a price to a slot by **creating an "Override date"
+schedule** for it and a purchase rule scoped to schedules, and it consolidated slots with
+the same prices onto **one shared rule**. Measured on 2026-09-26 (ENG-2708): a push for
+one date `PUT` the shared rule in place and every other date on that rule took the new
+price, 116 of 280 Empire slots and 26 of 258 Everyday California slots pushed that day
+showed another date's price. On Everyday California 24 rules price 1,136 future slots.
+The per-slot fingerprint (`oldPrice` of a push ≠ `newPrice` of the previous push on the
+same slot) has been between 40 % and 90 % every week since June: structural, not a
+September regression. The override schedules are the other half of the trouble, they put
+retired slots back on sale (ENG-2574, ENG-2747).
+
+Xola's own recommendation (Srisha, August and 2026-10-01): link the rule to the
+**timeslot entity** `{experienceId}_{date}_{time}` at sequence 9,500,001. "A timeslot link
+does not open up availability", and the usual `template.id` price action works on it. The
+booking-priced path has done exactly that since ENG-2607.
+
+### What the flagged path does
+
+`XOLA_PER_PERSON_TIMESLOT_RULES` (`off` by default, `on` for everyone) plus two allowlists
+that force it on, `XOLA_PER_PERSON_TIMESLOT_EXPERIENCES` and
+`XOLA_PER_PERSON_TIMESLOT_SUBSCRIPTIONS`. For a push with a date and time on a flagged
+experience (`src/xola/xola-timeslot-rules.ts`):
+
+1. **No schedule** is reused or created. The operator-schedule guard still runs first.
+2. The rule is the slot's own: `in_product_schedule_filter` with `schedules: {all: true}`
+   (naming a schedule returns `no_schedule_found`), one `template.id` → `set price` action
+   per demographic, name `Walkway Timeslot Price - {exp} - {date} {time}`.
+3. The slot's previous timeslot rule is found in `xola_price_changes` (rows with no
+   `scheduleId`, per-person units), read live on Xola, and `PUT` with reconciled actions;
+   gone on Xola, a new one is created. **A schedule-scoped rule is never `PUT`** on this
+   path, which is the whole fix for ENG-2708. Consolidation by price signature is off.
+4. After the write the rule Xola returns must carry exactly the pushed amounts, one action
+   per template, or the push is `FAILED` (never a silent `APPLIED`, the ENG-2707 lesson).
+5. A new rule is linked to the timeslot at 9,500,001; an updated one is linked again only
+   if Xola shows no live link. Other Walkway timeslot rules of the slot are removed.
+6. With `XOLA_PER_PERSON_TIMESLOT_RETIRE_OVERRIDES=true`, the slot's old Walkway override
+   schedule (ours by name) is deleted once the timeslot rule is confirmed linked, one
+   `DELETE` per push as Xola asked. The shared rule drops the dead id on its next `PUT`.
+7. The history row has `scheduleId = null`; `XOLA_RULE_STRATEGY` in the trace carries
+   `timeslotRule`, `legacyOverrideScheduleId`, `legacyOverrideRetired`.
+
+An undo of a schedule-scoped row (it sends the row's schedule and rule and asks for no
+schedule creation) still reverts the legacy rule, flag or not, so old pushes stay undoable.
+
+### Rollout
+
+1. Flag one Empire experience and one Everyday California experience, push a far-future
+   slot from the SaaS, check the cart and two sibling slots before and after: the siblings
+   must not move. Then `RETIRE_OVERRIDES=true` on the same experiences.
+2. Allowlist the subscriptions; auto-pilot migrates slot by slot as it pushes. Watch the
+   stale-override count in the digest fall and `should_have_joined`-style drift stop:
+   the ENG-2708 fingerprint must drop to the manual-push baseline.
+3. Then re-push the current recommendation on the 142 drifted slots from the ENG-2708 CSV
+   (they migrate on that push), and `on` for everyone.
+
+---
+
 ## Skip and failure buckets
 
 Batch results are canonicalised into buckets for the Slack digest. Order matters — the
@@ -598,6 +657,15 @@ skips-only breakdown alongside. A rising `no-op-same-price` is healthy. A rising
 ---
 
 ## Tuning
+
+`XOLA_PER_PERSON_TIMESLOT_RULES`, `XOLA_PER_PERSON_TIMESLOT_EXPERIENCES`, `XOLA_PER_PERSON_TIMESLOT_SUBSCRIPTIONS`
+:   Per-person pushes link one rule to the timeslot instead of a schedule, see
+    [timeslot rules](#timeslot-rules). `off` by default; the two allowlists (comma-separated
+    experience ids, subscription ids) force the path on for a pilot.
+
+`XOLA_PER_PERSON_TIMESLOT_RETIRE_OVERRIDES`
+:   `true` deletes the slot's old Walkway override schedule once the timeslot rule is
+    confirmed linked. Off by default so the pilot can compare before and after.
 
 `XOLA_DEFAULT_API_KEY`
 :   Last-resort key. Convenient in dev, dangerous in prod — it makes a missing subscription
