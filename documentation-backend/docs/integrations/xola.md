@@ -616,11 +616,26 @@ experience (`src/xola/xola-timeslot-rules.ts`):
 An undo of a schedule-scoped row (it sends the row's schedule and rule and asks for no
 schedule creation) still reverts the legacy rule, flag or not, so old pushes stay undoable.
 
+### What the write-time check cannot see
+
+Xola's timeslot cache serves the previous price for 10 to 22 hours after a rule update
+(TC Brew Bus, 2026-09-26, 77 of 85 slots), `GET /purchaseRules/:id` read stale for up to
+5 hours, and one `PUT` answered 200 with the updated rule while Xola kept the previous
+version (rule `6aa9c7ac…`, still on its Sept 17 version a day later). The push verifies the
+rule in the `PUT` response, so it is blind to that last case, and an immediate re-read
+would fail good pushes. Hence `scripts/xola-timeslot-rule-drift.ts`: run it the day
+after, it reads every future per-person timeslot slot's latest row and reports the rules
+whose live amounts, actions or link no longer match (read-only, exit 2 on drift, `--slack`
+for the summary, `--rule <id> --subscription <id>` to print one rule). A drifted slot is
+fixed by pushing its current recommendation again, never by hand on Xola.
+
 ### Rollout
 
 1. Flag one Empire experience and one Everyday California experience, push a far-future
-   slot from the SaaS, check the cart and two sibling slots before and after: the siblings
-   must not move. Then `RETIRE_OVERRIDES=true` on the same experiences.
+   slot from the SaaS. Same day: `PUT` response and `--rule` probe carry the new amounts.
+   Next day: `/timeslots`, the cart, and two sibling slots, which must not have moved.
+   Then `RETIRE_OVERRIDES=true` on the same experiences, once Xola has answered what a
+   schedule `DELETE` triggers for the operator and when it returns 423.
 2. Allowlist the subscriptions; auto-pilot migrates slot by slot as it pushes. Watch the
    stale-override count in the digest fall and `should_have_joined`-style drift stop:
    the ENG-2708 fingerprint must drop to the manual-push baseline.
