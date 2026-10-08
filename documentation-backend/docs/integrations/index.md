@@ -2,6 +2,7 @@
 
 Four rails carry prices to booking platforms: **Ventrata**, **Bokun**, **Xola** and
 **Prioticket**. A fifth integration, **Viator**, is a read and linkout path, not a push rail.
+A sixth, **Peek**, is under study — [its page](peek.md) is the brief, not a rail yet.
 
 They share an entry point and an audit contract. Everything past that differs, sometimes
 profoundly — Bokun's `PUT` is neither a replace nor an upsert, Xola needs two objects created
@@ -46,16 +47,17 @@ digest able to say *whose* fault a slow batch is.
 
 ## What differs, at a glance
 
-| | Ventrata | Bokun | Xola | Prioticket |
-| --- | --- | --- | --- | --- |
-| Auth | `Bearer` token | HMAC-signed | `x-api-key` | `Bearer <jwt>\|<distributorId>` |
-| Protocol | OCTO + REST | REST v2 | Native REST | OCTO + custom webhook |
-| Write verb | `POST` availability | `PUT` component | `POST`/`PUT` purchase rule | `PATCH` webhook |
-| Objects to create first | none | price schedule | **schedule + purchase rule + link** | none |
-| Price you push is what you read back | **no** — tax added on top | yes | yes | yes |
-| Median push (90 d) | 693 ms | 12.1 s | 5.9 s | low volume |
-| Undo | yes | yes | yes | yes |
-| Circuit breaker | no | **yes, three-stage** | no | no |
+| | Ventrata | Bokun | Xola | Prioticket | Peek (study) |
+| --- | --- | --- | --- | --- | --- |
+| Auth | `Bearer` token | HMAC-signed | `x-api-key` | `Bearer <jwt>\|<distributorId>` | app install + HMAC JWT |
+| Protocol | OCTO + REST | REST v2 | Native REST | OCTO + custom webhook | SDK over installations API |
+| Write verb | `POST` availability | `PUT` component | `POST`/`PUT` purchase rule | `PATCH` webhook | `upsertOverrides` |
+| Objects to create first | none | price schedule | **schedule + purchase rule + link** | none | one pricing engine per install |
+| Price you push is what you read back | **no** — tax added on top | yes | yes | yes | yes (resolved overrides returned) |
+| Per start time | per availability | per rate | rule + timeslot link | per availability | native `startTimeRange` filter |
+| Median push (90 d) | 693 ms | 12.1 s | 5.9 s | low volume | — |
+| Undo | yes | yes | yes | yes | `clearOverrides` (whole date) |
+| Circuit breaker | no | **yes, three-stage** | no | no | — |
 
 The two cells worth staring at: **Xola requires three vendor objects to exist** before a price
 applies, and **Ventrata does not return what you pushed**. Both are covered on their pages.
@@ -68,6 +70,7 @@ applies, and **Ventrata does not return what you pushed**. Both are covered on t
 - [Bokun](bokun.md) — the entity model and the `PUT` semantics that cost a post-mortem
 - [Xola](xola.md) — schedules, purchase rules, and rule reuse by price signature
 - [Prioticket](prioticket.md) — the pipe-delimited auth and the Walkway webhook
+- [Peek](peek.md) — study only: pricing engines, per-ticket overrides filtered by start time, the app-install auth
 
 ---
 
