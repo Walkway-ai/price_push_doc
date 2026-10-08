@@ -1033,6 +1033,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="peek/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Peek (study)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1394,7 +1422,8 @@
 
 <h1 id="integrations-how-price-push-actually-works">Integrations — how price push actually works<a class="headerlink" href="#integrations-how-price-push-actually-works" title="Permanent link">&para;</a></h1>
 <p>Four rails carry prices to booking platforms: <strong>Ventrata</strong>, <strong>Bokun</strong>, <strong>Xola</strong> and
-<strong>Prioticket</strong>. A fifth integration, <strong>Viator</strong>, is a read and linkout path, not a push rail.</p>
+<strong>Prioticket</strong>. A fifth integration, <strong>Viator</strong>, is a read and linkout path, not a push rail.
+A sixth, <strong>Peek</strong>, is under study — <a href="peek/">its page</a> is the brief, not a rail yet.</p>
 <p>They share an entry point and an audit contract. Everything past that differs, sometimes
 profoundly — Bokun's <code>PUT</code> is neither a replace nor an upsert, Xola needs two objects created
 on the vendor side before a price can exist, Ventrata adds tax to what you pushed and hands
@@ -1437,6 +1466,7 @@ digest able to say <em>whose</em> fault a slow batch is.</p>
 <th>Bokun</th>
 <th>Xola</th>
 <th>Prioticket</th>
+<th>Peek (study)</th>
 </tr>
 </thead>
 <tbody>
@@ -1446,6 +1476,7 @@ digest able to say <em>whose</em> fault a slow batch is.</p>
 <td>HMAC-signed</td>
 <td><code>x-api-key</code></td>
 <td><code>Bearer &lt;jwt&gt;\|&lt;distributorId&gt;</code></td>
+<td>app install + HMAC JWT</td>
 </tr>
 <tr>
 <td>Protocol</td>
@@ -1453,6 +1484,7 @@ digest able to say <em>whose</em> fault a slow batch is.</p>
 <td>REST v2</td>
 <td>Native REST</td>
 <td>OCTO + custom webhook</td>
+<td>SDK over installations API</td>
 </tr>
 <tr>
 <td>Write verb</td>
@@ -1460,6 +1492,7 @@ digest able to say <em>whose</em> fault a slow batch is.</p>
 <td><code>PUT</code> component</td>
 <td><code>POST</code>/<code>PUT</code> purchase rule</td>
 <td><code>PATCH</code> webhook</td>
+<td><code>upsertOverrides</code></td>
 </tr>
 <tr>
 <td>Objects to create first</td>
@@ -1467,6 +1500,7 @@ digest able to say <em>whose</em> fault a slow batch is.</p>
 <td>price schedule</td>
 <td><strong>schedule + purchase rule + link</strong></td>
 <td>none</td>
+<td>one pricing engine per install</td>
 </tr>
 <tr>
 <td>Price you push is what you read back</td>
@@ -1474,6 +1508,15 @@ digest able to say <em>whose</em> fault a slow batch is.</p>
 <td>yes</td>
 <td>yes</td>
 <td>yes</td>
+<td>yes (resolved overrides returned)</td>
+</tr>
+<tr>
+<td>Per start time</td>
+<td>per availability</td>
+<td>per rate</td>
+<td>rule + timeslot link</td>
+<td>per availability</td>
+<td>native <code>startTimeRange</code> filter</td>
 </tr>
 <tr>
 <td>Median push (90 d)</td>
@@ -1481,6 +1524,7 @@ digest able to say <em>whose</em> fault a slow batch is.</p>
 <td>12.1 s</td>
 <td>5.9 s</td>
 <td>low volume</td>
+<td>—</td>
 </tr>
 <tr>
 <td>Undo</td>
@@ -1488,6 +1532,7 @@ digest able to say <em>whose</em> fault a slow batch is.</p>
 <td>yes</td>
 <td>yes</td>
 <td>yes</td>
+<td><code>clearOverrides</code> (whole date)</td>
 </tr>
 <tr>
 <td>Circuit breaker</td>
@@ -1495,6 +1540,7 @@ digest able to say <em>whose</em> fault a slow batch is.</p>
 <td><strong>yes, three-stage</strong></td>
 <td>no</td>
 <td>no</td>
+<td>—</td>
 </tr>
 </tbody>
 </table>
@@ -1507,6 +1553,7 @@ applies, and <strong>Ventrata does not return what you pushed</strong>. Both are
 <li><a href="bokun/">Bokun</a> — the entity model and the <code>PUT</code> semantics that cost a post-mortem</li>
 <li><a href="xola/">Xola</a> — schedules, purchase rules, and rule reuse by price signature</li>
 <li><a href="prioticket/">Prioticket</a> — the pipe-delimited auth and the Walkway webhook</li>
+<li><a href="peek/">Peek</a> — study only: pricing engines, per-ticket overrides filtered by start time, the app-install auth</li>
 </ul>
 <hr />
 <h2 id="adding-a-rail">Adding a rail<a class="headerlink" href="#adding-a-rail" title="Permanent link">&para;</a></h2>
