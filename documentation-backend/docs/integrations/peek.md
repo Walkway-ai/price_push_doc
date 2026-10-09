@@ -1,7 +1,8 @@
 # Peek (Peek Pro)
 
-Phase 1 is in the backend (`src/peek`, PR #637, live in prod since 2026-10-08) and the push
-was validated end to end on Peek's sandbox on 2026-10-09: install webhook received, catalogue
+The rail is in the backend (`src/peek`: phase 1 in PR #637, live in prod since 2026-10-08;
+full parity on branch `feat/peek-integration`, 2026-10-09) and the push was validated end to
+end on Peek's sandbox on 2026-10-09: install webhook received, catalogue
 read, one override pushed on a start time, price in force read back at the new amount, undo,
 price back to base. This page is the rail as it is, plus the portal setup that cost a day to
 find and the points still open with Peek. Source for the API: the official TypeScript SDK
@@ -116,8 +117,10 @@ list minus the slot, plus the slot's previous entry if it had one.
 
 `availabilityTimes.price` is what the first page of this study said did not exist. It does,
 on the backoffice GraphQL behind the registry proxy (schema found by introspection; the SDK
-simply does not select it). It is the right source for the old-price snapshot before a push,
-the read-back after one, and the `price` table mirror — all three are "not in phase 1" today.
+simply does not select it). The backend reads it before every push (old-price snapshot) and
+after (a push whose price in force differs from what was pushed is FAILED with the reason:
+another engine takes precedence on the slot), and mirrors the headline unit into the `price`
+table.
 
 **No per-channel price to write.** Channels are read-only labels. There is no equivalent of
 Ventrata's CHECKOUT / CONNECT split: one price, applied to everything Peek sells. A product
@@ -238,5 +241,10 @@ Still open with Peek:
 2. **Rentals**: whether overrides apply the same way to `RENTAL` products.
 3. **Volume**: any cap on overrides per engine or per date (Bókun's 512 daily rules bit us).
 
-Next in the backend: read `availabilityTimes.price` before and after each push (old-price
-snapshot, read-back, `price` mirror), auto-pilot dispatch, the first-push report hook.
+Parity with the other rails (backend `src/peek`, since 2026-10-09): price in force read
+before/after, `price` table mirror, manual lock (channel `Peek`), user-action link, vendor
+audit, first-push report (vendor `peek`), history in the shared shape, undo that releases
+the lock, and auto-apply (`PeekService.autoApplyBatchPricePush`, run by the auto-apply job
+after Prioticket; the adult ticket at the recommended price, the other tickets from the
+operator's pricing rules; kill switch `PEEK_AUTO_APPLY_DISABLED`). Not yet: rentals, the
+`spotsTaken` filter.
