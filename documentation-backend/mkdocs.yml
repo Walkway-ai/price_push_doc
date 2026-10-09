@@ -86,7 +86,7 @@ nav:
       - Bokun: integrations/bokun.md
       - Xola: integrations/xola.md
       - Prioticket: integrations/prioticket.md
-      - Peek (study): integrations/peek.md
+      - Peek: integrations/peek.md
   - Features:
       - Compsets at the subscription grain (soft release): features/compset-subscription-grain.md
       - Time-slot exclusions (ENG-2584): features/price-push-slot-exclusions.md
